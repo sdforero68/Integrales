@@ -1,6 +1,0 @@
-# Ignorar dependencias y entornos
-node_modules/
-.env
-backend/config/database.env
-*.log
-.DS_Store
