@@ -33,12 +33,44 @@
           </svg>
           <span class="badge" id="cart-badge" hidden>0</span>
         </button>
-        <button class="icon-btn" data-action="user" aria-label="Usuario">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--color-primary)">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-            <circle cx="12" cy="7" r="4"/>
-          </svg>
-        </button>
+        <div class="user-menu-wrapper">
+          <button class="icon-btn" data-action="user" aria-label="Usuario" id="user-menu-btn">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--color-primary)">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+          </button>
+          <div class="user-menu-dropdown" id="user-menu" hidden>
+            <div class="user-menu-header">
+              <div class="user-menu-avatar">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                  <circle cx="12" cy="7" r="4"/>
+                </svg>
+              </div>
+              <div class="user-menu-info">
+                <p class="user-menu-name" id="user-menu-name">Usuario</p>
+                <p class="user-menu-email" id="user-menu-email">-</p>
+              </div>
+            </div>
+            <div class="user-menu-divider"></div>
+            <a href="./profile.html" class="user-menu-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+              <span>Mi Perfil</span>
+            </a>
+            <button class="user-menu-item user-menu-logout" id="logout-btn-navbar">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                <polyline points="16 17 21 12 16 7"/>
+                <line x1="21" y1="12" x2="9" y2="12"/>
+              </svg>
+              <span>Cerrar Sesión</span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </header>
@@ -147,6 +179,63 @@
       <h2 class="text-center mb-12 gradient-text">Contacto</h2>
       <p class="text-center muted">Escríbenos para pedidos y consultas.</p>
     </section>
+  </div>
+
+  <!-- Product Details Modal -->
+  <div class="product-modal" id="product-modal" hidden>
+    <div class="product-modal-overlay" id="product-modal-overlay"></div>
+    <div class="product-modal-content">
+      <button class="product-modal-close" id="product-modal-close">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+      
+      <div class="product-modal-header">
+        <h2 class="product-modal-title" id="product-modal-title" style="color: var(--color-primary)"></h2>
+        <p class="product-modal-description">Detalles del producto</p>
+      </div>
+
+      <div class="product-modal-body">
+        <div class="product-modal-grid">
+          <!-- Image -->
+          <div class="product-modal-image-wrapper">
+            <img id="product-modal-image" src="" alt="" class="product-modal-image" />
+          </div>
+
+          <!-- Details -->
+          <div class="product-modal-details">
+            <div class="product-modal-section">
+              <h3 class="product-modal-section-title" style="color: var(--color-tertiary)">Descripción</h3>
+              <p class="product-modal-text" id="product-modal-description"></p>
+            </div>
+
+            <div class="product-modal-section" id="product-modal-ingredients-section" hidden>
+              <h3 class="product-modal-section-title" style="color: var(--color-tertiary)">Ingredientes</h3>
+              <p class="product-modal-text" id="product-modal-ingredients"></p>
+            </div>
+
+            <div class="product-modal-section" id="product-modal-benefits-section" hidden>
+              <h3 class="product-modal-section-title" style="color: var(--color-tertiary)">Beneficios</h3>
+              <p class="product-modal-text" id="product-modal-benefits"></p>
+            </div>
+
+            <div class="product-modal-price-section">
+              <p class="product-modal-price" id="product-modal-price" style="color: var(--color-primary)"></p>
+              <button class="product-modal-add-btn" id="product-modal-add-btn" style="background-color: var(--color-accent)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="9" cy="21" r="1"/>
+                  <circle cx="20" cy="21" r="1"/>
+                  <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                </svg>
+                <span>Agregar al Carrito</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script type="module" src="./js/main.js"></script>
