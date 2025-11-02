@@ -1,0 +1,396 @@
+/* Profile Container */
+.profile-container {
+  width: 100%;
+  padding: 3rem 0;
+  min-height: 100vh;
+  background: #f8fafc;
+  animation: fadeIn 0.4s ease-out;
+}
+
+.profile-header {
+  position: relative;
+  margin-bottom: 2rem;
+}
+
+.profile-title {
+  text-align: center;
+  margin: 0;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 800;
+}
+
+.btn-back-home {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--color-primary);
+  background: #ffffff;
+  border: 2px solid var(--color-primary);
+  border-radius: 0.75rem;
+  cursor: pointer;
+  transition: transform 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+  margin-bottom: 1rem;
+}
+
+.btn-back-home:hover {
+  transform: translateY(-2px);
+  background: var(--color-primary);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(13, 110, 253, 0.2);
+}
+
+.btn-back-home:active {
+  transform: translateY(0);
+}
+
+.btn-back-home svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.profile-content {
+  max-width: 80rem;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Profile Card */
+.profile-card {
+  background: #ffffff;
+  border-radius: 1rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  margin-bottom: 2rem;
+  overflow: hidden;
+  animation: slideInUp 0.5s ease-out;
+}
+
+.card-header {
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.card-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--text);
+}
+
+.card-title svg {
+  color: var(--color-primary);
+}
+
+.card-content {
+  padding: 2rem;
+}
+
+/* User Info */
+.user-info-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.user-info-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+}
+
+.user-avatar {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.user-name {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 0.25rem 0;
+}
+
+.user-email {
+  font-size: 1.125rem;
+  color: #4b5563;
+  margin: 0;
+}
+
+.user-phone {
+  font-size: 1rem;
+  color: #4b5563;
+  margin: 0;
+}
+
+.user-phone:empty {
+  display: none;
+}
+
+/* Logout Button */
+.btn-logout {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: var(--text);
+  background: #ffffff;
+  border: 2px solid #e2e8f0;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  transition: transform 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+  white-space: nowrap;
+}
+
+.btn-logout:hover {
+  transform: translateY(-1px);
+  border-color: var(--color-accent);
+  background-color: #f8fafc;
+}
+
+.btn-logout:active {
+  transform: translateY(0);
+}
+
+.btn-logout svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Loading State */
+.loading-state {
+  text-align: center;
+  padding: 3rem 1rem;
+}
+
+.loading-text {
+  font-size: 1.125rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+}
+
+.empty-state svg {
+  margin: 0 auto 1rem;
+  display: block;
+}
+
+.empty-text {
+  font-size: 1.25rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* Orders List */
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Order Card */
+.order-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  transition: box-shadow 0.15s ease;
+}
+
+.order-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.order-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.order-id {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+.order-date {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* Status Badge */
+.status-badge {
+  padding: 0.375rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.status-badge.pendiente {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.status-badge.confirmado {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+.status-badge.enviado {
+  background-color: #e9d5ff;
+  color: #6b21a8;
+}
+
+.status-badge.entregado {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.status-badge.default {
+  background-color: #f3f4f6;
+  color: #374151;
+}
+
+/* Order Items */
+.order-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.order-item {
+  display: flex;
+  justify-content: space-between;
+  color: #374151;
+  font-size: 0.95rem;
+}
+
+/* Order Footer */
+.order-footer {
+  border-top: 1px solid #e2e8f0;
+  padding-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.order-methods {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.order-method {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+.order-total {
+  text-align: right;
+}
+
+.order-total-label {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin: 0 0 0.25rem 0;
+}
+
+.order-total-amount {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin: 0;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .profile-container {
+    padding: 2rem 0;
+  }
+
+  .card-content {
+    padding: 1.5rem;
+  }
+
+  .user-info-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .btn-logout {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .order-header {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .order-footer {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .order-total {
+    text-align: left;
+    width: 100%;
+  }
+}
+
