@@ -43,6 +43,7 @@ import { initToggles } from './ui/toggle.js';
 import { initToggleGroups } from './ui/toggle-group.js';
 import { initTooltips } from './ui/tooltip.js';
 import { initToaster } from './ui/toaster.js';
+import { initApp } from './app.js';
 
 // Sistema de carrito con localStorage (scope global)
 const CART_STORAGE_KEY = 'app_cart';
@@ -71,20 +72,44 @@ document.addEventListener('DOMContentLoaded', () => {
   const navbar = document.querySelector('.navbar');
   const navHeight = navbar ? navbar.offsetHeight : 0;
 
-  const navigate = (sectionId) => {
-    const el = document.getElementById(sectionId);
-    if (!el) {
-      console.log(`Sección no encontrada: ${sectionId}`);
+  // Función para navegar a páginas separadas o secciones en la misma página
+  function navigate(target) {
+    // Si el target es una página HTML, redirigir
+    if (target.endsWith('.html')) {
+      window.location.href = target;
       return;
     }
-    const rect = el.getBoundingClientRect();
-    const targetY = window.scrollY + rect.top - navHeight + 1; // +1 to avoid overlap
-    window.scrollTo({ top: targetY, behavior: 'smooth' });
-  };
+    
+    // Si estamos en index.html, intentar hacer scroll a la sección
+    if (window.location.pathname.endsWith('index.html') || window.location.pathname === '/' || window.location.pathname.endsWith('/')) {
+      const el = document.getElementById(target);
+      if (el) {
+        const rect = el.getBoundingClientRect();
+        const targetY = window.scrollY + rect.top - navHeight + 1;
+        window.scrollTo({ top: targetY, behavior: 'smooth' });
+        return;
+      }
+    }
+    
+    // Mapeo de secciones a páginas
+    const pageMap = {
+      'home': './index.html',
+      'catalog': './catalog.html',
+      'markets': './markets.html',
+      'about': './about.html',
+      'contact': './contact.html'
+    };
+    
+    if (pageMap[target]) {
+      window.location.href = pageMap[target];
+    }
+  }
 
+  // Manejar botones con data-target
   document.querySelectorAll('[data-target]')
     .forEach((btn) => {
-      btn.addEventListener('click', () => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
         const target = btn.getAttribute('data-target');
         navigate(target);
       });
@@ -110,39 +135,54 @@ document.addEventListener('DOMContentLoaded', () => {
     io.observe(el);
   });
 
-  // Scrollspy active link handling
-  const sections = [
-    { id: 'home', el: document.getElementById('home') },
-    { id: 'about', el: document.getElementById('about') },
-    { id: 'catalog', el: document.getElementById('catalog') },
-    { id: 'markets', el: document.getElementById('markets') },
-    { id: 'contact', el: document.getElementById('contact') },
-  ].filter(s => s.el);
-  const links = Array.from(document.querySelectorAll('.nav-link'));
+  // Scrollspy active link handling (solo para index.html)
+  const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+  if (currentPage === 'index.html' || currentPage === '' || currentPage === '/') {
+    const sections = [
+      { id: 'home', el: document.getElementById('home') },
+      { id: 'about', el: document.getElementById('about') },
+    ].filter(s => s.el);
+    const links = Array.from(document.querySelectorAll('.nav-link'));
 
-  const setActive = (id) => {
-    links.forEach((a) => {
-      a.classList.toggle('active', a.getAttribute('data-target') === id);
+    const setActive = (id) => {
+      links.forEach((a) => {
+        const href = a.getAttribute('href');
+        if (href === './index.html' || href === 'index.html') {
+          a.classList.toggle('active', id === 'home' || !id);
+        } else {
+          a.classList.remove('active');
+        }
+      });
+    };
+
+    const onScroll = () => {
+      const fromTop = window.scrollY + navHeight + 10;
+      let current = sections[0]?.id;
+      sections.forEach((s) => {
+        const top = s.el.offsetTop;
+        if (fromTop >= top) current = s.id;
+      });
+      if (current) setActive(current);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  } else {
+    // Para otras páginas, marcar el enlace activo según la página actual
+    const links = Array.from(document.querySelectorAll('.nav-link'));
+    links.forEach((link) => {
+      const href = link.getAttribute('href');
+      if (href && (href.includes(currentPage) || (currentPage === 'index.html' && (href === './index.html' || href === 'index.html')))) {
+        link.classList.add('active');
+      } else {
+        link.classList.remove('active');
+      }
     });
-  };
+  }
 
-  const onScroll = () => {
-    const fromTop = window.scrollY + navHeight + 10;
-    let current = sections[0]?.id;
-    sections.forEach((s) => {
-      const top = s.el.offsetTop;
-      if (fromTop >= top) current = s.id;
-    });
-    if (current) setActive(current);
-  };
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
-
-  // Header actions
-  const cartBadges = Array.from(document.querySelectorAll('.cart-badge, #cart-badge'));
-
-  const updateCartBadge = () => {
+  // Función local para actualizar badge (para compatibilidad cuando sync.js no está disponible)
+  const updateCartBadgeLocal = () => {
     const count = getCartItemsCount();
+    const cartBadges = Array.from(document.querySelectorAll('.cart-badge, #cart-badge'));
     cartBadges.forEach((badge) => {
       if (count > 0) {
         badge.textContent = String(count);
@@ -153,95 +193,20 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
   
-  // Inicializar badge del carrito
-  updateCartBadge();
-
-  document.querySelectorAll('[data-action="cart"]').forEach((el) => {
-    el.addEventListener('click', () => {
-      // Redirigir a la página del carrito
-      window.location.href = './cart.html';
-    });
+  // Intentar usar sync.js, pero tener fallback local
+  import('./sync.js').then(({ updateCartBadge }) => {
+    updateCartBadge();
+  }).catch(() => {
+    // Si sync.js no está disponible, usar función local
+    updateCartBadgeLocal();
   });
-  // Verificar si el usuario está logueado
-  const checkLoginStatus = () => {
-    const accessToken = localStorage.getItem('accessToken');
-    return !!accessToken;
-  };
-
-  // Obtener información del usuario
-  const getUserInfo = () => {
-    const userStr = localStorage.getItem('user') || localStorage.getItem('current_user');
-    if (!userStr) return null;
-    try {
-      return JSON.parse(userStr);
-    } catch {
-      return null;
-    }
-  };
-
-  // Actualizar información del usuario en el menú
-  const updateUserMenu = () => {
-    const userMenu = document.getElementById('user-menu');
-    const userMenuName = document.getElementById('user-menu-name');
-    const userMenuEmail = document.getElementById('user-menu-email');
-    
-    if (checkLoginStatus()) {
-      const user = getUserInfo();
-      if (userMenuName && user) {
-        userMenuName.textContent = user?.user_metadata?.name || 'Usuario';
-      }
-      if (userMenuEmail && user) {
-        userMenuEmail.textContent = user?.email || '-';
-      }
-    }
-  };
-
-  // Manejo del menú de usuario
-  const userMenuBtn = document.getElementById('user-menu-btn');
-  const userMenu = document.getElementById('user-menu');
   
-  if (userMenuBtn && userMenu) {
-    userMenuBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      
-      if (checkLoginStatus()) {
-        // Mostrar menú desplegable
-        updateUserMenu();
-        userMenu.hidden = !userMenu.hidden;
-      } else {
-        // Redirigir al login si no está logueado
-        window.location.href = './login.html';
-      }
-    });
+  // También definir updateCartBadge para uso en otras funciones
+  window.updateCartBadge = updateCartBadgeLocal;
 
-    // Cerrar menú al hacer click fuera
-    document.addEventListener('click', (e) => {
-      if (!userMenu.contains(e.target) && !userMenuBtn.contains(e.target)) {
-        userMenu.hidden = true;
-      }
-    });
-  }
-
-  // Manejo del botón de logout en el navbar
-  const logoutBtnNavbar = document.getElementById('logout-btn-navbar');
-  if (logoutBtnNavbar) {
-    logoutBtnNavbar.addEventListener('click', () => {
-      // Limpiar localStorage
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('user');
-      localStorage.removeItem('current_user');
-      localStorage.removeItem('current_session');
-      
-      // Ocultar menú
-      if (userMenu) userMenu.hidden = true;
-      
-      // Recargar página
-      window.location.reload();
-    });
-  }
-
-  // Actualizar menú al cargar
-  updateUserMenu();
+  // El manejo del botón de carrito ahora se hace mediante sync.js
+  // El manejo del login ahora se hace mediante sync.js
+  // Solo mantener funciones locales para compatibilidad si es necesario
 
   // Footer year
   const yearEl = document.getElementById('footer-year');
@@ -281,48 +246,56 @@ document.addEventListener('DOMContentLoaded', () => {
     const getCategoryImage = (category) => {
       const categoryMap = {
         'panaderia': 'https://images.unsplash.com/photo-1627308593341-d886acdc06a2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhcnRpc2FuJTIwYnJlYWQlMjBiYWtlcnl8ZW58MXx8fHwxNzYxODE5MTc5fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
-        'granola': 'https://images.unsplash.com/photo-1595787572590-545171362a1c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxoZWFsdGh5JTIwZ3Jhbm9sYSUyMG51dHN8ZW58MXx8fHwxNzYxODUwNTg3fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+        'amasijos': 'https://images.unsplash.com/photo-1603532551666-451a96bca5fd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080',
         'galleteria': 'https://images.unsplash.com/photo-1644595425685-5769f217654a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxvcmdhbmljJTIwY29va2llc3xlbnwxfHx8fDE3NjE4NTA1ODh8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+        'granola': 'https://images.unsplash.com/photo-1595787572590-545171362a1c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxoZWFsdGh5JTIwZ3Jhbm9sYSUyMG51dHN8ZW58MXx8fHwxNzYxODUwNTg3fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
         'frutos-secos': 'https://images.unsplash.com/photo-1702506183897-e4869f155209?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkcmllZCUyMGZydWl0cyUyMHNlZWRzfGVufDF8fHx8MTc2MTg1MDU4OHww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+        'envasados': 'https://images.unsplash.com/photo-1588168333986-5078d3ae3976?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080',
+        // Compatibilidad con IDs antiguos
         'bakery': 'https://images.unsplash.com/photo-1627308593341-d886acdc06a2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhcnRpc2FuJTIwYnJlYWQlMjBiYWtlcnl8ZW58MXx8fHwxNzYxODE5MTc5fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
         'cookies': 'https://images.unsplash.com/photo-1644595425685-5769f217654a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxvcmdhbmljJTIwY29va2llc3xlbnwxfHx8fDE3NjE4NTA1ODh8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
-        'nuts': 'https://images.unsplash.com/photo-1702506183897-e4869f155209?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkcmllZCUyMGZydWl0cyUyMHNlZWRzfGVufDF8fHx8MTc2MTg1MDU4OHww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral'
+        'nuts': 'https://images.unsplash.com/photo-1702506183897-e4869f155209?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkcmllZCUyMGZydWl0cyUyMHNlZWRzfGVufDF8fHx8MTc2MTg1MDU4OHww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
+        'jarred': 'https://images.unsplash.com/photo-1588168333986-5078d3ae3976?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080'
       };
       
       return categoryMap[category] || categoryMap['panaderia'];
     };
     
-    // Función para manejar agregar al carrito
-    const handleAddToCart = (product) => {
-      const cart = getCart();
-      
-      // Buscar si el producto ya está en el carrito
-      const existingItemIndex = cart.findIndex(item => item.id === product.id);
-      
-      if (existingItemIndex >= 0) {
-        // Si existe, incrementar la cantidad
-        cart[existingItemIndex].quantity += 1;
-      } else {
-        // Si no existe, agregar nuevo item
-        cart.push({
-          id: product.id,
-          name: product.name,
-          description: product.description,
-          price: product.price,
-          image: product.image || getCategoryImage(product.category),
-          category: product.category,
-          quantity: 1
-        });
+    // Función para manejar agregar al carrito (usando sync.js)
+    const handleAddToCart = async (product) => {
+      try {
+        // Importar función de sincronización
+        const { addToCart } = await import('./sync.js');
+        addToCart(product);
+      } catch (error) {
+        // Fallback local si sync.js no está disponible
+        console.error('Error importing sync:', error);
+        const cart = getCart();
+        const existingItemIndex = cart.findIndex(item => item.id === product.id);
+        
+        if (existingItemIndex >= 0) {
+          cart[existingItemIndex].quantity += 1;
+        } else {
+          cart.push({
+            id: product.id,
+            name: product.name,
+            description: product.description,
+            price: product.price,
+            image: product.image || getCategoryImage(product.category),
+            category: product.category,
+            quantity: 1
+          });
+        }
+        
+        saveCart(cart);
+        updateCartBadgeLocal();
+        
+        if (window.toast) {
+          window.toast.success(`${product.name} agregado al carrito`);
+        } else {
+          console.log('Producto agregado al carrito:', product.name);
+        }
       }
-      
-      // Guardar carrito en localStorage
-      saveCart(cart);
-      
-      // Actualizar badge
-      updateCartBadge();
-      
-      // Mostrar confirmación visual (opcional)
-      console.log('Producto agregado al carrito:', product.name);
     };
     
     // Función para abrir modal de detalles
@@ -389,7 +362,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     };
     
-    // Función para ver detalles (compatibilidad)
+    // Función para ver detalles
     const handleViewDetails = (product) => {
       openProductModal(product);
     };
@@ -450,7 +423,22 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const renderGrid = () => {
+      // Verificar que products esté disponible
+      if (!products || products.length === 0) {
+        console.error('No hay productos disponibles');
+        if (emptyEl) emptyEl.hidden = false;
+        if (gridEl) gridEl.innerHTML = '<div class="text-center py-16"><p class="text-xl">No hay productos disponibles en este momento.</p></div>';
+        return;
+      }
+      
       const list = filterProducts();
+      console.log(`Renderizando ${list.length} productos de ${products.length} totales`);
+      
+      if (!gridEl) {
+        console.error('Elemento catalog-grid no encontrado');
+        return;
+      }
+      
       gridEl.innerHTML = '';
       if (list.length === 0) {
         if (emptyEl) emptyEl.hidden = false;
@@ -539,12 +527,23 @@ document.addEventListener('DOMContentLoaded', () => {
         if (searchEl) searchEl.value = '';
         renderFilters();
         renderGrid();
-        navigate('catalog');
+        // No navegar, solo limpiar filtros y mostrar todos los productos
       });
     }
 
-    renderFilters();
-    renderGrid();
+    // Verificar que products y categories estén disponibles
+    if (!products || products.length === 0) {
+      console.error('Error: No se pudieron cargar los productos');
+      if (gridEl) {
+        gridEl.innerHTML = '<div class="text-center py-16"><p class="text-xl">Error al cargar los productos. Por favor, recarga la página.</p></div>';
+      }
+    } else {
+      console.log(`Productos cargados: ${products.length}`);
+      renderFilters();
+      renderGrid();
+    }
+  } else {
+    console.warn('Elementos del catálogo no encontrados (catalog-grid o catalog-filters)');
   }
 
   // =====================
@@ -843,4 +842,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // Toaster
   // =====================
   initToaster();
+
+  // =====================
+  // App (Estado Global y Navegación)
+  // =====================
+  initApp();
 });

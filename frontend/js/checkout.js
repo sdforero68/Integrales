@@ -5,6 +5,46 @@ import { getCart, saveCart, CART_STORAGE_KEY } from './main.js';
 const ORDERS_STORAGE_KEY = 'app_orders';
 const DELIVERY_FEE = 5000;
 
+// Cache para funciones de sync.js
+let syncIsLoggedIn = null;
+let syncGetCurrentUser = null;
+let syncModuleLoaded = false;
+
+// Función para cargar sync.js (con cache)
+async function loadSyncModule() {
+  if (syncModuleLoaded) {
+    return { isLoggedIn: syncIsLoggedIn, getCurrentUser: syncGetCurrentUser };
+  }
+  
+  try {
+    const syncModule = await import('./sync.js');
+    syncIsLoggedIn = syncModule.isLoggedIn;
+    syncGetCurrentUser = syncModule.getCurrentUser;
+    syncModuleLoaded = true;
+    return { isLoggedIn: syncIsLoggedIn, getCurrentUser: syncGetCurrentUser };
+  } catch (error) {
+    // sync.js no está disponible, usar fallbacks locales
+    console.warn('sync.js no disponible, usando fallbacks locales');
+    syncIsLoggedIn = () => {
+      const accessToken = localStorage.getItem('accessToken') || localStorage.getItem('current_session');
+      return !!accessToken;
+    };
+    syncGetCurrentUser = () => {
+      const userStr = localStorage.getItem('user') || localStorage.getItem('current_user');
+      if (userStr) {
+        try {
+          return JSON.parse(userStr);
+        } catch (e) {
+          return null;
+        }
+      }
+      return null;
+    };
+    syncModuleLoaded = true;
+    return { isLoggedIn: syncIsLoggedIn, getCurrentUser: syncGetCurrentUser };
+  }
+}
+
 // Función para formatear precio
 function formatPrice(price) {
   return new Intl.NumberFormat('es-CO', {
@@ -14,24 +54,35 @@ function formatPrice(price) {
   }).format(price);
 }
 
-// Función para verificar si el usuario está logueado
+// Función para verificar si el usuario está logueado (usando sync.js si está disponible)
 function checkLoginStatus() {
-  const accessToken = localStorage.getItem('accessToken');
-  return !!accessToken;
+  if (!syncModuleLoaded) {
+    // Si no se ha cargado aún, usar fallback local inmediatamente
+    const accessToken = localStorage.getItem('accessToken') || localStorage.getItem('current_session');
+    return !!accessToken;
+  }
+  return syncIsLoggedIn ? syncIsLoggedIn() : false;
 }
 
-// Función para obtener información del usuario
+// Función para obtener información del usuario (usando sync.js si está disponible)
 function getUserInfo() {
-  const userStr = localStorage.getItem('user');
-  if (userStr) {
-    try {
-      return JSON.parse(userStr);
-    } catch (e) {
-      return null;
+  if (!syncModuleLoaded) {
+    // Si no se ha cargado aún, usar fallback local inmediatamente
+    const userStr = localStorage.getItem('user') || localStorage.getItem('current_user');
+    if (userStr) {
+      try {
+        return JSON.parse(userStr);
+      } catch (e) {
+        return null;
+      }
     }
+    return null;
   }
-  return null;
+  return syncGetCurrentUser ? syncGetCurrentUser() : null;
 }
+
+// Cargar sync.js al iniciar (en background)
+loadSyncModule();
 
 // Función para guardar pedido en localStorage
 function saveOrder(order) {

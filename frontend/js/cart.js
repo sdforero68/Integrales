@@ -1,5 +1,6 @@
 // Importar funciones del carrito desde main.js
 import { getCart, saveCart, getCartItemsCount, CART_STORAGE_KEY } from './main.js';
+import { updateCartBadge } from './sync.js';
 
 // Función para formatear precio
 function formatPrice(price) {
@@ -10,20 +11,7 @@ function formatPrice(price) {
   }).format(price);
 }
 
-// Función para actualizar el badge del carrito
-function updateCartBadge() {
-  const badges = Array.from(document.querySelectorAll('.cart-badge, #cart-badge'));
-  const count = getCartItemsCount();
-  
-  badges.forEach((badge) => {
-    if (count > 0) {
-      badge.textContent = String(count);
-      badge.hidden = false;
-    } else {
-      badge.hidden = true;
-    }
-  });
-}
+// La función updateCartBadge ahora se importa de sync.js
 
 // Función para renderizar items del carrito
 function renderCartItems() {
@@ -125,7 +113,7 @@ function handleCartAction(action, itemId) {
   }
   
   renderCartItems();
-  updateCartBadge();
+  updateCartBadge(); // Usar función de sync.js
 }
 
 // Función para actualizar el resumen
@@ -172,5 +160,5 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Exportar funciones para uso en otros archivos
-export { formatPrice, updateCartBadge };
+export { formatPrice };
 

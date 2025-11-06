@@ -198,16 +198,19 @@ function renderOrders(orders) {
   });
 }
 
-// Función de logout
-function handleLogout() {
-  // Limpiar localStorage
-  localStorage.removeItem('accessToken');
-  localStorage.removeItem('user');
-  localStorage.removeItem('current_user');
-  localStorage.removeItem('current_session');
-  
-  // Redirigir al login
-  window.location.href = './login.html';
+// Función de logout (usando sync.js)
+async function handleLogout() {
+  try {
+    const { handleLogout: handleLogoutSync } = await import('./sync.js');
+    handleLogoutSync();
+  } catch (error) {
+    // Fallback local
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('user');
+    localStorage.removeItem('current_user');
+    localStorage.removeItem('current_session');
+    window.location.href = './login.html';
+  }
 }
 
 // Inicializar cuando el DOM esté listo
