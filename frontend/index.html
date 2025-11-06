@@ -168,16 +168,299 @@
       </div>
     </section>
 
-    <!-- Mercados Campesinos (placeholder) -->
+    <!-- Mercados Campesinos -->
     <section class="section container px-4" id="markets">
-      <h2 class="text-center mb-12 gradient-text">Mercados Campesinos</h2>
-      <p class="text-center muted">Próximamente información de puntos de venta y fechas.</p>
+      <div class="markets-container">
+        <!-- Header -->
+        <div class="text-center mb-12 animate-fade-in-up">
+          <h1 class="gradient-text mb-4">Mercados Campesinos</h1>
+          <p class="text-xl muted mb-6">Encuéntranos en nuestros puntos de venta en Bogotá</p>
+          
+          <!-- Event Schedule -->
+          <div class="schedule-box">
+            <svg class="schedule-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+              <line x1="16" y1="2" x2="16" y2="6"/>
+              <line x1="8" y1="2" x2="8" y2="6"/>
+              <line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+            <div class="schedule-text">
+              <p class="schedule-label">Eventos cada</p>
+              <p class="schedule-value">Sábados cada 15 días</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Production Location -->
+        <div class="market-card production-card mb-8 animate-fade-in-up">
+          <div class="card-header-accent">
+            <h3 class="card-header-title">
+              <svg class="card-header-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 10c0 7-9 12-9 12S3 17 3 10a9 9 0 1 1 18 0z"/>
+                <circle cx="12" cy="10" r="3"/>
+              </svg>
+              Centro de Producción
+            </h3>
+          </div>
+          <div class="card-content">
+            <div class="card-content-flex">
+              <div class="card-icon-circle">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 10c0 7-9 12-9 12S3 17 3 10a9 9 0 1 1 18 0z"/>
+                  <circle cx="12" cy="10" r="3"/>
+                </svg>
+              </div>
+              <div>
+                <h4 class="card-content-title">Dirección de Producción</h4>
+                <p class="card-address">Calle 5 # 5 - 22</p>
+                <p class="card-location">Cogua, Cundinamarca</p>
+                <p class="card-description">Aquí elaboramos todos nuestros productos artesanales con ingredientes naturales y mucho amor.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Market Locations -->
+        <div class="mb-8">
+          <h2 class="text-center mb-6" style="color: var(--color-primary)">Puntos de Venta - Bogotá</h2>
+          <p class="text-center text-lg muted mb-8">Visítanos en cualquiera de estos tres puntos cada sábado (cada 15 días)</p>
+          
+          <div class="markets-grid">
+            <div class="market-card market-location-card animate-fade-in-up" style="--delay: 0.1s">
+              <div class="card-header-secondary">
+                <h3 class="card-header-title">
+                  <svg class="card-header-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 10c0 7-9 12-9 12S3 17 3 10a9 9 0 1 1 18 0z"/>
+                    <circle cx="12" cy="10" r="3"/>
+                  </svg>
+                  Floraria
+                </h3>
+              </div>
+              <div class="card-content">
+                <div class="market-info">
+                  <div class="market-info-item">
+                    <svg class="market-info-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M21 10c0 7-9 12-9 12S3 17 3 10a9 9 0 1 1 18 0z"/>
+                      <circle cx="12" cy="10" r="3"/>
+                    </svg>
+                    <p class="market-location-text">Bogotá - Floraria</p>
+                  </div>
+                  <p class="market-description-text">Punto de venta ubicado en el sector de Floraria</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="market-card market-location-card animate-fade-in-up" style="--delay: 0.2s">
+              <div class="card-header-secondary">
+                <h3 class="card-header-title">
+                  <svg class="card-header-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 10c0 7-9 12-9 12S3 17 3 10a9 9 0 1 1 18 0z"/>
+                    <circle cx="12" cy="10" r="3"/>
+                  </svg>
+                  Kennedy La Macarena
+                </h3>
+              </div>
+              <div class="card-content">
+                <div class="market-info">
+                  <div class="market-info-item">
+                    <svg class="market-info-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M21 10c0 7-9 12-9 12S3 17 3 10a9 9 0 1 1 18 0z"/>
+                      <circle cx="12" cy="10" r="3"/>
+                    </svg>
+                    <p class="market-location-text">Bogotá - Kennedy, La Macarena</p>
+                  </div>
+                  <p class="market-description-text">Punto de venta en el barrio La Macarena, Kennedy</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="market-card market-location-card animate-fade-in-up" style="--delay: 0.3s">
+              <div class="card-header-secondary">
+                <h3 class="card-header-title">
+                  <svg class="card-header-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 10c0 7-9 12-9 12S3 17 3 10a9 9 0 1 1 18 0z"/>
+                    <circle cx="12" cy="10" r="3"/>
+                  </svg>
+                  Parque Principal Fontibón
+                </h3>
+              </div>
+              <div class="card-content">
+                <div class="market-info">
+                  <div class="market-info-item">
+                    <svg class="market-info-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M21 10c0 7-9 12-9 12S3 17 3 10a9 9 0 1 1 18 0z"/>
+                      <circle cx="12" cy="10" r="3"/>
+                    </svg>
+                    <p class="market-location-text">Bogotá - Parque Principal, Fontibón</p>
+                  </div>
+                  <p class="market-description-text">Punto de venta en el Parque Principal de Fontibón</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Additional Info -->
+        <div class="market-card info-card gradient-bg-secondary mb-8">
+          <div class="card-content">
+            <div class="card-content-flex">
+              <div class="card-icon-circle animate-float">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"/>
+                  <polyline points="12 6 12 12 16 14"/>
+                </svg>
+              </div>
+              <div>
+                <h3 class="card-content-title" style="color: var(--color-primary)">Importante</h3>
+                <p class="card-description text-lg">Los mercados campesinos se realizan cada sábado quincenal. Te recomendamos llegar temprano para encontrar la mejor variedad de productos frescos. Si prefieres, puedes hacer tu pedido online y recogerlo en cualquiera de estos puntos.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact Info -->
+        <div class="contact-box">
+          <p class="contact-box-title">¿Tienes preguntas sobre las fechas de los mercados?</p>
+          <p class="contact-box-text">
+            Contáctanos: 
+            <a href="tel:+573222225271" class="contact-box-link">322 222 5271</a>
+          </p>
+        </div>
+      </div>
     </section>
 
-    <!-- Contacto (placeholder) -->
+    <!-- Contacto -->
     <section class="section container px-4" id="contact">
-      <h2 class="text-center mb-12 gradient-text">Contacto</h2>
-      <p class="text-center muted">Escríbenos para pedidos y consultas.</p>
+      <h1 class="text-center mb-8 gradient-text animate-fade-in-up">Contáctanos</h1>
+      <p class="text-center text-xl mb-12 max-w-3xl mx-auto muted">
+        ¿Tienes preguntas, sugerencias o pedidos especiales? Nos encantaría escucharte.
+      </p>
+
+      <div class="contact-container">
+        <!-- Contact Information -->
+        <div class="contact-info animate-fade-in-up">
+          <h2 class="mb-6" style="color: var(--color-tertiary)">Información de Contacto</h2>
+          
+          <div class="contact-info-list">
+            <div class="contact-info-item">
+              <div class="contact-info-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22 16.92V21a2 2 0 0 1-2.18 2A19.8 19.8 0 0 1 3 5.18 2 2 0 0 1 5 3h4.09a2 2 0 0 1 2 1.72c.12.9.3 1.77.57 2.61a2 2 0 0 1-.45 2.11L10.91 11a16 16 0 0 0 6.09 6.09l1.56-1.3a2 2 0 0 1 2.11-.45c.84.27 1.71.45 2.61.57A2 2 0 0 1 22 16.92z"/>
+                </svg>
+              </div>
+              <div>
+                <h4 class="contact-info-label">Teléfono</h4>
+                <a href="tel:+573222225271" class="contact-info-value">322 222 5271</a>
+                <p class="contact-info-detail">Lunes a Sábado, 8:00 AM - 6:00 PM</p>
+              </div>
+            </div>
+
+            <div class="contact-info-item">
+              <div class="contact-info-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 4h16v16H4z" fill="none"/>
+                  <path d="M22 6l-10 7L2 6"/>
+                </svg>
+              </div>
+              <div>
+                <h4 class="contact-info-label">Email</h4>
+                <p class="contact-info-value-text">info@anitaintegrales.com</p>
+                <p class="contact-info-detail">Respondemos en 24 horas</p>
+              </div>
+            </div>
+
+            <div class="contact-info-item">
+              <div class="contact-info-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 10c0 7-9 12-9 12S3 17 3 10a9 9 0 1 1 18 0z"/>
+                  <circle cx="12" cy="10" r="3"/>
+                </svg>
+              </div>
+              <div>
+                <h4 class="contact-info-label">Ubicación</h4>
+                <p class="contact-info-value-text">Calle 5 # 5 - 22</p>
+                <p class="contact-info-detail">Cogua, Cundinamarca</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Map Placeholder -->
+          <div class="map-placeholder">
+            <div class="map-placeholder-content">
+              <svg class="map-placeholder-icon animate-float" xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 10c0 7-9 12-9 12S3 17 3 10a9 9 0 1 1 18 0z"/>
+                <circle cx="12" cy="10" r="3"/>
+              </svg>
+              <p class="map-placeholder-text">Ubicación en el mapa</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact Form -->
+        <div class="contact-form-wrapper animate-fade-in-up" style="--delay: 0.2s">
+          <h2 class="mb-6" style="color: var(--color-tertiary)">Envíanos un Mensaje</h2>
+          <form id="contact-form" class="contact-form">
+            <div class="form-group">
+              <label for="contact-name" class="form-label">Nombre Completo</label>
+              <input
+                id="contact-name"
+                type="text"
+                required
+                class="form-input"
+                placeholder="Tu nombre"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="contact-email" class="form-label">Correo Electrónico</label>
+              <input
+                id="contact-email"
+                type="email"
+                required
+                class="form-input"
+                placeholder="tu@email.com"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="contact-phone" class="form-label">Teléfono</label>
+              <input
+                id="contact-phone"
+                type="tel"
+                class="form-input"
+                placeholder="+57 300 123 4567"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="contact-message" class="form-label">Mensaje</label>
+              <textarea
+                id="contact-message"
+                required
+                class="form-textarea"
+                rows="6"
+                placeholder="Escribe tu mensaje aquí..."
+              ></textarea>
+            </div>
+
+            <div id="contact-success" class="form-message form-message-success" hidden>
+              ¡Mensaje enviado con éxito! Te responderemos pronto.
+            </div>
+
+            <div id="contact-error" class="form-message form-message-error" hidden>
+              Hubo un error al enviar el mensaje. Por favor intenta de nuevo.
+            </div>
+
+            <button type="submit" id="contact-submit" class="btn btn-contact-submit">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="22" y1="2" x2="11" y2="13"/>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+              </svg>
+              <span id="contact-submit-text">Enviar Mensaje</span>
+            </button>
+          </form>
+        </div>
+      </div>
     </section>
   </div>
 
@@ -239,6 +522,20 @@
   </div>
 
   <script type="module" src="./js/main.js"></script>
+  
+  <!-- WhatsApp Button -->
+  <a
+    href="https://wa.me/573222225271?text=Hola%21%20me%20gustaría%20obtener%20más%20información%20acerca%20de%20los%20productos%20de%20Anita%20Integrales"
+    target="_blank"
+    rel="noopener noreferrer"
+    class="whatsapp-button"
+    aria-label="Contactar por WhatsApp"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+    </svg>
+  </a>
+
   <footer class="footer">
     <div class="container px-4 footer-columns">
       <!-- Columna: Marca / Descripción -->

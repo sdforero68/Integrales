@@ -1,4 +1,48 @@
 import { products, categories } from './products.js';
+import { initAccordions } from './ui/accordion.js';
+import { initAlertDialogs } from './ui/alert-dialog.js';
+import { initAlerts } from './ui/alert.js';
+import { initAspectRatios } from './ui/aspect-ratio.js';
+import { initAvatars } from './ui/avatar.js';
+import { initBreadcrumbs } from './ui/breadcrumb.js';
+import { initButtons } from './ui/button.js';
+import { initCalendars } from './ui/calendar.js';
+import { initCards } from './ui/card.js';
+import { initCarousels } from './ui/carousel.js';
+import { initCharts } from './ui/chart.js';
+import { initCheckboxes } from './ui/checkbox.js';
+import { initCollapsibles } from './ui/collapsible.js';
+import { initContextMenus } from './ui/context-menu.js';
+import { initDialogs } from './ui/dialog.js';
+import { initDrawers } from './ui/drawer.js';
+import { initDropdownMenus } from './ui/dropdown-menu.js';
+import { initForms } from './ui/form.js';
+import { initHoverCards } from './ui/hover-card.js';
+import { initInputOTPs } from './ui/input-otp.js';
+import { initInputs } from './ui/input.js';
+import { initLabels } from './ui/label.js';
+import { initMenubars } from './ui/menubar.js';
+import { initNavigationMenus } from './ui/navigation-menu.js';
+import { initPagination } from './ui/pagination.js';
+import { initPopovers } from './ui/popover.js';
+import { initProgresses } from './ui/progress.js';
+import { initRadioGroups } from './ui/radio-group.js';
+import { initResizablePanelGroups } from './ui/resizable-panel.js';
+import { initScrollAreas } from './ui/scroll-area.js';
+import { initSelects } from './ui/select.js';
+import { initSeparators } from './ui/separator.js';
+import { initSheets } from './ui/sheet.js';
+import { initSidebars } from './ui/sidebar.js';
+import { initSkeletons } from './ui/skeleton.js';
+import { initSliders } from './ui/slider.js';
+import { initSwitches } from './ui/switch.js';
+import { initTables } from './ui/table.js';
+import { initTabs } from './ui/tabs.js';
+import { initTextareas } from './ui/textarea.js';
+import { initToggles } from './ui/toggle.js';
+import { initToggleGroups } from './ui/toggle-group.js';
+import { initTooltips } from './ui/tooltip.js';
+import { initToaster } from './ui/toaster.js';
 
 // Sistema de carrito con localStorage (scope global)
 const CART_STORAGE_KEY = 'app_cart';
@@ -502,4 +546,301 @@ document.addEventListener('DOMContentLoaded', () => {
     renderFilters();
     renderGrid();
   }
+
+  // =====================
+  // Contact Form
+  // =====================
+  const contactForm = document.getElementById('contact-form');
+  const contactSubmit = document.getElementById('contact-submit');
+  const contactSubmitText = document.getElementById('contact-submit-text');
+  const contactSuccess = document.getElementById('contact-success');
+  const contactError = document.getElementById('contact-error');
+
+  if (contactForm) {
+    contactForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      // Obtener valores del formulario
+      const formData = {
+        name: document.getElementById('contact-name').value,
+        email: document.getElementById('contact-email').value,
+        phone: document.getElementById('contact-phone').value,
+        message: document.getElementById('contact-message').value
+      };
+
+      // Deshabilitar botón y mostrar estado de carga
+      contactSubmit.disabled = true;
+      contactSubmitText.textContent = 'Enviando...';
+      contactSuccess.hidden = true;
+      contactError.hidden = true;
+
+      try {
+        // Importar configuración de Supabase
+        const { projectId, publicAnonKey } = await import('./config.js');
+        
+        // Verificar que las credenciales estén configuradas
+        if (projectId === 'tu-project-id' || publicAnonKey === 'tu-public-anon-key') {
+          throw new Error('Por favor configura las credenciales de Supabase en config.js');
+        }
+
+        const response = await fetch(
+          `https://${projectId}.supabase.co/functions/v1/make-server-7b271734/contact`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${publicAnonKey}`
+            },
+            body: JSON.stringify(formData)
+          }
+        );
+
+        if (response.ok) {
+          // Mostrar mensaje de éxito
+          contactSuccess.hidden = false;
+          contactError.hidden = true;
+          
+          // Limpiar formulario
+          contactForm.reset();
+          
+          // Ocultar mensaje después de 5 segundos
+          setTimeout(() => {
+            contactSuccess.hidden = true;
+          }, 5000);
+        } else {
+          // Mostrar mensaje de error
+          contactError.hidden = false;
+          contactSuccess.hidden = true;
+        }
+      } catch (error) {
+        console.error('Error submitting contact form:', error);
+        contactError.hidden = false;
+        contactSuccess.hidden = true;
+      } finally {
+        // Restaurar botón
+        contactSubmit.disabled = false;
+        contactSubmitText.textContent = 'Enviar Mensaje';
+      }
+    });
+  }
+
+  // =====================
+  // Accordion
+  // =====================
+  initAccordions();
+
+  // =====================
+  // AlertDialog
+  // =====================
+  initAlertDialogs();
+
+  // =====================
+  // Alert
+  // =====================
+  initAlerts();
+
+  // =====================
+  // AspectRatio
+  // =====================
+  initAspectRatios();
+
+  // =====================
+  // Avatar
+  // =====================
+  initAvatars();
+
+  // =====================
+  // Breadcrumb
+  // =====================
+  initBreadcrumbs();
+
+  // =====================
+  // Button
+  // =====================
+  initButtons();
+
+  // =====================
+  // Calendar
+  // =====================
+  initCalendars();
+
+  // =====================
+  // Card
+  // =====================
+  initCards();
+
+  // =====================
+  // Carousel
+  // =====================
+  initCarousels();
+
+  // =====================
+  // Chart
+  // =====================
+  initCharts();
+
+  // =====================
+  // Checkbox
+  // =====================
+  initCheckboxes();
+
+  // =====================
+  // Collapsible
+  // =====================
+  initCollapsibles();
+
+  // =====================
+  // ContextMenu
+  // =====================
+  initContextMenus();
+
+  // =====================
+  // Dialog
+  // =====================
+  initDialogs();
+
+  // =====================
+  // Drawer
+  // =====================
+  initDrawers();
+
+  // =====================
+  // DropdownMenu
+  // =====================
+  initDropdownMenus();
+
+  // =====================
+  // Form
+  // =====================
+  initForms();
+
+  // =====================
+  // HoverCard
+  // =====================
+  initHoverCards();
+
+  // =====================
+  // InputOTP
+  // =====================
+  initInputOTPs();
+
+  // =====================
+  // Input
+  // =====================
+  initInputs();
+
+  // =====================
+  // Label
+  // =====================
+  initLabels();
+
+  // =====================
+  // Menubar
+  // =====================
+  initMenubars();
+
+  // =====================
+  // NavigationMenu
+  // =====================
+  initNavigationMenus();
+
+  // =====================
+  // Pagination
+  // =====================
+  initPagination();
+
+  // =====================
+  // Popover
+  // =====================
+  initPopovers();
+
+  // =====================
+  // Progress
+  // =====================
+  initProgresses();
+
+  // =====================
+  // RadioGroup
+  // =====================
+  initRadioGroups();
+
+  // =====================
+  // ResizablePanelGroup
+  // =====================
+  initResizablePanelGroups();
+
+  // =====================
+  // ScrollArea
+  // =====================
+  initScrollAreas();
+
+  // =====================
+  // Select
+  // =====================
+  initSelects();
+
+  // =====================
+  // Separator
+  // =====================
+  initSeparators();
+
+  // =====================
+  // Sheet
+  // =====================
+  initSheets();
+
+  // =====================
+  // Sidebar
+  // =====================
+  initSidebars();
+
+  // =====================
+  // Skeleton
+  // =====================
+  initSkeletons();
+
+  // =====================
+  // Slider
+  // =====================
+  initSliders();
+
+  // =====================
+  // Switch
+  // =====================
+  initSwitches();
+
+  // =====================
+  // Table
+  // =====================
+  initTables();
+
+  // =====================
+  // Tabs
+  // =====================
+  initTabs();
+
+  // =====================
+  // Textarea
+  // =====================
+  initTextareas();
+
+  // =====================
+  // Toggle
+  // =====================
+  initToggles();
+
+  // =====================
+  // ToggleGroup
+  // =====================
+  initToggleGroups();
+
+  // =====================
+  // Tooltip
+  // =====================
+  initTooltips();
+
+  // =====================
+  // Toaster
+  // =====================
+  initToaster();
 });
