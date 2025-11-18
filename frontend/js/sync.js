@@ -143,10 +143,18 @@ export function updateUserMenu() {
   const userMenuName = document.getElementById('user-menu-name');
   const userMenuEmail = document.getElementById('user-menu-email');
   const userMenuBtn = document.getElementById('user-menu-btn');
+  const userMenuHeader = userMenu?.querySelector('.user-menu-header');
+  const userMenuDivider = userMenu?.querySelector('.user-menu-divider');
+  const userMenuItems = userMenu?.querySelectorAll('.user-menu-item');
+  const loginMenuItem = document.getElementById('user-menu-login');
+  const registerMenuItem = document.getElementById('user-menu-register');
+  const profileMenuItem = document.getElementById('user-menu-profile');
+  const logoutMenuItem = document.getElementById('logout-btn-navbar');
   
   if (isLoggedIn()) {
     const user = getCurrentUser();
     
+    // Mostrar información del usuario
     if (userMenuName && user) {
       userMenuName.textContent = user?.user_metadata?.name || 'Usuario';
     }
@@ -155,12 +163,32 @@ export function updateUserMenu() {
       userMenuEmail.textContent = user?.email || '-';
     }
     
+    // Mostrar elementos de usuario logueado
+    if (userMenuHeader) userMenuHeader.hidden = false;
+    if (userMenuDivider) userMenuDivider.hidden = false;
+    if (profileMenuItem) profileMenuItem.hidden = false;
+    if (logoutMenuItem) logoutMenuItem.hidden = false;
+    
+    // Ocultar opciones de login/registro
+    if (loginMenuItem) loginMenuItem.hidden = true;
+    if (registerMenuItem) registerMenuItem.hidden = true;
+    
     if (userMenu) {
       userMenu.hidden = false;
     }
   } else {
+    // Ocultar información del usuario
+    if (userMenuHeader) userMenuHeader.hidden = true;
+    if (userMenuDivider) userMenuDivider.hidden = true;
+    if (profileMenuItem) profileMenuItem.hidden = true;
+    if (logoutMenuItem) logoutMenuItem.hidden = true;
+    
+    // Mostrar opciones de login/registro
+    if (loginMenuItem) loginMenuItem.hidden = false;
+    if (registerMenuItem) registerMenuItem.hidden = false;
+    
     if (userMenu) {
-      userMenu.hidden = true;
+      userMenu.hidden = false;
     }
   }
 }
@@ -222,35 +250,27 @@ export function initSync() {
   // Configurar botón de usuario
   const userMenuBtn = document.getElementById('user-menu-btn');
   const userMenu = document.getElementById('user-menu');
+  const userMenuWrapper = document.querySelector('.user-menu-wrapper');
   
   if (userMenuBtn) {
     userMenuBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       
-      // Función auxiliar para obtener la ruta relativa correcta
-      const getRelativePath = (targetPage) => {
-        const currentPath = window.location.pathname;
-        
-        // Si estamos en una página dentro de /pages/, usar ../ para volver a pages/
-        if (currentPath.includes('/pages/')) {
-          return `../${targetPage}/index.html`;
-        } else {
-          // Si estamos en la raíz (index.html), usar ./
-          return `./pages/${targetPage}/index.html`;
-        }
-      };
-      
-      if (isLoggedIn()) {
-        // Si está logueado, ir a perfil
-        window.location.href = getRelativePath('profile');
-      } else {
-        // Si no está logueado, ir a login
-        window.location.href = getRelativePath('login');
+      // Toggle del menú desplegable
+      if (userMenu) {
+        userMenu.hidden = !userMenu.hidden;
       }
     });
   }
   
-  // Mantener el menú desplegable oculto por defecto (solo se mostrará si se necesita en el futuro)
+  // Cerrar el menú al hacer clic fuera de él
+  document.addEventListener('click', (e) => {
+    if (userMenu && userMenuWrapper && !userMenuWrapper.contains(e.target)) {
+      userMenu.hidden = true;
+    }
+  });
+  
+  // Mantener el menú desplegable oculto por defecto
   if (userMenu) {
     userMenu.hidden = true;
   }

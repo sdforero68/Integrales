@@ -154,13 +154,31 @@ document.addEventListener('DOMContentLoaded', () => {
   // Manejar click en botón de checkout
   const checkoutBtn = document.getElementById('checkout-btn');
   if (checkoutBtn) {
-    checkoutBtn.addEventListener('click', (e) => {
+    checkoutBtn.addEventListener('click', async (e) => {
       e.preventDefault();
       const cart = getCart();
       if (cart.length === 0) {
-        alert('Tu carrito está vacío');
+        if (window.toast) {
+          window.toast.error('Tu carrito está vacío');
+        } else {
+          alert('Tu carrito está vacío');
+        }
         return;
       }
+      
+      // Verificar si el usuario está logueado
+      const accessToken = localStorage.getItem('accessToken') || localStorage.getItem('current_session');
+      if (!accessToken) {
+        if (window.toast) {
+          window.toast.error('Debes iniciar sesión para proceder al pago');
+        } else {
+          alert('Debes iniciar sesión para proceder al pago');
+        }
+        // Redirigir a login
+        window.location.href = '../login/index.html';
+        return;
+      }
+      
       window.location.href = '../checkout/index.html';
     });
   }

@@ -28,6 +28,23 @@ document.addEventListener('DOMContentLoaded', () => {
   const navbar = document.querySelector('.navbar');
   const navHeight = navbar ? navbar.offsetHeight : 0;
 
+  // Hacer el navbar transparente al hacer scroll
+  let lastScroll = 0;
+  const handleScroll = () => {
+    const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+    
+    if (currentScroll > 50) {
+      navbar.classList.add('scrolled');
+    } else {
+      navbar.classList.remove('scrolled');
+    }
+    
+    lastScroll = currentScroll;
+  };
+
+  window.addEventListener('scroll', handleScroll, { passive: true });
+  handleScroll(); // Verificar estado inicial
+
   // Función para navegar a páginas separadas o secciones en la misma página
   function navigate(target) {
     // Si el target es una página HTML, redirigir
@@ -448,65 +465,172 @@ document.addEventListener('DOMContentLoaded', () => {
         // Obtener imagen del producto o usar imagen por categoría
         const productImage = resolveProductImage(p);
         
-        card.innerHTML = `
-          <div class="product-media">
-            <img 
-              src="${productImage}" 
-              alt="${p.name}"
-              onerror="this.onerror=null;this.src='${placeholderImage}'"
-            />
-          </div>
-          <div class="product-body">
-            <h3 class="product-title">${p.name}</h3>
-            <p class="product-desc">${p.description || ''}</p>
-            <div class="product-price-row">
-              <span class="product-price">${formatCurrency(p.price)}</span>
-              <button class="product-info-btn" data-product-id="${p.id}">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="12" cy="12" r="10"/>
-                  <path d="M12 16v-4"/>
-                  <path d="M12 8h.01"/>
+        // Verificar si el producto está en favoritos (usar async/await de forma más limpia)
+        (async () => {
+          try {
+            const { isFavorite: checkFavorite } = await import('./favorites.js');
+            const isFav = checkFavorite(p.id);
+          
+          card.innerHTML = `
+            <div class="product-media">
+              <button class="product-favorite-btn ${isFav ? 'active' : ''}" data-product-id="${p.id}" aria-label="Agregar a favoritos">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="${isFav ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
                 </svg>
               </button>
+              <img 
+                src="${productImage}" 
+                alt="${p.name}"
+                onerror="this.onerror=null;this.src='${placeholderImage}'"
+              />
             </div>
-          </div>
-          <div class="product-footer">
-            <button class="product-view-btn" data-product-id="${p.id}">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                <circle cx="12" cy="12" r="3"/>
-              </svg>
-              <span>Ver Detalles</span>
-            </button>
-            <button class="product-add-btn" data-product-id="${p.id}">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="9" cy="21" r="1"/>
-                <circle cx="20" cy="21" r="1"/>
-                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-              </svg>
-              <span>Agregar al carrito</span>
-            </button>
-          </div>
-        `;
-        
-        // Agregar event listeners
-        const infoBtn = card.querySelector('.product-info-btn');
-        const viewBtn = card.querySelector('.product-view-btn');
-        const addBtn = card.querySelector('.product-add-btn');
-        
-        if (infoBtn) {
-          infoBtn.addEventListener('click', () => handleViewDetails(p));
-        }
-        
-        if (viewBtn) {
-          viewBtn.addEventListener('click', () => handleViewDetails(p));
-        }
-        
-        if (addBtn) {
-          addBtn.addEventListener('click', () => handleAddToCart(p));
-        }
-        
-        gridEl.appendChild(card);
+            <div class="product-body">
+              <h3 class="product-title">${p.name}</h3>
+              <p class="product-desc">${p.description || ''}</p>
+              <div class="product-price-row">
+                <span class="product-price">${formatCurrency(p.price)}</span>
+                <button class="product-info-btn" data-product-id="${p.id}">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M12 16v-4"/>
+                    <path d="M12 8h.01"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div class="product-footer">
+              <button class="product-view-btn" data-product-id="${p.id}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+                <span>Ver Detalles</span>
+              </button>
+              <button class="product-add-btn" data-product-id="${p.id}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="9" cy="21" r="1"/>
+                  <circle cx="20" cy="21" r="1"/>
+                  <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                </svg>
+                <span>Agregar al carrito</span>
+              </button>
+            </div>
+          `;
+          
+          // Agregar event listener para favoritos
+          const favoriteBtn = card.querySelector('.product-favorite-btn');
+          if (favoriteBtn) {
+            favoriteBtn.addEventListener('click', async (e) => {
+              e.stopPropagation();
+              const { toggleFavorite, isLoggedIn } = await import('./favorites.js');
+              
+              if (!isLoggedIn()) {
+                if (window.toast) {
+                  window.toast.error('Debes iniciar sesión para agregar productos a favoritos');
+                } else {
+                  alert('Debes iniciar sesión para agregar productos a favoritos');
+                }
+                return;
+              }
+              
+              const result = toggleFavorite(p);
+              const isFav = checkFavorite(p.id);
+              
+              // Actualizar el botón visualmente
+              favoriteBtn.classList.toggle('active', isFav);
+              const svg = favoriteBtn.querySelector('svg');
+              if (svg) {
+                svg.setAttribute('fill', isFav ? 'currentColor' : 'none');
+              }
+              
+              if (window.toast) {
+                window.toast.success(result.message);
+              }
+            });
+          }
+          
+          // Agregar event listeners
+          const infoBtn = card.querySelector('.product-info-btn');
+          const viewBtn = card.querySelector('.product-view-btn');
+          const addBtn = card.querySelector('.product-add-btn');
+          
+          if (infoBtn) {
+            infoBtn.addEventListener('click', () => handleViewDetails(p));
+          }
+          
+          if (viewBtn) {
+            viewBtn.addEventListener('click', () => handleViewDetails(p));
+          }
+          
+          if (addBtn) {
+            addBtn.addEventListener('click', () => handleAddToCart(p));
+          }
+          
+          gridEl.appendChild(card);
+          } catch (error) {
+            console.error('Error loading favorites:', error);
+            // Fallback si favorites.js no está disponible
+          card.innerHTML = `
+            <div class="product-media">
+              <img 
+                src="${productImage}" 
+                alt="${p.name}"
+                onerror="this.onerror=null;this.src='${placeholderImage}'"
+              />
+            </div>
+            <div class="product-body">
+              <h3 class="product-title">${p.name}</h3>
+              <p class="product-desc">${p.description || ''}</p>
+              <div class="product-price-row">
+                <span class="product-price">${formatCurrency(p.price)}</span>
+                <button class="product-info-btn" data-product-id="${p.id}">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M12 16v-4"/>
+                    <path d="M12 8h.01"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div class="product-footer">
+              <button class="product-view-btn" data-product-id="${p.id}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+                <span>Ver Detalles</span>
+              </button>
+              <button class="product-add-btn" data-product-id="${p.id}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="9" cy="21" r="1"/>
+                  <circle cx="20" cy="21" r="1"/>
+                  <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                </svg>
+                <span>Agregar al carrito</span>
+              </button>
+            </div>
+          `;
+          
+          // Agregar event listeners
+          const infoBtn = card.querySelector('.product-info-btn');
+          const viewBtn = card.querySelector('.product-view-btn');
+          const addBtn = card.querySelector('.product-add-btn');
+          
+          if (infoBtn) {
+            infoBtn.addEventListener('click', () => handleViewDetails(p));
+          }
+          
+          if (viewBtn) {
+            viewBtn.addEventListener('click', () => handleViewDetails(p));
+          }
+          
+          if (addBtn) {
+            addBtn.addEventListener('click', () => handleAddToCart(p));
+          }
+          
+          gridEl.appendChild(card);
+          }
+        })();
       });
     };
 

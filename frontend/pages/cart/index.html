@@ -6,7 +6,7 @@
   <title>Carrito de Compras - Anita Integrales</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Galada&family=Delius&family=Pacifico&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Delius:wght@400;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../../css/styles.css" />
   <link rel="stylesheet" href="../../css/pages/cart/index.css" />
 </head>
@@ -19,7 +19,6 @@
         </div>
         <div class="brand-text">
           <div class="brand brand-font gradient-text text-3xl">Anita Integrales</div>
-          <p class="creative-font text-sm" style="color: var(--color-accent); margin: 0;">Alimentos ancestrales</p>
         </div>
       </div>
       <nav class="nav-links">
@@ -31,7 +30,7 @@
       </nav>
       <div class="nav-actions">
         <button class="icon-btn" data-action="cart" aria-label="Carrito">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--color-primary)">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--color-secondary)">
             <circle cx="9" cy="21" r="1"/>
             <circle cx="20" cy="21" r="1"/>
             <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
@@ -40,7 +39,7 @@
         </button>
         <div class="user-menu-wrapper">
           <button class="icon-btn" data-action="user" aria-label="Usuario" id="user-menu-btn">
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--color-primary)">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--color-secondary)">
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
               <circle cx="12" cy="7" r="4"/>
             </svg>
@@ -192,8 +191,8 @@
                 </div>
               </div>
               <div class="summary-buttons">
-                <button class="btn-checkout" id="checkout-btn" onclick="window.location.href='../checkout/index.html'">
-                  Proceder al Checkout
+                <button class="btn-checkout" id="checkout-btn">
+                  Proceder a Pago
                 </button>
                 <button class="btn-continue-shopping" onclick="window.location.href='../catalog/index.html'">
                   Continuar Comprando
@@ -208,6 +207,7 @@
 
   <script type="module" src="../../js/sync.js"></script>
   <script type="module" src="../../js/main.js"></script>
+  <script type="module" src="../../js/animations.js"></script>
   <script type="module" src="../../js/pages/cart/index.js"></script>
 </body>
 </html>

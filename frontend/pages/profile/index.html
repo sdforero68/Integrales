@@ -6,11 +6,96 @@
   <title>Mi Perfil - Anita Integrales</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Galada&family=Delius&family=Pacifico&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Delius:wght@400;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../../css/styles.css" />
   <link rel="stylesheet" href="../../css/pages/profile/index.css" />
 </head>
 <body>
+  <header class="navbar">
+    <div class="container px-4 nav-inner">
+      <div class="brand-group" onclick="window.location.href='../../index.html'">
+        <div class="brand-avatar" style="border-color: var(--color-accent)">
+          <img src="../../assets/images/logo.png" alt="Anita Integrales" class="brand-avatar-img" />
+        </div>
+        <div class="brand-text">
+          <div class="brand brand-font gradient-text text-3xl">Anita Integrales</div>
+        </div>
+      </div>
+      <nav class="nav-links">
+        <a href="../../index.html" class="nav-link">Inicio</a>
+        <a href="../catalog/index.html" class="nav-link">Catálogo</a>
+        <a href="../markets/index.html" class="nav-link">Mercados Campesinos</a>
+        <a href="../about/index.html" class="nav-link">Nosotros</a>
+        <a href="../contact/index.html" class="nav-link">Contacto</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="icon-btn" data-action="cart" aria-label="Carrito">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--color-secondary)">
+            <circle cx="9" cy="21" r="1"/>
+            <circle cx="20" cy="21" r="1"/>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+          </svg>
+          <span class="badge" id="cart-badge" hidden>0</span>
+        </button>
+        <div class="user-menu-wrapper">
+          <button class="icon-btn" data-action="user" aria-label="Usuario" id="user-menu-btn">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--color-secondary)">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+          </button>
+          <div class="user-menu-dropdown" id="user-menu" hidden>
+            <div class="user-menu-header">
+              <div class="user-menu-avatar">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                  <circle cx="12" cy="7" r="4"/>
+                </svg>
+              </div>
+              <div class="user-menu-info">
+                <p class="user-menu-name" id="user-menu-name">Usuario</p>
+                <p class="user-menu-email" id="user-menu-email">-</p>
+              </div>
+            </div>
+            <div class="user-menu-divider"></div>
+            <a href="./index.html" class="user-menu-item" id="user-menu-profile">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+              <span>Mi Perfil</span>
+            </a>
+            <button class="user-menu-item user-menu-logout" id="logout-btn-navbar">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                <polyline points="16 17 21 12 16 7"/>
+                <line x1="21" y1="12" x2="9" y2="12"/>
+              </svg>
+              <span>Cerrar Sesión</span>
+            </button>
+            <!-- Opciones para usuarios no logueados -->
+            <a href="../login/index.html" class="user-menu-item" id="user-menu-login" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+                <polyline points="10 17 15 12 10 7"/>
+                <line x1="15" y1="12" x2="3" y2="12"/>
+              </svg>
+              <span>Iniciar Sesión</span>
+            </a>
+            <a href="../login/index.html?register=true" class="user-menu-item" id="user-menu-register" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <line x1="19" y1="8" x2="19" y2="14"/>
+                <line x1="22" y1="11" x2="16" y2="11"/>
+              </svg>
+              <span>Registrarse</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
   <div class="profile-container">
     <div class="container px-4">
       <div class="profile-header">
@@ -27,8 +112,28 @@
       </div>
 
       <div class="profile-content">
+        <!-- No Session State -->
+        <div id="no-session-state" class="profile-card">
+          <div class="card-content text-center" style="padding: 3rem;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--color-accent); margin: 0 auto 1.5rem;">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+            <h2 style="color: var(--color-tertiary); margin-bottom: 1rem; font-size: 1.5rem;">No has iniciado sesión</h2>
+            <p style="color: var(--color-tertiary); margin-bottom: 2rem; opacity: 0.8;">Para acceder a tu perfil, necesitas iniciar sesión o crear una cuenta.</p>
+            <div style="display: flex; flex-direction: column; gap: 1rem; align-items: center; justify-content: center;">
+              <a href="../../index.html" class="btn btn-outline" style="color: var(--color-primary); background: rgba(255, 248, 240, 0.9);">
+                Volver al Inicio
+              </a>
+              <a href="../login/index.html" class="btn gradient-bg-primary text-white">
+                Iniciar Sesión
+              </a>
+            </div>
+          </div>
+        </div>
+
         <!-- User Info Card -->
-        <div class="profile-card">
+        <div class="profile-card" id="user-info-card" hidden>
           <div class="card-content">
             <div class="user-info-header">
               <div class="user-info-left">
@@ -58,8 +163,40 @@
           </div>
         </div>
 
+        <!-- Favorites Card -->
+        <div class="profile-card" id="favorites-card" hidden>
+          <div class="card-header">
+            <h2 class="card-title">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+              </svg>
+              <span>Mis Favoritos</span>
+            </h2>
+          </div>
+          <div class="card-content">
+            <!-- Loading State -->
+            <div id="favorites-loading-state" class="loading-state">
+              <p class="loading-text">Cargando favoritos...</p>
+            </div>
+
+            <!-- Empty State -->
+            <div id="favorites-empty-state" class="empty-state" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #cbd5e1">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+              </svg>
+              <p class="empty-text">Aún no tienes productos favoritos</p>
+              <a href="../../pages/catalog/index.html" class="btn btn-outline" style="margin-top: 1rem; color: var(--color-primary); background: rgba(255, 248, 240, 0.9);">
+                Explorar Catálogo
+              </a>
+            </div>
+
+            <!-- Favorites List -->
+            <div id="favorites-list" class="favorites-list" hidden></div>
+          </div>
+        </div>
+
         <!-- Order History Card -->
-        <div class="profile-card">
+        <div class="profile-card" id="order-history-card" hidden>
           <div class="card-header">
             <h2 class="card-title">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -98,6 +235,8 @@
 
   <script type="module" src="../../js/sync.js"></script>
   <script type="module" src="../../js/pages/profile/index.js"></script>
+  <script type="module" src="../../js/main.js"></script>
+  <script type="module" src="../../js/animations.js"></script>
   
   <!-- WhatsApp Button -->
   <a
@@ -107,8 +246,8 @@
     class="whatsapp-button"
     aria-label="Contactar por WhatsApp"
   >
-    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
     </svg>
   </a>
 
@@ -143,7 +282,7 @@
                 <path d="M4 4h16v16H4z" fill="none"/>
                 <path d="M22 6l-10 7L2 6"/>
               </svg>
-              <span>info@anitaintegrales.com</span>
+              <span>sdht91memories@gmail.com</span>
             </div>
             <div class="flex items-start gap-2">
               <svg class="h-5 w-5 mt-1 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
