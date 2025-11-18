@@ -1,49 +1,5 @@
 import { products, categories } from './products.js';
-import { initAccordions } from './ui/accordion.js';
-import { initAlertDialogs } from './ui/alert-dialog.js';
-import { initAlerts } from './ui/alert.js';
-import { initAspectRatios } from './ui/aspect-ratio.js';
-import { initAvatars } from './ui/avatar.js';
-import { initBreadcrumbs } from './ui/breadcrumb.js';
-import { initButtons } from './ui/button.js';
-import { initCalendars } from './ui/calendar.js';
-import { initCards } from './ui/card.js';
-import { initCarousels } from './ui/carousel.js';
-import { initCharts } from './ui/chart.js';
-import { initCheckboxes } from './ui/checkbox.js';
-import { initCollapsibles } from './ui/collapsible.js';
-import { initContextMenus } from './ui/context-menu.js';
-import { initDialogs } from './ui/dialog.js';
-import { initDrawers } from './ui/drawer.js';
-import { initDropdownMenus } from './ui/dropdown-menu.js';
-import { initForms } from './ui/form.js';
-import { initHoverCards } from './ui/hover-card.js';
-import { initInputOTPs } from './ui/input-otp.js';
-import { initInputs } from './ui/input.js';
-import { initLabels } from './ui/label.js';
-import { initMenubars } from './ui/menubar.js';
-import { initNavigationMenus } from './ui/navigation-menu.js';
-import { initPagination } from './ui/pagination.js';
-import { initPopovers } from './ui/popover.js';
-import { initProgresses } from './ui/progress.js';
-import { initRadioGroups } from './ui/radio-group.js';
-import { initResizablePanelGroups } from './ui/resizable-panel.js';
-import { initScrollAreas } from './ui/scroll-area.js';
-import { initSelects } from './ui/select.js';
-import { initSeparators } from './ui/separator.js';
-import { initSheets } from './ui/sheet.js';
-import { initSidebars } from './ui/sidebar.js';
-import { initSkeletons } from './ui/skeleton.js';
-import { initSliders } from './ui/slider.js';
-import { initSwitches } from './ui/switch.js';
-import { initTables } from './ui/table.js';
-import { initTabs } from './ui/tabs.js';
-import { initTextareas } from './ui/textarea.js';
-import { initToggles } from './ui/toggle.js';
-import { initToggleGroups } from './ui/toggle-group.js';
-import { initTooltips } from './ui/tooltip.js';
-import { initToaster } from './ui/toaster.js';
-import { initApp } from './app.js';
+import { initToaster } from './UI/toaster.js';
 
 // Sistema de carrito con localStorage (scope global)
 const CART_STORAGE_KEY = 'app_cart';
@@ -222,7 +178,21 @@ document.addEventListener('DOMContentLoaded', () => {
   const clearBtn = document.getElementById('catalog-clear');
 
   if (gridEl && filtersEl) {
-    let selectedCategory = 'all';
+    const resolveAssetPath = (relativePath) => {
+      const base = window.location.pathname.includes('/pages/')
+        ? '../../assets/images/'
+        : './assets/images/';
+      return new URL(`${base}${relativePath}`, window.location.href).href;
+    };
+    const placeholderImage = resolveAssetPath('placeholder.svg');
+
+    // Leer parámetro de categoría de la URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const categoryParam = urlParams.get('category');
+    
+    // Validar que la categoría existe en la lista de categorías
+    const categoryExists = categories.some(cat => cat.id === categoryParam);
+    let selectedCategory = categoryExists ? categoryParam : 'all';
     let searchQuery = '';
 
     const renderFilters = () => {
@@ -245,20 +215,45 @@ document.addEventListener('DOMContentLoaded', () => {
     // Función para obtener imagen por categoría
     const getCategoryImage = (category) => {
       const categoryMap = {
-        'panaderia': 'https://images.unsplash.com/photo-1627308593341-d886acdc06a2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhcnRpc2FuJTIwYnJlYWQlMjBiYWtlcnl8ZW58MXx8fHwxNzYxODE5MTc5fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
-        'amasijos': 'https://images.unsplash.com/photo-1603532551666-451a96bca5fd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080',
-        'galleteria': 'https://images.unsplash.com/photo-1644595425685-5769f217654a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxvcmdhbmljJTIwY29va2llc3xlbnwxfHx8fDE3NjE4NTA1ODh8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
-        'granola': 'https://images.unsplash.com/photo-1595787572590-545171362a1c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxoZWFsdGh5JTIwZ3Jhbm9sYSUyMG51dHN8ZW58MXx8fHwxNzYxODUwNTg3fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
-        'frutos-secos': 'https://images.unsplash.com/photo-1702506183897-e4869f155209?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkcmllZCUyMGZydWl0cyUyMHNlZWRzfGVufDF8fHx8MTc2MTg1MDU4OHww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
-        'envasados': 'https://images.unsplash.com/photo-1588168333986-5078d3ae3976?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080',
+        'panaderia': 'categories/panaderia.jpg',
+        'amasijos': 'categories/amasijos.jpg',
+        'galleteria': 'categories/galleteria.jpg',
+        'granola': 'categories/granola.jpg',
+        'frutos-secos': 'categories/frutos-secos.jpg',
+        'envasados': 'categories/envasados.jpg',
         // Compatibilidad con IDs antiguos
-        'bakery': 'https://images.unsplash.com/photo-1627308593341-d886acdc06a2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhcnRpc2FuJTIwYnJlYWQlMjBiYWtlcnl8ZW58MXx8fHwxNzYxODE5MTc5fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
-        'cookies': 'https://images.unsplash.com/photo-1644595425685-5769f217654a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxvcmdhbmljJTIwY29va2llc3xlbnwxfHx8fDE3NjE4NTA1ODh8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
-        'nuts': 'https://images.unsplash.com/photo-1702506183897-e4869f155209?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkcmllZCUyMGZydWl0cyUyMHNlZWRzfGVufDF8fHx8MTc2MTg1MDU4OHww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
-        'jarred': 'https://images.unsplash.com/photo-1588168333986-5078d3ae3976?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080'
+        'bakery': 'categories/panaderia.jpg',
+        'cookies': 'categories/galleteria.jpg',
+        'nuts': 'categories/frutos-secos.jpg',
+        'jarred': 'categories/envasados.jpg'
       };
-      
-      return categoryMap[category] || categoryMap['panaderia'];
+
+      const relativePath = categoryMap[category];
+      return relativePath ? resolveAssetPath(relativePath) : placeholderImage;
+    };
+
+    const resolveProductImage = (product) => {
+      if (!product?.image) {
+        if (product?.id) {
+          return resolveAssetPath(`products/${product.id}.jpg`);
+        }
+        return getCategoryImage(product?.category);
+      }
+
+      if (typeof product.image === 'string' && product.image.startsWith('http')) {
+        return product.image;
+      }
+
+      const imagePath = typeof product.image === 'string' ? product.image : '';
+      if (!imagePath) {
+        return getCategoryImage(product?.category);
+      }
+
+      const normalized = imagePath.startsWith('products/')
+        ? imagePath
+        : `products/${imagePath}`;
+
+      return resolveAssetPath(normalized);
     };
     
     // Función para manejar agregar al carrito (usando sync.js)
@@ -281,7 +276,7 @@ document.addEventListener('DOMContentLoaded', () => {
             name: product.name,
             description: product.description,
             price: product.price,
-            image: product.image || getCategoryImage(product.category),
+            image: resolveProductImage(product),
             category: product.category,
             quantity: 1
           });
@@ -314,14 +309,15 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!modal) return;
       
       // Llenar información del producto
-      const productImage = product.image || getCategoryImage(product.category);
+      const productImage = resolveProductImage(product);
       
       if (modalTitle) modalTitle.textContent = product.name;
       if (modalImage) {
         modalImage.src = productImage;
         modalImage.alt = product.name;
         modalImage.onerror = () => {
-          modalImage.src = getCategoryImage(product.category);
+          modalImage.onerror = null;
+          modalImage.src = placeholderImage;
         };
       }
       if (modalDescription) modalDescription.textContent = product.description || '';
@@ -450,14 +446,14 @@ document.addEventListener('DOMContentLoaded', () => {
         card.className = 'product-card';
         
         // Obtener imagen del producto o usar imagen por categoría
-        const productImage = p.image || getCategoryImage(p.category);
+        const productImage = resolveProductImage(p);
         
         card.innerHTML = `
           <div class="product-media">
             <img 
               src="${productImage}" 
               alt="${p.name}"
-              onerror="this.src='${getCategoryImage(p.category)}'"
+              onerror="this.onerror=null;this.src='${placeholderImage}'"
             />
           </div>
           <div class="product-body">
@@ -527,7 +523,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (searchEl) searchEl.value = '';
         renderFilters();
         renderGrid();
-        // No navegar, solo limpiar filtros y mostrar todos los productos
+        // Limpiar parámetro de categoría de la URL
+        const url = new URL(window.location.href);
+        url.searchParams.delete('category');
+        window.history.replaceState({}, '', url);
       });
     }
 
@@ -574,43 +573,24 @@ document.addEventListener('DOMContentLoaded', () => {
       contactError.hidden = true;
 
       try {
-        // Importar configuración de Supabase
-        const { projectId, publicAnonKey } = await import('./config.js');
+        // Por ahora, solo simular el envío del formulario
+        // TODO: Integrar con backend cuando esté disponible
+        console.log('Formulario de contacto:', formData);
         
-        // Verificar que las credenciales estén configuradas
-        if (projectId === 'tu-project-id' || publicAnonKey === 'tu-public-anon-key') {
-          throw new Error('Por favor configura las credenciales de Supabase en config.js');
-        }
-
-        const response = await fetch(
-          `https://${projectId}.supabase.co/functions/v1/make-server-7b271734/contact`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${publicAnonKey}`
-            },
-            body: JSON.stringify(formData)
-          }
-        );
-
-        if (response.ok) {
-          // Mostrar mensaje de éxito
-          contactSuccess.hidden = false;
-          contactError.hidden = true;
-          
-          // Limpiar formulario
-          contactForm.reset();
-          
-          // Ocultar mensaje después de 5 segundos
-          setTimeout(() => {
-            contactSuccess.hidden = true;
-          }, 5000);
-        } else {
-          // Mostrar mensaje de error
-          contactError.hidden = false;
+        // Simular delay de red
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        // Mostrar mensaje de éxito
+        contactSuccess.hidden = false;
+        contactError.hidden = true;
+        
+        // Limpiar formulario
+        contactForm.reset();
+        
+        // Ocultar mensaje después de 5 segundos
+        setTimeout(() => {
           contactSuccess.hidden = true;
-        }
+        }, 5000);
       } catch (error) {
         console.error('Error submitting contact form:', error);
         contactError.hidden = false;
@@ -624,227 +604,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // =====================
-  // Accordion
-  // =====================
-  initAccordions();
-
-  // =====================
-  // AlertDialog
-  // =====================
-  initAlertDialogs();
-
-  // =====================
-  // Alert
-  // =====================
-  initAlerts();
-
-  // =====================
-  // AspectRatio
-  // =====================
-  initAspectRatios();
-
-  // =====================
-  // Avatar
-  // =====================
-  initAvatars();
-
-  // =====================
-  // Breadcrumb
-  // =====================
-  initBreadcrumbs();
-
-  // =====================
-  // Button
-  // =====================
-  initButtons();
-
-  // =====================
-  // Calendar
-  // =====================
-  initCalendars();
-
-  // =====================
-  // Card
-  // =====================
-  initCards();
-
-  // =====================
-  // Carousel
-  // =====================
-  initCarousels();
-
-  // =====================
-  // Chart
-  // =====================
-  initCharts();
-
-  // =====================
-  // Checkbox
-  // =====================
-  initCheckboxes();
-
-  // =====================
-  // Collapsible
-  // =====================
-  initCollapsibles();
-
-  // =====================
-  // ContextMenu
-  // =====================
-  initContextMenus();
-
-  // =====================
-  // Dialog
-  // =====================
-  initDialogs();
-
-  // =====================
-  // Drawer
-  // =====================
-  initDrawers();
-
-  // =====================
-  // DropdownMenu
-  // =====================
-  initDropdownMenus();
-
-  // =====================
-  // Form
-  // =====================
-  initForms();
-
-  // =====================
-  // HoverCard
-  // =====================
-  initHoverCards();
-
-  // =====================
-  // InputOTP
-  // =====================
-  initInputOTPs();
-
-  // =====================
-  // Input
-  // =====================
-  initInputs();
-
-  // =====================
-  // Label
-  // =====================
-  initLabels();
-
-  // =====================
-  // Menubar
-  // =====================
-  initMenubars();
-
-  // =====================
-  // NavigationMenu
-  // =====================
-  initNavigationMenus();
-
-  // =====================
-  // Pagination
-  // =====================
-  initPagination();
-
-  // =====================
-  // Popover
-  // =====================
-  initPopovers();
-
-  // =====================
-  // Progress
-  // =====================
-  initProgresses();
-
-  // =====================
-  // RadioGroup
-  // =====================
-  initRadioGroups();
-
-  // =====================
-  // ResizablePanelGroup
-  // =====================
-  initResizablePanelGroups();
-
-  // =====================
-  // ScrollArea
-  // =====================
-  initScrollAreas();
-
-  // =====================
-  // Select
-  // =====================
-  initSelects();
-
-  // =====================
-  // Separator
-  // =====================
-  initSeparators();
-
-  // =====================
-  // Sheet
-  // =====================
-  initSheets();
-
-  // =====================
-  // Sidebar
-  // =====================
-  initSidebars();
-
-  // =====================
-  // Skeleton
-  // =====================
-  initSkeletons();
-
-  // =====================
-  // Slider
-  // =====================
-  initSliders();
-
-  // =====================
-  // Switch
-  // =====================
-  initSwitches();
-
-  // =====================
-  // Table
-  // =====================
-  initTables();
-
-  // =====================
-  // Tabs
-  // =====================
-  initTabs();
-
-  // =====================
-  // Textarea
-  // =====================
-  initTextareas();
-
-  // =====================
-  // Toggle
-  // =====================
-  initToggles();
-
-  // =====================
-  // ToggleGroup
-  // =====================
-  initToggleGroups();
-
-  // =====================
-  // Tooltip
-  // =====================
-  initTooltips();
-
-  // =====================
   // Toaster
   // =====================
   initToaster();
-
-  // =====================
-  // App (Estado Global y Navegación)
-  // =====================
-  initApp();
 });

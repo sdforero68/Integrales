@@ -19,7 +19,7 @@ function getUserInfo() {
   
   if (!userStr || !accessToken) {
     // Si no hay sesión, redirigir al login
-    window.location.href = './login.html';
+    window.location.href = '../login/index.html';
     return null;
   }
   
@@ -28,7 +28,7 @@ function getUserInfo() {
     return { user, accessToken };
   } catch (error) {
     console.error('Error parsing user data:', error);
-    window.location.href = './login.html';
+    window.location.href = '../login/index.html';
     return null;
   }
 }
@@ -201,7 +201,7 @@ function renderOrders(orders) {
 // Función de logout (usando sync.js)
 async function handleLogout() {
   try {
-    const { handleLogout: handleLogoutSync } = await import('./sync.js');
+    const { handleLogout: handleLogoutSync } = await import('../../sync.js');
     handleLogoutSync();
   } catch (error) {
     // Fallback local
@@ -209,7 +209,7 @@ async function handleLogout() {
     localStorage.removeItem('user');
     localStorage.removeItem('current_user');
     localStorage.removeItem('current_session');
-    window.location.href = './login.html';
+    window.location.href = '../login/index.html';
   }
 }
 

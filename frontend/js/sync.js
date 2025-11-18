@@ -185,7 +185,7 @@ export function handleLogout() {
   const currentPage = window.location.pathname.split('/').pop();
   
   if (currentPage === 'profile.html' || currentPage === 'checkout.html') {
-    window.location.href = './login.html';
+    window.location.href = './pages/login/index.html';
   } else {
     window.location.reload();
   }
@@ -219,28 +219,40 @@ export function initSync() {
     updateCartBadge();
   });
   
-  // Configurar menú de usuario
+  // Configurar botón de usuario
   const userMenuBtn = document.getElementById('user-menu-btn');
   const userMenu = document.getElementById('user-menu');
   
-  if (userMenuBtn && userMenu) {
+  if (userMenuBtn) {
     userMenuBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       
+      // Función auxiliar para obtener la ruta relativa correcta
+      const getRelativePath = (targetPage) => {
+        const currentPath = window.location.pathname;
+        
+        // Si estamos en una página dentro de /pages/, usar ../ para volver a pages/
+        if (currentPath.includes('/pages/')) {
+          return `../${targetPage}/index.html`;
+        } else {
+          // Si estamos en la raíz (index.html), usar ./
+          return `./pages/${targetPage}/index.html`;
+        }
+      };
+      
       if (isLoggedIn()) {
-        updateUserMenu();
-        userMenu.hidden = !userMenu.hidden;
+        // Si está logueado, ir a perfil
+        window.location.href = getRelativePath('profile');
       } else {
-        window.location.href = './login.html';
+        // Si no está logueado, ir a login
+        window.location.href = getRelativePath('login');
       }
     });
-    
-    // Cerrar menú al hacer click fuera
-    document.addEventListener('click', (e) => {
-      if (userMenu && !userMenu.contains(e.target) && !userMenuBtn.contains(e.target)) {
-        userMenu.hidden = true;
-      }
-    });
+  }
+  
+  // Mantener el menú desplegable oculto por defecto (solo se mostrará si se necesita en el futuro)
+  if (userMenu) {
+    userMenu.hidden = true;
   }
   
   // Configurar botón de logout
@@ -249,24 +261,40 @@ export function initSync() {
     logoutBtn.addEventListener('click', handleLogout);
   }
   
-  // Configurar botón de carrito
-  document.querySelectorAll('[data-action="cart"]').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const currentPage = window.location.pathname.split('/').pop();
-      if (currentPage === 'index.html') {
-        // Si estamos en index.html, navegar a la sección cart
-        const cartSection = document.getElementById('cart');
-        if (cartSection) {
-          window.location.hash = 'cart';
-          cartSection.scrollIntoView({ behavior: 'smooth' });
-        } else {
-          window.location.href = './cart.html';
-        }
-      } else {
-        window.location.href = './cart.html';
+  // Configurar botón de carrito para abrir el drawer
+  // Esperar un momento para que cart-drawer.js se cargue primero
+  setTimeout(async () => {
+    try {
+      const cartDrawerModule = await import('./cart-drawer.js');
+      const openCartDrawer = cartDrawerModule.openCartDrawer;
+      
+      if (openCartDrawer) {
+        document.querySelectorAll('[data-action="cart"]').forEach((btn) => {
+          btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            openCartDrawer();
+          });
+        });
       }
-    });
-  });
+    } catch (error) {
+      console.error('Error loading cart drawer:', error);
+      // Fallback: redirigir a la página del carrito
+      document.querySelectorAll('[data-action="cart"]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const getRelativePath = (targetPage) => {
+            const currentPath = window.location.pathname;
+            if (currentPath.includes('/pages/')) {
+              return `../${targetPage}/index.html`;
+            } else {
+              return `./pages/${targetPage}/index.html`;
+            }
+          };
+          window.location.href = getRelativePath('cart');
+        });
+      });
+    }
+  }, 100);
 }
 
 // Inicializar cuando el DOM esté listo

@@ -4,16 +4,21 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Iniciar Sesión - Anita Integrales</title>
-  <link rel="stylesheet" href="./css/styles.css" />
-  <link rel="stylesheet" href="./css/login.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Galada&family=Delius&family=Pacifico&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../css/styles.css" />
+  <link rel="stylesheet" href="../../css/pages/login/index.css" />
 </head>
 <body>
   <div class="login-container">
     <div class="login-wrapper">
       <!-- Logo -->
       <div class="login-logo-wrapper">
-        <img src="./assets/logo.png" alt="Anita Integrales" class="login-logo" />
-        <h1 class="login-brand-title">Anita Integrales</h1>
+        <div class="login-brand" onclick="window.location.href='../../index.html'">
+          <img src="../../assets/images/logo.png" alt="Anita Integrales" class="login-logo" />
+          <h1 class="login-title">Anita Integrales</h1>
+        </div>
       </div>
       
       <!-- Card de Login -->
@@ -249,7 +254,7 @@
     </div>
   </div>
 
-  <script type="module" src="./js/sync.js"></script>
-  <script type="module" src="./js/login.js"></script>
+  <script type="module" src="../../js/sync.js"></script>
+  <script type="module" src="../../js/pages/login/index.js"></script>
 </body>
 </html>

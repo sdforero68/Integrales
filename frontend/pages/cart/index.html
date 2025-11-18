@@ -4,15 +4,18 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Carrito de Compras - Anita Integrales</title>
-  <link rel="stylesheet" href="./css/styles.css" />
-  <link rel="stylesheet" href="./css/cart.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Galada&family=Delius&family=Pacifico&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../css/styles.css" />
+  <link rel="stylesheet" href="../../css/pages/cart/index.css" />
 </head>
 <body>
   <header class="navbar">
     <div class="container px-4 nav-inner">
-      <div class="brand-group" onclick="window.location.href='./index.html'">
+      <div class="brand-group" onclick="window.location.href='../../index.html'">
         <div class="brand-avatar" style="border-color: var(--color-accent)">
-          <img src="./assets/logo.png" alt="Anita Integrales" class="brand-avatar-img" />
+          <img src="../../assets/images/logo.png" alt="Anita Integrales" class="brand-avatar-img" />
         </div>
         <div class="brand-text">
           <div class="brand brand-font gradient-text text-3xl">Anita Integrales</div>
@@ -20,11 +23,11 @@
         </div>
       </div>
       <nav class="nav-links">
-        <a href="./index.html#home" class="nav-link">Inicio</a>
-        <a href="./index.html#catalog" class="nav-link">Catálogo</a>
-        <a href="./index.html#markets" class="nav-link">Mercados Campesinos</a>
-        <a href="./index.html#about" class="nav-link">Nosotros</a>
-        <a href="./index.html#contact" class="nav-link">Contacto</a>
+        <a href="../../index.html" class="nav-link">Inicio</a>
+        <a href="../catalog/index.html" class="nav-link">Catálogo</a>
+        <a href="../markets/index.html" class="nav-link">Mercados Campesinos</a>
+        <a href="../about/index.html" class="nav-link">Nosotros</a>
+        <a href="../contact/index.html" class="nav-link">Contacto</a>
       </nav>
       <div class="nav-actions">
         <button class="icon-btn" data-action="cart" aria-label="Carrito">
@@ -56,7 +59,7 @@
               </div>
             </div>
             <div class="user-menu-divider"></div>
-            <a href="./profile.html" class="user-menu-item">
+            <a href="../profile/index.html" class="user-menu-item">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
                 <circle cx="12" cy="7" r="4"/>
@@ -80,29 +83,85 @@
   <div class="cart-container">
     <div class="container px-4">
       <div class="cart-header">
-        <button class="btn-back-home" onclick="window.location.href='./index.html'">
+        <div class="cart-header-title">
+          <h1 class="cart-title" style="color: var(--color-primary)">
+            Tu pedido
+          </h1>
+          <span class="cart-products-count" id="cart-products-count">0 Productos</span>
+        </div>
+        <button class="btn-back-home" onclick="window.location.href='../../index.html'">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
             <polyline points="9 22 9 12 15 12 15 22"/>
           </svg>
           <span>Volver al inicio</span>
         </button>
-        <h1 class="cart-title" style="color: var(--color-primary)">
-          Carrito de Compras
-        </h1>
       </div>
 
       <!-- Empty State -->
       <div id="cart-empty" class="cart-empty" hidden>
-        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #cbd5e1">
-          <circle cx="9" cy="21" r="1"/>
-          <circle cx="20" cy="21" r="1"/>
-          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-        </svg>
-        <p class="empty-text">Tu carrito está vacío</p>
-        <button class="btn-continue-shopping" onclick="window.location.href='./index.html#catalog'">
-          Continuar Comprando
+        <div class="empty-cart-illustration">
+          <div class="cart-icon-wrapper">
+            <svg class="cart-icon-main" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <rect x="20" y="30" width="50" height="35" rx="3" fill="var(--color-primary)" opacity="0.9"/>
+              <rect x="25" y="35" width="40" height="25" rx="2" fill="var(--color-secondary)"/>
+              <line x1="30" y1="40" x2="60" y2="40" stroke="var(--color-primary)" stroke-width="2"/>
+              <line x1="30" y1="48" x2="60" y2="48" stroke="var(--color-primary)" stroke-width="2"/>
+              <line x1="30" y1="56" x2="55" y2="56" stroke="var(--color-primary)" stroke-width="2"/>
+              <circle cx="30" cy="75" r="6" fill="var(--color-tertiary)"/>
+              <circle cx="70" cy="75" r="6" fill="var(--color-tertiary)"/>
+            </svg>
+            <div class="decorative-shapes">
+              <div class="shape shape-1"></div>
+              <div class="shape shape-2"></div>
+              <div class="shape shape-3"></div>
+              <div class="shape shape-4"></div>
+            </div>
+          </div>
+        </div>
+        <p class="empty-text">Aún no tienes productos en tu carrito</p>
+        
+        <!-- Empty Cart Summary -->
+        <div class="empty-cart-summary">
+          <div class="summary-row-empty">
+            <span>Subtotal</span>
+            <span>-</span>
+          </div>
+          <div class="summary-row-empty">
+            <span>Productos</span>
+            <span>$0</span>
+          </div>
+          <div class="summary-row-empty">
+            <span>Subtotal</span>
+            <span>$0</span>
+          </div>
+          <div class="summary-row-empty summary-total-empty">
+            <span>Total</span>
+            <span>$0</span>
+          </div>
+          <p class="iva-text">IVA incluído</p>
+        </div>
+        
+        <button class="btn-add-to-cart" onclick="window.location.href='../catalog/index.html'">
+          Añadir al carrito
         </button>
+        
+        <div class="payment-security">
+          <div class="payment-methods">
+            <div class="payment-icon">💳</div>
+            <span class="payment-text">VISA</span>
+            <span class="payment-text">PSE</span>
+            <div class="payment-icon">💳</div>
+            <div class="payment-icon">💳</div>
+          </div>
+          <div class="security-badge">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              <path d="M9 12l2 2 4-4"/>
+            </svg>
+            <span>Secured by Lyra</span>
+          </div>
+        </div>
       </div>
 
       <!-- Cart Content -->
@@ -133,10 +192,10 @@
                 </div>
               </div>
               <div class="summary-buttons">
-                <button class="btn-checkout" id="checkout-btn" onclick="window.location.href='./checkout.html'">
+                <button class="btn-checkout" id="checkout-btn" onclick="window.location.href='../checkout/index.html'">
                   Proceder al Checkout
                 </button>
-                <button class="btn-continue-shopping" onclick="window.location.href='./index.html#catalog'">
+                <button class="btn-continue-shopping" onclick="window.location.href='../catalog/index.html'">
                   Continuar Comprando
                 </button>
               </div>
@@ -147,9 +206,9 @@
     </div>
   </div>
 
-  <script type="module" src="./js/sync.js"></script>
-  <script type="module" src="./js/main.js"></script>
-  <script type="module" src="./js/cart.js"></script>
+  <script type="module" src="../../js/sync.js"></script>
+  <script type="module" src="../../js/main.js"></script>
+  <script type="module" src="../../js/pages/cart/index.js"></script>
 </body>
 </html>
 

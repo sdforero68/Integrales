@@ -1,6 +1,6 @@
 // Importar funciones del carrito desde main.js
-import { getCart, saveCart, getCartItemsCount, CART_STORAGE_KEY } from './main.js';
-import { updateCartBadge } from './sync.js';
+import { getCart, saveCart, getCartItemsCount, CART_STORAGE_KEY } from '../../main.js';
+import { updateCartBadge } from '../../sync.js';
 
 // Función para formatear precio
 function formatPrice(price) {
@@ -20,6 +20,13 @@ function renderCartItems() {
   const cartContent = document.getElementById('cart-content');
   
   const cart = getCart();
+  
+  // Actualizar contador de productos
+  const productsCountEl = document.getElementById('cart-products-count');
+  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+  if (productsCountEl) {
+    productsCountEl.textContent = `${totalItems} ${totalItems === 1 ? 'Producto' : 'Productos'}`;
+  }
   
   if (cart.length === 0) {
     // Mostrar estado vacío y ocultar contenido
@@ -154,7 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
         alert('Tu carrito está vacío');
         return;
       }
-      window.location.href = './checkout.html';
+      window.location.href = '../checkout/index.html';
     });
   }
 });

@@ -348,5 +348,5 @@ function onLoginSuccess(accessToken, user) {
   console.log('Login exitoso:', { accessToken, user });
   
   // Redirigir a la pantalla de inicio después del login exitoso
-  window.location.href = './index.html';
+  window.location.href = '../../index.html';
 }
