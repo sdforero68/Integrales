@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Galada&family=Delius&family=Pacifico&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../../css/styles.css" />
+  <link rel="stylesheet" href="../../css/pages/about/index.css" />
 </head>
 <body>
   <header class="navbar">
@@ -79,38 +80,216 @@
     </div>
   </header>
 
-  <div class="w-full">
-    <!-- Benefits Section -->
-    <section class="py-16 container mx-auto px-4">
-      <h2 class="text-center mb-12 gradient-text animate-fade-in-up">¿Por qué elegir Anita Integrales?</h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div class="text-center p-8 rounded-2xl gradient-bg-secondary transition-all hover:scale-105 hover:shadow-xl animate-fade-in-up">
-          <div class="w-20 h-20 rounded-full mx-auto mb-4 flex items-center justify-center gradient-bg-accent animate-float">
+  <div class="w-full relative overflow-hidden" style="background: #fafafa;">
+    <!-- Barra decorativa vertical -->
+    <div class="decorative-bar"></div>
+    
+    <!-- Nuestra Historia Section -->
+    <section class="about-hero-section relative py-20 px-4" style="min-height: 90vh;">
+      <div class="container mx-auto max-w-7xl relative z-10">
+        <!-- Top Left: Texto principal -->
+        <div class="hero-content mb-16 md:mb-0">
+          <div class="mb-4">
+            <span class="text-lg font-semibold" style="color: var(--color-tertiary);">Anita Integrales:</span>
+          </div>
+          <h1 class="hero-title mb-6">
+            <span style="color: var(--color-tertiary);">El Comienzo de</span>
+            <span class="highlight-text" style="color: var(--color-accent);">un Sueño</span>
+          </h1>
+          <p class="hero-subtitle mb-8" style="color: var(--color-tertiary);">
+            Más de 15 años creando alimentos saludables
+          </p>
+          
+          <!-- Texto descriptivo -->
+          <div class="hero-description max-w-2xl mb-8">
+            <p class="text-lg leading-relaxed mb-4" style="color: var(--color-tertiary);">
+              Hace más de 15 años, un accidente que afectó mi brazo cambió el rumbo de mi vida. Durante mi proceso de rehabilitación, descubrí una pasión que no sabía que tenía: amasar.
+            </p>
+            <p class="text-lg leading-relaxed mb-6" style="color: var(--color-tertiary);">
+              Lo que comenzó como terapia física se convirtió en un amor profundo por crear alimentos saludables y nutritivos. Cada pan, cada galleta, cada producto lleva consigo no solo ingredientes de calidad, sino también dedicación y cariño.
+            </p>
+            <p class="quote-highlight text-2xl italic font-bold" style="color: var(--color-primary);">
+              "De la adversidad nace la oportunidad"
+            </p>
+          </div>
+        </div>
+
+        <!-- Top Right: Imágenes decorativas -->
+        <div class="hero-images">
+          <!-- Decoración: Asterisco -->
+          <div class="decorative-asterisk asterisk-1">✦</div>
+          <div class="decorative-asterisk asterisk-2">✦</div>
+          
+          <!-- Línea decorativa -->
+          <svg class="decorative-line line-1" viewBox="0 0 200 50" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,25 Q50,10 100,25 T200,25" stroke="var(--color-accent)" stroke-width="3" fill="none"/>
+          </svg>
+          
+          <!-- Imagen principal con fondo de color -->
+          <div class="hero-image-card image-card-1">
+            <div class="image-bg" style="background-color: #ffdeb1;"></div>
+            <img 
+              src="../../assets/images/about/historia.jpg" 
+              alt="Historia de Anita Integrales" 
+              class="hero-img"
+              onerror="this.src='../../assets/images/placeholder.svg'"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Nuestro Compromiso Section -->
+    <section class="commitment-section relative px-4" style="background: linear-gradient(135deg, #ffdeb1 0%, #ffdeb150 100%); padding-top: 2.5rem; padding-bottom: 2.5rem;">
+      <div class="container mx-auto max-w-7xl relative z-10">
+        <!-- Bottom Left: Imágenes de productos -->
+        <div class="commitment-images">
+          <div class="commitment-image-card img-card-1">
+            <div class="image-bg" style="background-color: var(--color-primary);"></div>
+            <img 
+              src="../../assets/images/about/compromiso.jpg" 
+              alt="Nuestro compromiso" 
+              class="commitment-img"
+              onerror="this.src='../../assets/images/placeholder.svg'"
+            />
+          </div>
+          
+          <!-- Línea decorativa -->
+          <svg class="decorative-line line-2" viewBox="0 0 150 30" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,15 Q30,5 75,15 T150,15" stroke="var(--color-primary)" stroke-width="2.5" fill="none"/>
+          </svg>
+          
+          <div class="decorative-asterisk asterisk-3">✦</div>
+        </div>
+
+        <!-- Bottom Right: Texto de bienvenida -->
+        <div class="commitment-content">
+          <h2 class="commitment-title mb-6">
+            Bienvenido a <span class="highlight-text" style="color: var(--color-primary);">Anita Integrales</span>
+          </h2>
+          <div class="commitment-text max-w-2xl">
+            <p class="text-lg leading-relaxed mb-4" style="color: var(--color-tertiary);">
+              En Anita Integrales, nos comprometemos a ofrecer productos elaborados con ingredientes naturales y saludables. Utilizamos harinas ancestrales como quinua, amaranto y sagú, así como semillas nutritivas como linaza y chía.
+            </p>
+            <p class="text-lg leading-relaxed mb-4" style="color: var(--color-tertiary);">
+              Cada producto es artesanal, elaborado a mano con recetas tradicionales y técnicas de masa madre que garantizan un sabor excepcional y beneficios para la salud.
+            </p>
+            <p class="text-lg leading-relaxed" style="color: var(--color-tertiary);">
+              Creemos que la comida es medicina, y por eso seleccionamos cuidadosamente cada ingrediente para ofrecerte lo mejor de la naturaleza.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Ingredientes Especiales Section -->
+    <section class="ingredients-section container mx-auto px-4 relative" style="padding-top: 4rem; padding-bottom: 4rem;">
+      <h2 class="text-center text-5xl font-bold mb-12 animate-on-scroll float-up" style="color: var(--color-primary)">Ingredientes Especiales</h2>
+      <div class="ingredients-matrix max-w-7xl mx-auto">
+        <!-- Fila 1 -->
+        <div class="ingredients-row">
+          <div class="ingredient-card-small bg-white p-4 rounded-xl shadow-lg border-2 animate-on-scroll fade-in-scale">
+            <h3 class="text-base font-bold mb-1" style="color: var(--color-tertiary)">Quinua</h3>
+            <p class="text-xs text-gray-600">Proteína completa</p>
+          </div>
+          <div class="ingredient-card-small bg-white p-4 rounded-xl shadow-lg border-2 animate-on-scroll fade-in-scale">
+            <h3 class="text-base font-bold mb-1" style="color: var(--color-tertiary)">Yacón</h3>
+            <p class="text-xs text-gray-600">Prebiótico natural</p>
+          </div>
+          <div class="ingredient-card-small bg-white p-4 rounded-xl shadow-lg border-2 animate-on-scroll fade-in-scale">
+            <h3 class="text-base font-bold mb-1" style="color: var(--color-tertiary)">Linaza</h3>
+            <p class="text-xs text-gray-600">Omega 3</p>
+          </div>
+          <div class="ingredient-card-small bg-white p-4 rounded-xl shadow-lg border-2 animate-on-scroll fade-in-scale">
+            <h3 class="text-base font-bold mb-1" style="color: var(--color-tertiary)">Amaranto</h3>
+            <p class="text-xs text-gray-600">Rico en calcio</p>
+          </div>
+          <div class="ingredient-card-small bg-white p-4 rounded-xl shadow-lg border-2 animate-on-scroll fade-in-scale">
+            <h3 class="text-base font-bold mb-1" style="color: var(--color-tertiary)">Centeno</h3>
+            <p class="text-xs text-gray-600">Alto en fibra</p>
+          </div>
+        </div>
+        <!-- Fila 2 -->
+        <div class="ingredients-row">
+          <div class="ingredient-card-small bg-white p-4 rounded-xl shadow-lg border-2 animate-on-scroll fade-in-scale">
+            <h3 class="text-base font-bold mb-1" style="color: var(--color-tertiary)">Chía</h3>
+            <p class="text-xs text-gray-600">Antioxidantes</p>
+          </div>
+          <div class="ingredient-card-small bg-white p-4 rounded-xl shadow-lg border-2 animate-on-scroll fade-in-scale">
+            <h3 class="text-base font-bold mb-1" style="color: var(--color-tertiary)">Sagú</h3>
+            <p class="text-xs text-gray-600">Sin gluten</p>
+          </div>
+          <div class="ingredient-card-small bg-white p-4 rounded-xl shadow-lg border-2 animate-on-scroll fade-in-scale">
+            <h3 class="text-base font-bold mb-1" style="color: var(--color-tertiary)">Masa Madre</h3>
+            <p class="text-xs text-gray-600">Digestión lenta</p>
+          </div>
+          <div class="ingredient-card-small bg-white p-4 rounded-xl shadow-lg border-2 animate-on-scroll fade-in-scale">
+            <h3 class="text-base font-bold mb-1" style="color: var(--color-tertiary)">Avena</h3>
+            <p class="text-xs text-gray-600">Beta-glucanos</p>
+          </div>
+          <div class="ingredient-card-small bg-white p-4 rounded-xl shadow-lg border-2 animate-on-scroll fade-in-scale">
+            <h3 class="text-base font-bold mb-1" style="color: var(--color-tertiary)">Trigo Integral</h3>
+            <p class="text-xs text-gray-600">Fibra dietética</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Nuestros Valores Section -->
+    <section class="values-section container mx-auto px-4 relative" style="background: linear-gradient(135deg, #ffdeb1 0%, #ffdeb150 100%); padding-top: 4rem; padding-bottom: 4rem;">
+      <h2 class="text-center text-5xl font-bold mb-12 animate-on-scroll float-up" style="color: var(--color-tertiary)">Nuestros Valores</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+        <div class="value-card text-center p-8 bg-white rounded-xl shadow-lg animate-on-scroll fade-in-scale">
+          <div class="icon-container w-20 h-20 rounded-full mx-auto mb-4 flex items-center justify-center" style="background-color: var(--color-accent);">
             <span class="text-4xl">🌾</span>
           </div>
-          <h3 class="mb-3" style="color: var(--color-tertiary)">100% Artesanal</h3>
+          <h3 class="text-2xl font-bold mb-4" style="color: var(--color-tertiary)">100% Artesanal</h3>
           <p class="text-gray-700">Todos nuestros productos son elaborados a mano con técnicas tradicionales y mucho amor.</p>
         </div>
-        <div class="text-center p-8 rounded-2xl gradient-bg-secondary transition-all hover:scale-105 hover:shadow-xl animate-fade-in-up" style="animation-delay: 0.2s;">
-          <div class="w-20 h-20 rounded-full mx-auto mb-4 flex items-center justify-center gradient-bg-accent animate-float" style="animation-delay: 0.5s;">
+        <div class="value-card text-center p-8 bg-white rounded-xl shadow-lg animate-on-scroll fade-in-scale">
+          <div class="icon-container w-20 h-20 rounded-full mx-auto mb-4 flex items-center justify-center" style="background-color: var(--color-accent);">
             <span class="text-4xl">🥖</span>
           </div>
-          <h3 class="mb-3" style="color: var(--color-tertiary)">Ingredientes Naturales</h3>
+          <h3 class="text-2xl font-bold mb-4" style="color: var(--color-tertiary)">Ingredientes Naturales</h3>
           <p class="text-gray-700">Usamos harinas ancestrales, semillas y granos orgánicos sin conservantes artificiales.</p>
         </div>
-        <div class="text-center p-8 rounded-2xl gradient-bg-secondary transition-all hover:scale-105 hover:shadow-xl animate-fade-in-up" style="animation-delay: 0.4s;">
-          <div class="w-20 h-20 rounded-full mx-auto mb-4 flex items-center justify-center gradient-bg-accent animate-float" style="animation-delay: 1s;">
+        <div class="value-card text-center p-8 bg-white rounded-xl shadow-lg animate-on-scroll fade-in-scale">
+          <div class="icon-container w-20 h-20 rounded-full mx-auto mb-4 flex items-center justify-center" style="background-color: var(--color-accent);">
             <span class="text-4xl">❤️</span>
           </div>
-          <h3 class="mb-3" style="color: var(--color-tertiary)">Tradición Familiar</h3>
+          <h3 class="text-2xl font-bold mb-4" style="color: var(--color-tertiary)">Tradición Familiar</h3>
           <p class="text-gray-700">Más de 15 años de experiencia y dedicación en cada producto que elaboramos.</p>
         </div>
       </div>
     </section>
   </div>
 
+  <!-- Cart Drawer (Floating Cart) -->
+  <div id="cart-drawer" class="cart-drawer" hidden>
+    <div class="cart-drawer-overlay" id="cart-drawer-overlay"></div>
+    <div class="cart-drawer-content">
+      <div class="cart-drawer-header">
+        <h2 class="cart-drawer-title">Tu carrito</h2>
+        <button class="cart-drawer-close" id="cart-drawer-close" aria-label="Cerrar carrito">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <div class="cart-drawer-body" id="cart-drawer-body">
+        <!-- El contenido se llenará dinámicamente -->
+      </div>
+      <div class="cart-drawer-footer" id="cart-drawer-footer">
+        <!-- El footer se llenará dinámicamente -->
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="../../js/cart-drawer.js"></script>
   <script type="module" src="../../js/sync.js"></script>
   <script type="module" src="../../js/main.js"></script>
+  <script type="module" src="../../js/pages/about/index.js"></script>
   
   <!-- WhatsApp Button -->
   <a

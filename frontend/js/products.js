@@ -37,29 +37,29 @@ export const products = [
   // PANADERÍA
   {
     id: 'pan-queso-grande',
-    name: 'Pan de Queso Grande',
+    name: 'Pan de Queso y Cuajada Grande',
     category: 'panaderia',
     price: 12000,
-    description: 'Pan artesanal con queso, tamaño grande',
-    ingredients: 'Harina integral, queso, masa madre',
-    benefits: 'Rico en proteínas y fibra'
+    description: 'Pan artesanal con queso y cuajada incorporados en la mezcla, tamaño grande 5 unds.',
+    ingredients: 'Harina integral, mantequilla, miel de caña, queso, quinua, yacón y linaza',
+    benefits: 'Rico en proteínas y fibra, no contiene levadura.'
   },
   {
     id: 'pan-queso-pequeno',
-    name: 'Pan de Queso Pequeño',
+    name: 'Pan de Queso y Cuajada Pequeño',
     category: 'panaderia',
     price: 10000,
-    description: 'Pan artesanal con queso, tamaño pequeño',
-    ingredients: 'Harina integral, queso, masa madre',
-    benefits: 'Rico en proteínas y fibra'
+    description: 'Pan artesanal con queso y cuajada incorporados en la mezcla, tamaño pequeño 10 unds.',
+    ingredients: 'Harina integral, mantequilla, miel de caña, queso, quinua, yacón y linaza',
+    benefits: 'Rico en proteínas y fibra, no contiene levadura.'
   },
   {
     id: 'pan-maiz-grande',
     name: 'Pan de Maíz Grande',
     category: 'panaderia',
     price: 12000,
-    description: 'Pan artesanal de maíz, tamaño grande',
-    ingredients: 'Harina de maíz, harina integral',
+    description: 'Pan artesanal de maíz, con queso y cuajada, tamaño grande 5 unds.',
+    ingredients: 'Harina de maíz, mantequilla, miel de caña, queso, quinua, yacón y linaza',
     benefits: 'Sin gluten, rico en fibra'
   },
   {
@@ -67,18 +67,18 @@ export const products = [
     name: 'Pan de Maíz Pequeño',
     category: 'panaderia',
     price: 7000,
-    description: 'Pan artesanal de maíz, tamaño pequeño',
-    ingredients: 'Harina de maíz, harina integral',
+    description: 'Pan artesanal de maíz, con queso y cuajada, tamaño pequeño 6 unds.',
+    ingredients: 'Harina de maíz, mantequilla, miel de caña, queso, quinua, yacón y linaza',
     benefits: 'Sin gluten, rico en fibra'
   },
   {
     id: 'masa-madre-centeno',
-    name: 'Masa Madre Centeno',
+    name: 'Masa Madre de Centeno',
     category: 'panaderia',
     price: 16000,
-    description: 'Pan de masa madre con centeno',
-    ingredients: 'Harina de centeno, masa madre natural',
-    benefits: 'Digestión lenta, rico en minerales'
+    description: 'Pan de masa madre (proceso de fermentación natural) con harina de centeno',
+    ingredients: 'Harina de centeno, masa madre natural y nueces',
+    benefits: 'Digestión lenta, rico en minerales, libre de gluten, grasa, huevo, levadura y dulce.'
   },
   {
     id: 'masa-madre-ancestral-grande',
