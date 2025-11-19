@@ -28,23 +28,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const navbar = document.querySelector('.navbar');
   const navHeight = navbar ? navbar.offsetHeight : 0;
 
-  // Hacer el navbar transparente al hacer scroll
-  let lastScroll = 0;
-  const handleScroll = () => {
-    const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
-    
-    if (currentScroll > 50) {
-      navbar.classList.add('scrolled');
-    } else {
-      navbar.classList.remove('scrolled');
-    }
-    
-    lastScroll = currentScroll;
-  };
-
-  window.addEventListener('scroll', handleScroll, { passive: true });
-  handleScroll(); // Verificar estado inicial
-
   // Función para navegar a páginas separadas o secciones en la misma página
   function navigate(target) {
     // Si el target es una página HTML, redirigir

@@ -53,7 +53,6 @@
 /* Login Card */
 .login-card {
   background: #fff8f0;
-  border: 2px solid var(--color-accent);
   border-radius: 24px;
   padding: 2.5rem;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
@@ -345,23 +344,23 @@
   font-size: 1rem;
   font-weight: 700;
   color: #ffffff;
-  background: #1f2937;
+  background: var(--color-primary);
   border: none;
   border-radius: 12px;
   cursor: pointer;
-  transition: transform 0.15s ease, opacity 0.15s ease, box-shadow 0.15s ease,
-    background-color 0.15s ease;
+  transition: all 0.3s ease;
   margin-top: 0.5rem;
+  box-shadow: 0 4px 12px rgba(197, 101, 53, 0.3);
 }
 
 .btn-submit:hover:not(:disabled) {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  opacity: 0.95;
+  background: var(--color-tertiary);
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 8px 20px rgba(197, 101, 53, 0.5);
 }
 
 .btn-submit:active:not(:disabled) {
-  transform: translateY(0);
+  transform: translateY(-2px) scale(1.01);
 }
 
 .btn-submit:disabled {
@@ -447,18 +446,20 @@
   border: 1.5px solid #e2e8f0;
   border-radius: 12px;
   cursor: pointer;
-  transition: transform 0.15s ease, border-color 0.15s ease,
-    box-shadow 0.15s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .social-btn:hover {
-  transform: translateY(-1px);
-  border-color: #cbd5e1;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transform: translateY(-4px) scale(1.05);
+  border-color: var(--color-primary);
+  box-shadow: 0 8px 20px rgba(197, 101, 53, 0.3);
+  background: var(--color-primary);
+  color: #ffffff;
 }
 
 .social-btn:active {
-  transform: translateY(0);
+  transform: translateY(-2px) scale(1.02);
 }
 
 .social-btn svg {
