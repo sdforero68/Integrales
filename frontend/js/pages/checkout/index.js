@@ -1,5 +1,5 @@
 // Importar funciones del carrito desde main.js
-import { getCart, saveCart, CART_STORAGE_KEY } from './main.js';
+import { getCart, saveCart, CART_STORAGE_KEY } from '../../main.js';
 
 // Constantes
 const ORDERS_STORAGE_KEY = 'app_orders';
@@ -17,7 +17,7 @@ async function loadSyncModule() {
   }
   
   try {
-    const syncModule = await import('./sync.js');
+    const syncModule = await import('../../sync.js');
     syncIsLoggedIn = syncModule.isLoggedIn;
     syncGetCurrentUser = syncModule.getCurrentUser;
     syncModuleLoaded = true;
@@ -187,14 +187,14 @@ function handleSubmit(e) {
   
   if (!checkLoginStatus()) {
     alert('Debes iniciar sesión para realizar un pedido');
-    window.location.href = './login.html';
+    window.location.href = '../login/index.html';
     return;
   }
   
   const cart = getCart();
   if (cart.length === 0) {
     alert('Tu carrito está vacío');
-    window.location.href = './cart.html';
+    window.location.href = '../cart/index.html';
     return;
   }
   
@@ -277,7 +277,7 @@ function handleSubmit(e) {
       
       // Redirigir a página de éxito o perfil
       alert(`¡Pedido confirmado! Tu número de pedido es: ${savedOrder.id.slice(-8)}`);
-      window.location.href = './profile.html';
+      window.location.href = '../profile/index.html';
     } catch (error) {
       console.error('Error al procesar pedido:', error);
       if (errorEl) {
@@ -308,7 +308,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Si está logueado pero el carrito está vacío, redirigir
   if (cart.length === 0) {
     alert('Tu carrito está vacío');
-    window.location.href = './cart.html';
+    window.location.href = '../cart/index.html';
     return;
   }
   

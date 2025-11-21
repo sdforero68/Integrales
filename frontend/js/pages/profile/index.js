@@ -18,8 +18,7 @@ function getUserInfo() {
   const accessToken = localStorage.getItem('accessToken') || localStorage.getItem(CURRENT_SESSION_KEY);
   
   if (!userStr || !accessToken) {
-    // Si no hay sesión, redirigir al login
-    window.location.href = './login.html';
+    // Si no hay sesión, mostrar estado de no sesión en lugar de redirigir
     return null;
   }
   
@@ -28,7 +27,6 @@ function getUserInfo() {
     return { user, accessToken };
   } catch (error) {
     console.error('Error parsing user data:', error);
-    window.location.href = './login.html';
     return null;
   }
 }
@@ -201,7 +199,7 @@ function renderOrders(orders) {
 // Función de logout (usando sync.js)
 async function handleLogout() {
   try {
-    const { handleLogout: handleLogoutSync } = await import('./sync.js');
+    const { handleLogout: handleLogoutSync } = await import('../../sync.js');
     handleLogoutSync();
   } catch (error) {
     // Fallback local
@@ -209,23 +207,148 @@ async function handleLogout() {
     localStorage.removeItem('user');
     localStorage.removeItem('current_user');
     localStorage.removeItem('current_session');
-    window.location.href = './login.html';
+    window.location.href = '../login/index.html';
   }
+}
+
+// Cargar favoritos
+async function fetchFavorites() {
+  const loadingState = document.getElementById('favorites-loading-state');
+  const emptyState = document.getElementById('favorites-empty-state');
+  const favoritesList = document.getElementById('favorites-list');
+  
+  try {
+    if (loadingState) loadingState.hidden = false;
+    if (emptyState) emptyState.hidden = true;
+    if (favoritesList) favoritesList.hidden = true;
+    
+    // Simular delay de carga
+    setTimeout(async () => {
+      const { getFavorites } = await import('../../favorites.js');
+      const favorites = getFavorites();
+      
+      if (loadingState) loadingState.hidden = true;
+      
+      if (favorites.length === 0) {
+        if (emptyState) emptyState.hidden = false;
+      } else {
+        renderFavorites(favorites);
+        if (emptyState) emptyState.hidden = true;
+        if (favoritesList) favoritesList.hidden = false;
+      }
+    }, 500);
+  } catch (error) {
+    console.error('Error fetching favorites:', error);
+    if (loadingState) loadingState.hidden = true;
+    if (emptyState) emptyState.hidden = false;
+  }
+}
+
+// Renderizar favoritos
+async function renderFavorites(favorites) {
+  const favoritesList = document.getElementById('favorites-list');
+  if (!favoritesList) return;
+  
+  favoritesList.innerHTML = '';
+  
+  const { products } = await import('../../products.js');
+  const { removeFromFavorites } = await import('../../favorites.js');
+  const { addToCart } = await import('../../sync.js');
+  
+  favorites.forEach((favorite) => {
+    // Buscar el producto completo en la lista de productos
+    const fullProduct = products.find(p => p.id === favorite.id) || favorite;
+    
+    const favoriteCard = document.createElement('div');
+    favoriteCard.className = 'favorite-item';
+    
+    const productImage = fullProduct.image || `../../assets/images/products/${favorite.id}.jpg`;
+    
+    favoriteCard.innerHTML = `
+      <img src="${productImage}" alt="${favorite.name}" class="favorite-item-image" onerror="this.onerror=null;this.src='../../assets/images/placeholder.svg'" />
+      <div class="favorite-item-details">
+        <h3 class="favorite-item-name">${favorite.name}</h3>
+        <p class="favorite-item-description">${favorite.description || ''}</p>
+        <div class="favorite-item-price">${formatPrice(favorite.price)}</div>
+      </div>
+      <div class="favorite-item-actions">
+        <button class="favorite-remove-btn" data-product-id="${favorite.id}" aria-label="Eliminar de favoritos">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+          </svg>
+        </button>
+        <button class="favorite-add-cart-btn" data-product-id="${favorite.id}">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="9" cy="21" r="1"/>
+            <circle cx="20" cy="21" r="1"/>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+          </svg>
+          <span>Agregar al carrito</span>
+        </button>
+      </div>
+    `;
+    
+    // Event listeners
+    const removeBtn = favoriteCard.querySelector('.favorite-remove-btn');
+    const addCartBtn = favoriteCard.querySelector('.favorite-add-cart-btn');
+    
+    if (removeBtn) {
+      removeBtn.addEventListener('click', async () => {
+        removeFromFavorites(favorite.id);
+        fetchFavorites(); // Recargar lista
+        if (window.toast) {
+          window.toast.success('Producto eliminado de favoritos');
+        }
+      });
+    }
+    
+    if (addCartBtn) {
+      addCartBtn.addEventListener('click', () => {
+        addToCart(fullProduct);
+        if (window.toast) {
+          window.toast.success(`${favorite.name} agregado al carrito`);
+        }
+      });
+    }
+    
+    favoritesList.appendChild(favoriteCard);
+  });
 }
 
 // Inicializar cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', () => {
+  // Obtener elementos del DOM
+  const noSessionState = document.getElementById('no-session-state');
+  const userInfoCard = document.getElementById('user-info-card');
+  const favoritesCard = document.getElementById('favorites-card');
+  const orderHistoryCard = document.getElementById('order-history-card');
+  
   // Cargar información del usuario
   const userInfo = loadUserInfo();
   
-  if (userInfo) {
+  if (userInfo && userInfo.user) {
+    // Usuario autenticado - Mostrar contenido del perfil
+    if (noSessionState) noSessionState.style.display = 'none';
+    if (userInfoCard) userInfoCard.hidden = false;
+    if (favoritesCard) favoritesCard.hidden = false;
+    if (orderHistoryCard) orderHistoryCard.hidden = false;
+    
+    // Cargar favoritos
+    fetchFavorites();
+    
     // Cargar pedidos
     fetchOrders(userInfo.user.id);
-  }
-  
-  // Manejar botón de logout
-  const logoutBtn = document.getElementById('logout-btn');
-  if (logoutBtn) {
-    logoutBtn.addEventListener('click', handleLogout);
+    
+    // Manejar botón de logout
+    const logoutBtn = document.getElementById('logout-btn');
+    if (logoutBtn) {
+      logoutBtn.addEventListener('click', handleLogout);
+    }
+  } else {
+    // No hay sesión - Mostrar estado de no sesión
+    if (noSessionState) noSessionState.style.display = 'block';
+    if (userInfoCard) userInfoCard.hidden = true;
+    if (favoritesCard) favoritesCard.hidden = true;
+    if (orderHistoryCard) orderHistoryCard.hidden = true;
   }
 });

@@ -143,10 +143,18 @@ export function updateUserMenu() {
   const userMenuName = document.getElementById('user-menu-name');
   const userMenuEmail = document.getElementById('user-menu-email');
   const userMenuBtn = document.getElementById('user-menu-btn');
+  const userMenuHeader = userMenu?.querySelector('.user-menu-header');
+  const userMenuDivider = userMenu?.querySelector('.user-menu-divider');
+  const userMenuItems = userMenu?.querySelectorAll('.user-menu-item');
+  const loginMenuItem = document.getElementById('user-menu-login');
+  const registerMenuItem = document.getElementById('user-menu-register');
+  const profileMenuItem = document.getElementById('user-menu-profile');
+  const logoutMenuItem = document.getElementById('logout-btn-navbar');
   
   if (isLoggedIn()) {
     const user = getCurrentUser();
     
+    // Mostrar información del usuario
     if (userMenuName && user) {
       userMenuName.textContent = user?.user_metadata?.name || 'Usuario';
     }
@@ -155,12 +163,32 @@ export function updateUserMenu() {
       userMenuEmail.textContent = user?.email || '-';
     }
     
+    // Mostrar elementos de usuario logueado
+    if (userMenuHeader) userMenuHeader.hidden = false;
+    if (userMenuDivider) userMenuDivider.hidden = false;
+    if (profileMenuItem) profileMenuItem.hidden = false;
+    if (logoutMenuItem) logoutMenuItem.hidden = false;
+    
+    // Ocultar opciones de login/registro
+    if (loginMenuItem) loginMenuItem.hidden = true;
+    if (registerMenuItem) registerMenuItem.hidden = true;
+    
     if (userMenu) {
       userMenu.hidden = false;
     }
   } else {
+    // Ocultar información del usuario
+    if (userMenuHeader) userMenuHeader.hidden = true;
+    if (userMenuDivider) userMenuDivider.hidden = true;
+    if (profileMenuItem) profileMenuItem.hidden = true;
+    if (logoutMenuItem) logoutMenuItem.hidden = true;
+    
+    // Mostrar opciones de login/registro
+    if (loginMenuItem) loginMenuItem.hidden = false;
+    if (registerMenuItem) registerMenuItem.hidden = false;
+    
     if (userMenu) {
-      userMenu.hidden = true;
+      userMenu.hidden = false;
     }
   }
 }
@@ -185,7 +213,7 @@ export function handleLogout() {
   const currentPage = window.location.pathname.split('/').pop();
   
   if (currentPage === 'profile.html' || currentPage === 'checkout.html') {
-    window.location.href = './login.html';
+    window.location.href = './pages/login/index.html';
   } else {
     window.location.reload();
   }
@@ -219,28 +247,32 @@ export function initSync() {
     updateCartBadge();
   });
   
-  // Configurar menú de usuario
+  // Configurar botón de usuario
   const userMenuBtn = document.getElementById('user-menu-btn');
   const userMenu = document.getElementById('user-menu');
+  const userMenuWrapper = document.querySelector('.user-menu-wrapper');
   
-  if (userMenuBtn && userMenu) {
+  if (userMenuBtn) {
     userMenuBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       
-      if (isLoggedIn()) {
-        updateUserMenu();
+      // Toggle del menú desplegable
+      if (userMenu) {
         userMenu.hidden = !userMenu.hidden;
-      } else {
-        window.location.href = './login.html';
       }
     });
-    
-    // Cerrar menú al hacer click fuera
-    document.addEventListener('click', (e) => {
-      if (userMenu && !userMenu.contains(e.target) && !userMenuBtn.contains(e.target)) {
-        userMenu.hidden = true;
-      }
-    });
+  }
+  
+  // Cerrar el menú al hacer clic fuera de él
+  document.addEventListener('click', (e) => {
+    if (userMenu && userMenuWrapper && !userMenuWrapper.contains(e.target)) {
+      userMenu.hidden = true;
+    }
+  });
+  
+  // Mantener el menú desplegable oculto por defecto
+  if (userMenu) {
+    userMenu.hidden = true;
   }
   
   // Configurar botón de logout
@@ -249,24 +281,40 @@ export function initSync() {
     logoutBtn.addEventListener('click', handleLogout);
   }
   
-  // Configurar botón de carrito
-  document.querySelectorAll('[data-action="cart"]').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const currentPage = window.location.pathname.split('/').pop();
-      if (currentPage === 'index.html') {
-        // Si estamos en index.html, navegar a la sección cart
-        const cartSection = document.getElementById('cart');
-        if (cartSection) {
-          window.location.hash = 'cart';
-          cartSection.scrollIntoView({ behavior: 'smooth' });
-        } else {
-          window.location.href = './cart.html';
-        }
-      } else {
-        window.location.href = './cart.html';
+  // Configurar botón de carrito para abrir el drawer
+  // Esperar un momento para que cart-drawer.js se cargue primero
+  setTimeout(async () => {
+    try {
+      const cartDrawerModule = await import('./cart-drawer.js');
+      const openCartDrawer = cartDrawerModule.openCartDrawer;
+      
+      if (openCartDrawer) {
+        document.querySelectorAll('[data-action="cart"]').forEach((btn) => {
+          btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            openCartDrawer();
+          });
+        });
       }
-    });
-  });
+    } catch (error) {
+      console.error('Error loading cart drawer:', error);
+      // Fallback: redirigir a la página del carrito
+      document.querySelectorAll('[data-action="cart"]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const getRelativePath = (targetPage) => {
+            const currentPath = window.location.pathname;
+            if (currentPath.includes('/pages/')) {
+              return `../${targetPage}/index.html`;
+            } else {
+              return `./pages/${targetPage}/index.html`;
+            }
+          };
+          window.location.href = getRelativePath('cart');
+        });
+      });
+    }
+  }, 100);
 }
 
 // Inicializar cuando el DOM esté listo

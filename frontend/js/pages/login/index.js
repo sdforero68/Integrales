@@ -101,17 +101,33 @@ function resetFormAnimations(form) {
 
 // Inicializar cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', () => {
-  // Agregar clase de animación inicial al formulario de login
-  const loginForm = document.getElementById('login-form');
-  if (loginForm) {
-    loginForm.classList.add('animate-elements');
-  }
-  
   // Cambio entre login y signup
   loginCard = document.getElementById('login-card');
   signupCard = document.getElementById('signup-card');
   const signupLink = document.getElementById('signup-link');
   const loginLink = document.getElementById('login-link');
+  const loginForm = document.getElementById('login-form');
+  
+  // Verificar si hay parámetro register=true en la URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const shouldShowRegister = urlParams.get('register') === 'true';
+  
+  if (shouldShowRegister) {
+    // Mostrar formulario de registro directamente
+    if (loginCard) loginCard.hidden = true;
+    if (signupCard) {
+      signupCard.hidden = false;
+      const signupForm = signupCard.querySelector('form');
+      if (signupForm) signupForm.classList.add('animate-elements');
+    }
+  } else {
+    // Mostrar formulario de login por defecto
+    if (loginForm) {
+      loginForm.classList.add('animate-elements');
+    }
+    if (loginCard) loginCard.hidden = false;
+    if (signupCard) signupCard.hidden = true;
+  }
   
   if (signupLink) {
     signupLink.addEventListener('click', (e) => {
@@ -348,5 +364,5 @@ function onLoginSuccess(accessToken, user) {
   console.log('Login exitoso:', { accessToken, user });
   
   // Redirigir a la pantalla de inicio después del login exitoso
-  window.location.href = './index.html';
+  window.location.href = '../../index.html';
 }
