@@ -102,7 +102,7 @@
     <div class="decorative-bar"></div>
     
     <!-- Nuestra Historia Section -->
-    <section class="about-hero-section relative pt-20 pb-12 px-4" style="min-height: 90vh;">
+    <section class="about-hero-section relative pt-12 pb-12 px-4" style="min-height: 90vh;">
       <div class="container mx-auto max-w-7xl relative z-10">
         <!-- Top Left: Texto principal -->
         <div class="hero-content mb-16 md:mb-0 animate-fade-in-up">
@@ -207,85 +207,187 @@
     </section>
 
     <!-- Ingredientes Especiales Section -->
-    <section class="ingredients-section container mx-auto px-4 relative" style="padding-top: 4rem; padding-bottom: 4rem;">
+    <section class="ingredients-section container mx-auto px-4 relative" style="padding-top: 2rem; padding-bottom: 4rem;">
       <h2 class="text-center text-5xl font-bold mb-12 animate-on-scroll float-up" style="color: var(--color-primary)">Ingredientes Especiales</h2>
       <div class="ingredients-matrix max-w-7xl mx-auto">
         <!-- Fila 1 -->
         <div class="ingredients-row">
-          <div class="ingredient-card-small p-4 rounded-xl shadow-lg border-2 animate-on-scroll fade-in-scale" style="background: #fff8f0;">
-            <h3 class="text-base font-bold mb-1" style="color: var(--color-tertiary)">Quinua</h3>
-            <p class="text-xs text-gray-600">Proteína completa</p>
+          <div class="ingredient-flip-card animate-on-scroll fade-in-scale">
+            <div class="ingredient-flip-card-inner">
+              <div class="ingredient-flip-card-front" style="background: linear-gradient(135deg, var(--color-primary) 0%, #d4a574 100%);">
+                <h3 class="ingredient-flip-title">Quinua</h3>
+              </div>
+              <div class="ingredient-flip-card-back" style="background: linear-gradient(135deg, #fff8f0 0%, #FDF5E6 100%);">
+                <p class="ingredient-flip-benefit">Proteína completa</p>
+              </div>
+            </div>
           </div>
-          <div class="ingredient-card-small p-4 rounded-xl shadow-lg border-2 animate-on-scroll fade-in-scale" style="background: #fff8f0;">
-            <h3 class="text-base font-bold mb-1" style="color: var(--color-tertiary)">Yacón</h3>
-            <p class="text-xs text-gray-600">Prebiótico natural</p>
+          <div class="ingredient-flip-card animate-on-scroll fade-in-scale" style="--delay: 0.1s;">
+            <div class="ingredient-flip-card-inner">
+              <div class="ingredient-flip-card-front" style="background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-secondary) 100%);">
+                <h3 class="ingredient-flip-title">Yacón</h3>
+              </div>
+              <div class="ingredient-flip-card-back" style="background: linear-gradient(135deg, #fff8f0 0%, #FDF5E6 100%);">
+                <p class="ingredient-flip-benefit">Prebiótico natural</p>
+              </div>
+            </div>
           </div>
-          <div class="ingredient-card-small p-4 rounded-xl shadow-lg border-2 animate-on-scroll fade-in-scale" style="background: #fff8f0;">
-            <h3 class="text-base font-bold mb-1" style="color: var(--color-tertiary)">Linaza</h3>
-            <p class="text-xs text-gray-600">Omega 3</p>
+          <div class="ingredient-flip-card animate-on-scroll fade-in-scale" style="--delay: 0.2s;">
+            <div class="ingredient-flip-card-inner">
+              <div class="ingredient-flip-card-front" style="background: linear-gradient(135deg, var(--color-tertiary) 0%, var(--color-primary) 100%);">
+                <h3 class="ingredient-flip-title">Linaza</h3>
+              </div>
+              <div class="ingredient-flip-card-back" style="background: linear-gradient(135deg, #fff8f0 0%, #FDF5E6 100%);">
+                <p class="ingredient-flip-benefit">Omega 3</p>
+              </div>
+            </div>
           </div>
-          <div class="ingredient-card-small p-4 rounded-xl shadow-lg border-2 animate-on-scroll fade-in-scale" style="background: #fff8f0;">
-            <h3 class="text-base font-bold mb-1" style="color: var(--color-tertiary)">Amaranto</h3>
-            <p class="text-xs text-gray-600">Rico en calcio</p>
+          <div class="ingredient-flip-card animate-on-scroll fade-in-scale" style="--delay: 0.3s;">
+            <div class="ingredient-flip-card-inner">
+              <div class="ingredient-flip-card-front" style="background: linear-gradient(135deg, var(--color-primary) 0%, #d4a574 100%);">
+                <h3 class="ingredient-flip-title">Amaranto</h3>
+              </div>
+              <div class="ingredient-flip-card-back" style="background: linear-gradient(135deg, #fff8f0 0%, #FDF5E6 100%);">
+                <p class="ingredient-flip-benefit">Rico en calcio</p>
+              </div>
+            </div>
           </div>
-          <div class="ingredient-card-small p-4 rounded-xl shadow-lg border-2 animate-on-scroll fade-in-scale" style="background: #fff8f0;">
-            <h3 class="text-base font-bold mb-1" style="color: var(--color-tertiary)">Centeno</h3>
-            <p class="text-xs text-gray-600">Alto en fibra</p>
+          <div class="ingredient-flip-card animate-on-scroll fade-in-scale" style="--delay: 0.4s;">
+            <div class="ingredient-flip-card-inner">
+              <div class="ingredient-flip-card-front" style="background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-secondary) 100%);">
+                <h3 class="ingredient-flip-title">Centeno</h3>
+              </div>
+              <div class="ingredient-flip-card-back" style="background: linear-gradient(135deg, #fff8f0 0%, #FDF5E6 100%);">
+                <p class="ingredient-flip-benefit">Alto en fibra</p>
+              </div>
+            </div>
           </div>
         </div>
         <!-- Fila 2 -->
         <div class="ingredients-row">
-          <div class="ingredient-card-small p-4 rounded-xl shadow-lg border-2 animate-on-scroll fade-in-scale" style="background: #fff8f0;">
-            <h3 class="text-base font-bold mb-1" style="color: var(--color-tertiary)">Chía</h3>
-            <p class="text-xs text-gray-600">Antioxidantes</p>
+          <div class="ingredient-flip-card animate-on-scroll fade-in-scale">
+            <div class="ingredient-flip-card-inner">
+              <div class="ingredient-flip-card-front" style="background: linear-gradient(135deg, var(--color-tertiary) 0%, var(--color-primary) 100%);">
+                <h3 class="ingredient-flip-title">Chía</h3>
+              </div>
+              <div class="ingredient-flip-card-back" style="background: linear-gradient(135deg, #fff8f0 0%, #FDF5E6 100%);">
+                <p class="ingredient-flip-benefit">Antioxidantes</p>
+              </div>
+            </div>
           </div>
-          <div class="ingredient-card-small p-4 rounded-xl shadow-lg border-2 animate-on-scroll fade-in-scale" style="background: #fff8f0;">
-            <h3 class="text-base font-bold mb-1" style="color: var(--color-tertiary)">Sagú</h3>
-            <p class="text-xs text-gray-600">Sin gluten</p>
+          <div class="ingredient-flip-card animate-on-scroll fade-in-scale" style="--delay: 0.1s;">
+            <div class="ingredient-flip-card-inner">
+              <div class="ingredient-flip-card-front" style="background: linear-gradient(135deg, var(--color-primary) 0%, #d4a574 100%);">
+                <h3 class="ingredient-flip-title">Sagú</h3>
+              </div>
+              <div class="ingredient-flip-card-back" style="background: linear-gradient(135deg, #fff8f0 0%, #FDF5E6 100%);">
+                <p class="ingredient-flip-benefit">Sin gluten</p>
+              </div>
+            </div>
           </div>
-          <div class="ingredient-card-small p-4 rounded-xl shadow-lg border-2 animate-on-scroll fade-in-scale" style="background: #fff8f0;">
-            <h3 class="text-base font-bold mb-1" style="color: var(--color-tertiary)">Masa Madre</h3>
-            <p class="text-xs text-gray-600">Digestión lenta</p>
+          <div class="ingredient-flip-card animate-on-scroll fade-in-scale" style="--delay: 0.2s;">
+            <div class="ingredient-flip-card-inner">
+              <div class="ingredient-flip-card-front" style="background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-secondary) 100%);">
+                <h3 class="ingredient-flip-title">Masa Madre</h3>
+              </div>
+              <div class="ingredient-flip-card-back" style="background: linear-gradient(135deg, #fff8f0 0%, #FDF5E6 100%);">
+                <p class="ingredient-flip-benefit">Digestión lenta</p>
+              </div>
+            </div>
           </div>
-          <div class="ingredient-card-small p-4 rounded-xl shadow-lg border-2 animate-on-scroll fade-in-scale" style="background: #fff8f0;">
-            <h3 class="text-base font-bold mb-1" style="color: var(--color-tertiary)">Avena</h3>
-            <p class="text-xs text-gray-600">Beta-glucanos</p>
+          <div class="ingredient-flip-card animate-on-scroll fade-in-scale" style="--delay: 0.3s;">
+            <div class="ingredient-flip-card-inner">
+              <div class="ingredient-flip-card-front" style="background: linear-gradient(135deg, var(--color-tertiary) 0%, var(--color-primary) 100%);">
+                <h3 class="ingredient-flip-title">Avena</h3>
+              </div>
+              <div class="ingredient-flip-card-back" style="background: linear-gradient(135deg, #fff8f0 0%, #FDF5E6 100%);">
+                <p class="ingredient-flip-benefit">Beta-glucanos</p>
+              </div>
+            </div>
           </div>
-          <div class="ingredient-card-small p-4 rounded-xl shadow-lg border-2 animate-on-scroll fade-in-scale" style="background: #fff8f0;">
-            <h3 class="text-base font-bold mb-1" style="color: var(--color-tertiary)">Trigo Integral</h3>
-            <p class="text-xs text-gray-600">Fibra dietética</p>
+          <div class="ingredient-flip-card animate-on-scroll fade-in-scale" style="--delay: 0.4s;">
+            <div class="ingredient-flip-card-inner">
+              <div class="ingredient-flip-card-front" style="background: linear-gradient(135deg, var(--color-primary) 0%, #d4a574 100%);">
+                <h3 class="ingredient-flip-title">Trigo Integral</h3>
+              </div>
+              <div class="ingredient-flip-card-back" style="background: linear-gradient(135deg, #fff8f0 0%, #FDF5E6 100%);">
+                <p class="ingredient-flip-benefit">Fibra dietética</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Nuestros Valores Section -->
-    <section class="values-section container mx-auto px-4 relative" style="background: linear-gradient(135deg, #FDF5E6 0%, #FDF5E650 100%); padding-top: 4rem; padding-bottom: 4rem;">
-      <h2 class="text-center text-5xl font-bold mb-12 animate-on-scroll float-up" style="color: var(--color-tertiary)">Nuestros Valores</h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-        <div class="value-card text-center p-8 rounded-xl shadow-lg animate-on-scroll fade-in-scale" style="background: #fff8f0;">
-          <div class="icon-container w-20 h-20 rounded-full mx-auto mb-4 flex items-center justify-center" style="background-color: var(--color-accent);">
-            <span class="text-4xl">🌾</span>
+    <!-- Galería de Fotos Section -->
+    <section class="gallery-section container mx-auto px-4 relative" style="padding-top: 4rem; padding-bottom: 4rem; background: linear-gradient(135deg, #FDF5E6 0%, #fff8f0 100%);">
+      <h2 class="text-center text-5xl font-bold mb-12 brand-font" style="color: var(--color-tertiary); font-size: clamp(1.75rem, 4vw, 2.5rem); font-weight: 800;">Nuestra Galería</h2>
+      <div class="gallery-container max-w-7xl mx-auto">
+        <div class="gallery-grid-compact">
+          <div class="gallery-item-compact">
+            <img src="../../assets/images/Galeria/galeria01.jpeg" alt="Galería 1" class="gallery-image-compact" loading="lazy" />
           </div>
-          <h3 class="text-2xl font-bold mb-4" style="color: var(--color-tertiary)">100% Artesanal</h3>
-          <p class="text-gray-700">Todos nuestros productos son elaborados a mano con técnicas tradicionales y mucho amor.</p>
-        </div>
-        <div class="value-card text-center p-8 rounded-xl shadow-lg animate-on-scroll fade-in-scale" style="background: #fff8f0;">
-          <div class="icon-container w-20 h-20 rounded-full mx-auto mb-4 flex items-center justify-center" style="background-color: var(--color-accent);">
-            <span class="text-4xl">🥖</span>
+          <div class="gallery-item-compact">
+            <img src="../../assets/images/Galeria/galeria02.jpeg" alt="Galería 2" class="gallery-image-compact" loading="lazy" />
           </div>
-          <h3 class="text-2xl font-bold mb-4" style="color: var(--color-tertiary)">Ingredientes Naturales</h3>
-          <p class="text-gray-700">Usamos harinas ancestrales, semillas y granos orgánicos sin conservantes artificiales.</p>
-        </div>
-        <div class="value-card text-center p-8 rounded-xl shadow-lg animate-on-scroll fade-in-scale" style="background: #fff8f0;">
-          <div class="icon-container w-20 h-20 rounded-full mx-auto mb-4 flex items-center justify-center" style="background-color: var(--color-accent);">
-            <span class="text-4xl">❤️</span>
+          <div class="gallery-item-compact">
+            <img src="../../assets/images/Galeria/galeria03.jpeg" alt="Galería 3" class="gallery-image-compact" loading="lazy" />
           </div>
-          <h3 class="text-2xl font-bold mb-4" style="color: var(--color-tertiary)">Tradición Familiar</h3>
-          <p class="text-gray-700">Más de 15 años de experiencia y dedicación en cada producto que elaboramos.</p>
+          <div class="gallery-item-compact">
+            <img src="../../assets/images/Galeria/galeria04.jpeg" alt="Galería 4" class="gallery-image-compact" loading="lazy" />
+          </div>
+          <div class="gallery-item-compact">
+            <img src="../../assets/images/Galeria/galeria05.jpeg" alt="Galería 5" class="gallery-image-compact" loading="lazy" />
+          </div>
+          <div class="gallery-item-compact">
+            <img src="../../assets/images/Galeria/galeria06.jpeg" alt="Galería 6" class="gallery-image-compact" loading="lazy" />
+          </div>
+          <div class="gallery-item-compact">
+            <img src="../../assets/images/Galeria/galeria07.jpeg" alt="Galería 7" class="gallery-image-compact" loading="lazy" />
+          </div>
+          <div class="gallery-item-compact">
+            <img src="../../assets/images/Galeria/galeria08.jpeg" alt="Galería 8" class="gallery-image-compact" loading="lazy" />
+          </div>
+          <div class="gallery-item-compact">
+            <img src="../../assets/images/Galeria/galeria09.jpeg" alt="Galería 9" class="gallery-image-compact" loading="lazy" />
+          </div>
+          <div class="gallery-item-compact">
+            <img src="../../assets/images/Galeria/galeria10.jpeg" alt="Galería 10" class="gallery-image-compact" loading="lazy" />
+          </div>
+          <div class="gallery-item-compact">
+            <img src="../../assets/images/Galeria/galeria11.jpeg" alt="Galería 11" class="gallery-image-compact" loading="lazy" />
+          </div>
+          <div class="gallery-item-compact">
+            <img src="../../assets/images/Galeria/galeria12.jpeg" alt="Galería 12" class="gallery-image-compact" loading="lazy" />
+          </div>
+          <div class="gallery-item-compact">
+            <img src="../../assets/images/Galeria/galeria13.jpeg" alt="Galería 13" class="gallery-image-compact" loading="lazy" />
+          </div>
+          <div class="gallery-item-compact">
+            <img src="../../assets/images/Galeria/galeria14.jpeg" alt="Galería 14" class="gallery-image-compact" loading="lazy" />
+          </div>
+          <div class="gallery-item-compact">
+            <img src="../../assets/images/Galeria/galeria15.jpeg" alt="Galería 15" class="gallery-image-compact" loading="lazy" />
+          </div>
+          <div class="gallery-item-compact">
+            <img src="../../assets/images/Galeria/galeria16.jpeg" alt="Galería 16" class="gallery-image-compact" loading="lazy" />
+          </div>
+          <div class="gallery-item-compact">
+            <img src="../../assets/images/Galeria/galeria17.jpeg" alt="Galería 17" class="gallery-image-compact" loading="lazy" />
+          </div>
+          <div class="gallery-item-compact">
+            <img src="../../assets/images/Galeria/galeria18.jpeg" alt="Galería 18" class="gallery-image-compact" loading="lazy" />
+          </div>
+          <div class="gallery-item-compact">
+            <img src="../../assets/images/Galeria/galeria19.jpeg" alt="Galería 19" class="gallery-image-compact" loading="lazy" />
+          </div>
+          <div class="gallery-item-compact">
+            <img src="../../assets/images/Galeria/galeria20.jpeg" alt="Galería 20" class="gallery-image-compact" loading="lazy" />
+          </div>
         </div>
       </div>
     </section>
+
   </div>
 
   <!-- Cart Drawer (Floating Cart) -->
