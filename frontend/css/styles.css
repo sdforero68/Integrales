@@ -1846,10 +1846,10 @@ button.btn-terracota:active:not(:disabled) {
 }
 
 .card-icon-circle {
-  width: 3.5rem;
-  height: 3.5rem;
-  min-width: 3.5rem;
-  min-height: 3.5rem;
+  width: 4rem;
+  height: 4rem;
+  min-width: 4rem;
+  min-height: 4rem;
   border-radius: 9999px;
   background: linear-gradient(135deg, var(--color-primary), #d4a574);
   display: flex;
@@ -1858,11 +1858,16 @@ button.btn-terracota:active:not(:disabled) {
   flex-shrink: 0;
   color: #ffffff;
   overflow: visible;
+  padding: 0.75rem;
+  box-sizing: border-box;
 }
 
 .card-icon-circle svg {
-  width: 1.75rem;
-  height: 1.75rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
 }
 
 .card-content-title {
@@ -1870,6 +1875,75 @@ button.btn-terracota:active:not(:disabled) {
   font-weight: 600;
   margin: 0 0 0.5rem 0;
   color: var(--color-tertiary);
+}
+
+/* Asegurar padding simétrico arriba y abajo para producción */
+.production-card .card-content {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+.card-content-main {
+  flex: 1;
+}
+
+.card-content-action {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  margin-left: 2rem;
+}
+
+.production-map-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1.25rem;
+  border-radius: 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, var(--color-primary) 0%, #d4a574 100%);
+  color: #ffffff;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border: 1px solid var(--color-primary);
+  box-shadow: 0 2px 8px rgba(197, 101, 53, 0.2);
+  white-space: nowrap;
+}
+
+.production-map-btn svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.production-map-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(197, 101, 53, 0.4);
+  background: linear-gradient(135deg, #b8572e 0%, #c5965c 100%);
+}
+
+.production-map-btn:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .card-content-action {
+    margin-left: 0;
+    margin-top: 1.5rem;
+    justify-content: flex-start;
+  }
+  
+  .card-content-flex {
+    flex-direction: column;
+  }
+  
+  .production-map-btn {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 .card-address {
@@ -1971,6 +2045,9 @@ button.btn-terracota:active:not(:disabled) {
   display: flex;
   flex-direction: column;
   animation-delay: var(--delay, 0s);
+  cursor: pointer;
+  color: inherit;
+  text-decoration: none;
 }
 
 .sales-point-card-modern::before {
@@ -2119,6 +2196,33 @@ button.btn-terracota:active:not(:disabled) {
 .sales-point-card-modern:hover .sales-point-badge {
   transform: translateX(4px);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.sales-point-map-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, var(--color-primary) 0%, #d4a574 100%);
+  color: #ffffff;
+  margin-top: 0.5rem;
+  transition: all 0.3s ease;
+  border: 1px solid var(--color-primary);
+}
+
+.sales-point-map-link svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.sales-point-card-modern:hover .sales-point-map-link {
+  transform: translateX(4px);
+  box-shadow: 0 4px 12px rgba(197, 101, 53, 0.3);
+  background: linear-gradient(135deg, #b8572e 0%, #c5965c 100%);
 }
 
 /* Grid de Información Adicional */
