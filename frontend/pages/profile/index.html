@@ -185,7 +185,7 @@
                 <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
               </svg>
               <p class="empty-text">Aún no tienes productos favoritos</p>
-              <a href="../../pages/catalog/index.html" class="btn btn-outline" style="margin-top: 1rem; color: var(--color-primary); background: rgba(255, 248, 240, 0.9);">
+              <a href="../catalog/index.html" class="btn-explore-catalog" style="margin-top: 1rem;">
                 Explorar Catálogo
               </a>
             </div>
@@ -209,6 +209,17 @@
             </h2>
           </div>
           <div class="card-content">
+            <!-- Info Note -->
+            <div class="order-info-note" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="12" y1="16" x2="12" y2="12"/>
+                <line x1="12" y1="8" x2="12.01" y2="8"/>
+              </svg>
+              <p class="order-info-note-text">
+                <strong>Nota importante:</strong> Al eliminar un pedido del historial, no se cancela la orden. Solo se retira de esta lista. Para ver el registro completo del pedido, revisa la confirmación que llegó a tu correo electrónico.
+              </p>
+            </div>
             <!-- Loading State -->
             <div id="loading-state" class="loading-state">
               <p class="loading-text">Cargando pedidos...</p>

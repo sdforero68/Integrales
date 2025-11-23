@@ -225,6 +225,36 @@ body {
   margin: 0;
 }
 
+/* Botón Explorar Catálogo (estilo como botones del carrito pero terracota) */
+.btn-explore-catalog {
+  display: inline-block;
+  width: 100%;
+  max-width: 300px;
+  padding: 0.75rem 2rem;
+  border-radius: 0.75rem;
+  border: none;
+  background: var(--color-primary);
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 1.125rem;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(197, 101, 53, 0.3);
+}
+
+.btn-explore-catalog:hover {
+  background: var(--color-tertiary);
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 8px 20px rgba(197, 101, 53, 0.5);
+  color: #ffffff;
+}
+
+.btn-explore-catalog:active {
+  transform: translateY(-2px) scale(1.01);
+}
+
 /* Favorites List */
 .favorites-list {
   display: flex;
@@ -315,8 +345,19 @@ body {
   transform: scale(1.1);
 }
 
+.favorite-remove-btn.active {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+
 .favorite-remove-btn.active svg {
   fill: currentColor;
+  stroke: currentColor;
+}
+
+.favorite-remove-btn.active:hover {
+  background: rgba(239, 68, 68, 0.25);
+  color: #dc2626;
 }
 
 .favorite-add-cart-btn {
@@ -357,6 +398,37 @@ body {
 }
 
 /* Order Card */
+/* Order Info Note */
+.order-info-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(135deg, rgba(197, 101, 53, 0.08) 0%, rgba(212, 165, 116, 0.08) 100%);
+  border: 1px solid rgba(197, 101, 53, 0.2);
+  border-radius: 0.75rem;
+  color: var(--color-tertiary);
+}
+
+.order-info-note svg {
+  flex-shrink: 0;
+  margin-top: 0.125rem;
+  color: var(--color-primary);
+}
+
+.order-info-note-text {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  margin: 0;
+  color: var(--color-tertiary);
+}
+
+.order-info-note-text strong {
+  font-weight: 600;
+  color: var(--color-tertiary);
+}
+
 .order-card {
   border: 1px solid #e2e8f0;
   border-radius: 0.75rem;
@@ -373,6 +445,41 @@ body {
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 1rem;
+}
+
+.order-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.order-delete-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  background: transparent;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #6b7280;
+}
+
+.order-delete-btn:hover {
+  background: #fee2e2;
+  border-color: #ef4444;
+  color: #ef4444;
+  transform: scale(1.05);
+}
+
+.order-delete-btn:active {
+  transform: scale(0.95);
+}
+
+.order-delete-btn svg {
+  width: 18px;
+  height: 18px;
 }
 
 .order-info {

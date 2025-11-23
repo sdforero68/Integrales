@@ -46,7 +46,7 @@ export function toast(messageOrOptions = {}, options = {}) {
     title,
     description,
     type = 'default',
-    duration = 4000,
+    duration = 2000,
     position = 'top-right',
     action,
     actionLabel,

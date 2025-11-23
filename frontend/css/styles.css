@@ -7623,18 +7623,18 @@ input[type="radio"].radio-group-item:not(:checked) ~ .radio-group-indicator {
 }
 
 .toaster[data-position="top-left"] {
-  top: 1rem;
+  top: 120px; /* Debajo del navbar */
   left: 1rem;
 }
 
 .toaster[data-position="top-center"] {
-  top: 1rem;
+  top: 120px; /* Debajo del navbar */
   left: 50%;
   transform: translateX(-50%);
 }
 
 .toaster[data-position="top-right"] {
-  top: 1rem;
+  top: 120px; /* Debajo del navbar */
   right: 1rem;
 }
 

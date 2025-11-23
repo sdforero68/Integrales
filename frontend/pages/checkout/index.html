@@ -163,11 +163,11 @@
                     <input type="radio" name="delivery" value="pickup" id="pickup" checked />
                     <div class="radio-content">
                       <div class="radio-title" style="color: var(--color-primary)">Recoger en Punto de Venta</div>
-                      <p class="radio-desc">Gratis - Sábados cada 15 días en:</p>
+                      <p class="radio-desc">Gratis - Sábados cada 8 o 15 días en:</p>
                       <ul class="radio-list">
-                        <li>• Floraria, Bogotá</li>
-                        <li>• Kennedy La Macarena, Bogotá</li>
-                        <li>• Parque Principal Fontibón, Bogotá</li>
+                        <li>• Fontibón</li>
+                        <li>• Kennedy - La Macarena</li>
+                        <li>• Floralia</li>
                       </ul>
                     </div>
                   </label>
@@ -175,7 +175,7 @@
                     <input type="radio" name="delivery" value="delivery" id="delivery" />
                     <div class="radio-content">
                       <div class="radio-title">Envío a Domicilio</div>
-                      <p class="radio-desc" id="delivery-fee-desc">$5.000 - Según tu ubicación</p>
+                      <p class="radio-desc" id="delivery-fee-desc">$5.000 - Disponible solo en Zipaquirá y Cogua</p>
                     </div>
                   </label>
                 </div>
@@ -187,9 +187,12 @@
                       id="checkout-address"
                       required
                       class="form-textarea"
-                      placeholder="Ingresa tu dirección completa"
+                      placeholder="Ingresa tu dirección completa en Zipaquirá o Cogua"
                       rows="3"
                     ></textarea>
+                    <p class="form-hint" style="font-size: 0.875rem; color: #6b7280; margin-top: 0.5rem;">
+                      ⚠️ Solo realizamos envíos a domicilio en Zipaquirá y Cogua
+                    </p>
                   </div>
                 </div>
               </div>
@@ -202,7 +205,7 @@
                 <div class="radio-group">
                   <div id="cash-option" class="radio-option-group">
                     <label class="radio-option">
-                      <input type="radio" name="payment" value="cash" id="cash" />
+                      <input type="radio" name="payment" value="cash" id="cash" checked />
                       <div class="radio-content">
                         <div class="radio-title">Pago Contra Entrega (solo en punto de venta)</div>
                       </div>
@@ -268,7 +271,8 @@
                 type="submit"
                 id="checkout-submit"
                 class="btn-submit"
-                style="background-color: var(--color-accent)"
+                style="background-color: var(--color-accent); opacity: 0.6; cursor: not-allowed;"
+                disabled
               >
                 <span class="btn-text">Confirmar Pedido</span>
                 <span class="btn-loading" hidden>Procesando...</span>

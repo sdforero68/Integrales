@@ -158,13 +158,19 @@ function handleDeliveryChange() {
       const pseRadio = document.getElementById('pse');
       if (pseRadio) pseRadio.checked = true;
     }
+    // Hacer el campo de dirección requerido
+    if (addressInput) addressInput.required = true;
   } else {
     if (addressSection) addressSection.hidden = true;
     if (cashOption) cashOption.hidden = false;
-    if (addressInput) addressInput.value = '';
+    if (addressInput) {
+      addressInput.value = '';
+      addressInput.required = false;
+    }
   }
   
   updateTotals();
+  updateSubmitButton(); // Actualizar estado del botón
 }
 
 // Función para llenar datos del usuario si está logueado
@@ -178,6 +184,66 @@ function fillUserData() {
     if (nameInput && user.user_metadata?.name) nameInput.value = user.user_metadata.name;
     if (emailInput && user.email) emailInput.value = user.email;
     if (phoneInput && user.user_metadata?.phone) phoneInput.value = user.user_metadata.phone;
+  }
+}
+
+// Función para validar ciudad en la dirección
+function validateCity(address) {
+  if (!address) return false;
+  const addressLower = address.toLowerCase();
+  return addressLower.includes('zipaquira') || 
+         addressLower.includes('zipaquirá') || 
+         addressLower.includes('cogua');
+}
+
+// Función para validar todos los campos obligatorios
+function validateForm() {
+  const nameInput = document.getElementById('checkout-name');
+  const emailInput = document.getElementById('checkout-email');
+  const phoneInput = document.getElementById('checkout-phone');
+  const addressInput = document.getElementById('checkout-address');
+  const deliveryMethod = document.querySelector('input[name="delivery"]:checked')?.value;
+  const paymentMethod = document.querySelector('input[name="payment"]:checked')?.value;
+  
+  // Validar campos básicos
+  const nameValid = nameInput && nameInput.value.trim() !== '';
+  const emailValid = emailInput && emailInput.value.trim() !== '' && emailInput.validity.valid;
+  const phoneValid = phoneInput && phoneInput.value.trim() !== '';
+  
+  // Validar dirección si es necesario
+  let addressValid = true;
+  if (deliveryMethod === 'delivery') {
+    const addressValue = addressInput ? addressInput.value.trim() : '';
+    addressValid = addressValue !== '' && validateCity(addressValue);
+    
+    // Mostrar mensaje de error si la ciudad no es válida
+    if (addressInput && addressValue !== '' && !validateCity(addressValue)) {
+      addressInput.setCustomValidity('Los envíos a domicilio solo están disponibles en Zipaquirá y Cogua');
+    } else if (addressInput) {
+      addressInput.setCustomValidity('');
+    }
+  }
+  
+  // Validar método de pago
+  const paymentValid = !!paymentMethod;
+  
+  return nameValid && emailValid && phoneValid && addressValid && paymentValid;
+}
+
+// Función para actualizar el estado del botón de submit
+function updateSubmitButton() {
+  const submitBtn = document.getElementById('checkout-submit');
+  if (!submitBtn) return;
+  
+  const isValid = validateForm();
+  submitBtn.disabled = !isValid;
+  
+  if (!isValid) {
+    submitBtn.style.opacity = '0.6';
+    submitBtn.style.cursor = 'not-allowed';
+  } else {
+    submitBtn.style.opacity = '1';
+    submitBtn.style.cursor = 'pointer';
   }
 }
 
@@ -236,6 +302,20 @@ function handleSubmit(e) {
     return;
   }
   
+  // Validar que la dirección sea en Zipaquirá o Cogua
+  if (deliveryMethod === 'delivery' && customerInfo.address.trim()) {
+    if (!validateCity(customerInfo.address)) {
+      if (errorEl) {
+        errorEl.textContent = 'Los envíos a domicilio solo están disponibles en Zipaquirá y Cogua';
+        errorEl.hidden = false;
+      }
+      submitBtn.disabled = false;
+      btnText.hidden = false;
+      if (btnLoading) btnLoading.hidden = true;
+      return;
+    }
+  }
+  
   // Deshabilitar botón
   submitBtn.disabled = true;
   btnText.hidden = true;
@@ -275,9 +355,11 @@ function handleSubmit(e) {
       // Limpiar carrito
       saveCart([]);
       
-      // Redirigir a página de éxito o perfil
-      alert(`¡Pedido confirmado! Tu número de pedido es: ${savedOrder.id.slice(-8)}`);
-      window.location.href = '../profile/index.html';
+      // Guardar el ID del pedido en sessionStorage para la página de éxito
+      sessionStorage.setItem('lastOrderId', savedOrder.id);
+      
+      // Redirigir a página de confirmación
+      window.location.href = `../order-success/index.html?orderId=${savedOrder.id}`;
     } catch (error) {
       console.error('Error al procesar pedido:', error);
       if (errorEl) {
@@ -328,8 +410,35 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('input[name="payment"]').forEach((radio) => {
     radio.addEventListener('change', () => {
       updateTotals();
+      updateSubmitButton(); // Actualizar estado del botón
     });
   });
+  
+  // Event listeners para validación en tiempo real de campos
+  const nameInput = document.getElementById('checkout-name');
+  const emailInput = document.getElementById('checkout-email');
+  const phoneInput = document.getElementById('checkout-phone');
+  const addressInput = document.getElementById('checkout-address');
+  
+  if (nameInput) {
+    nameInput.addEventListener('input', updateSubmitButton);
+    nameInput.addEventListener('blur', updateSubmitButton);
+  }
+  
+  if (emailInput) {
+    emailInput.addEventListener('input', updateSubmitButton);
+    emailInput.addEventListener('blur', updateSubmitButton);
+  }
+  
+  if (phoneInput) {
+    phoneInput.addEventListener('input', updateSubmitButton);
+    phoneInput.addEventListener('blur', updateSubmitButton);
+  }
+  
+  if (addressInput) {
+    addressInput.addEventListener('input', updateSubmitButton);
+    addressInput.addEventListener('blur', updateSubmitButton);
+  }
   
   // Event listener para el formulario
   const form = document.getElementById('checkout-form');
@@ -339,5 +448,8 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // Inicializar estado del formulario
   handleDeliveryChange();
+  
+  // Verificar estado inicial del botón
+  updateSubmitButton();
 });
 
