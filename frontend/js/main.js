@@ -249,7 +249,9 @@ document.addEventListener('DOMContentLoaded', () => {
         return getCategoryImage(product?.category);
       }
 
-      const normalized = imagePath.startsWith('products/')
+      // Si la ruta ya incluye un directorio (como Catálogo/ o products/), usar directamente
+      const hasDirectory = imagePath.includes('/');
+      const normalized = hasDirectory
         ? imagePath
         : `products/${imagePath}`;
 
@@ -415,6 +417,12 @@ document.addEventListener('DOMContentLoaded', () => {
           (p.ingredients || '').toLowerCase().includes(q)
         );
       }
+      // Ordenar alfabéticamente por nombre
+      list.sort((a, b) => {
+        const nameA = (a.name || '').toLowerCase().trim();
+        const nameB = (b.name || '').toLowerCase().trim();
+        return nameA.localeCompare(nameB, 'es', { sensitivity: 'base' });
+      });
       return list;
     };
 
