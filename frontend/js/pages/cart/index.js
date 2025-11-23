@@ -13,6 +13,32 @@ function formatPrice(price) {
 
 // La función updateCartBadge ahora se importa de sync.js
 
+// Función para resolver la ruta de imagen del producto
+function resolveProductImagePath(item) {
+  if (!item?.image) {
+    return '../../assets/images/placeholder.svg';
+  }
+
+  // Si es una URL completa, retornarla directamente
+  if (typeof item.image === 'string' && item.image.startsWith('http')) {
+    return item.image;
+  }
+
+  // Resolver la ruta (siempre desde pages/cart/)
+  const imageBase = '../../assets/images';
+  
+  // Si la imagen ya tiene la ruta completa o relativa, usarla
+  const imagePath = typeof item.image === 'string' ? item.image : '';
+  
+  // Si la ruta incluye un directorio (como Catálogo/), construir la ruta completa
+  if (imagePath.includes('/')) {
+    return `${imageBase}/${imagePath}`;
+  }
+  
+  // Si no tiene directorio, asumir que está en products/
+  return `${imageBase}/products/${imagePath}`;
+}
+
 // Función para renderizar items del carrito
 function renderCartItems() {
   const cartItemsList = document.getElementById('cart-items-list');
@@ -57,10 +83,13 @@ function renderCartItems() {
   cartItemsList.innerHTML = '';
   
   cart.forEach((item) => {
+    // Resolver la ruta de imagen correctamente
+    const productImage = resolveProductImagePath(item);
+    
     const cartItemEl = document.createElement('div');
     cartItemEl.className = 'cart-item';
     cartItemEl.innerHTML = `
-      <img src="${item.image || ''}" alt="${item.name}" class="cart-item-image" />
+      <img src="${productImage}" alt="${item.name}" class="cart-item-image" onerror="this.src='../../assets/images/placeholder.svg'" />
       <div class="cart-item-details">
         <h3 class="cart-item-name">${item.name}</h3>
         <p class="cart-item-price">${formatPrice(item.price)} c/u</p>
