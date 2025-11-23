@@ -1,0 +1,22 @@
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# En todas las carpetas
+**/.DS_Store
+frontend/**/.DS_Store
+backend/**/.DS_Store
+
+# Archivos específicos
+frontend/.DS_Store
+frontend/js/.DS_Store
+frontend/assets/.DS_Store
+frontend/assets/images/.DS_Store
+frontend/assets/images/Catálogo/.DS_Store
+backend/.DS_Store
+
