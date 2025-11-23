@@ -557,6 +557,104 @@
   position: relative;
 }
 
+/* Galería de Fotos - Collage Compacto */
+.gallery-section {
+  overflow: hidden;
+}
+
+.gallery-container {
+  position: relative;
+}
+
+.gallery-grid-compact {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+  padding: 1rem 0;
+}
+
+.gallery-item-compact {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: #fff8f0;
+  aspect-ratio: 1;
+  border: 2px solid transparent;
+}
+
+.gallery-item-compact::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(197, 101, 53, 0.15) 0%, rgba(212, 165, 116, 0.15) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+  border-radius: 0.75rem;
+}
+
+.gallery-item-compact:hover::before {
+  opacity: 1;
+}
+
+.gallery-item-compact:hover {
+  transform: translateY(-8px) scale(1.05);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+  border-color: var(--color-primary);
+  z-index: 10;
+}
+
+.gallery-image-compact {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.gallery-item-compact:hover .gallery-image-compact {
+  transform: scale(1.1);
+}
+
+/* Diseño responsive */
+@media (max-width: 1200px) {
+  .gallery-grid-compact {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.875rem;
+  }
+}
+
+@media (max-width: 968px) {
+  .gallery-grid-compact {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .gallery-grid-compact {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.625rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .gallery-grid-compact {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
+  
+  .gallery-item-compact {
+    border-radius: 0.5rem;
+  }
+}
+
 /* Animaciones */
 @keyframes float {
   0%, 100% {
