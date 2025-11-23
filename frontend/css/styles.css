@@ -8401,7 +8401,7 @@ input[type="radio"].radio-group-item:not(:checked) ~ .radio-group-indicator {
 
 .carousel-pagination {
   position: absolute;
-  bottom: -2.5rem;
+  bottom: -1rem;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
