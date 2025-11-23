@@ -65,8 +65,8 @@
 }
 
 .hero-description {
-  font-size: 1.125rem;
-  line-height: 1.8;
+  font-size: 1rem; /* 16px - Estándar para body text */
+  line-height: 1.6;
 }
 
 .quote-highlight {
@@ -343,8 +343,8 @@
 }
 
 .commitment-text {
-  font-size: 1.125rem;
-  line-height: 1.8;
+  font-size: 1rem; /* 16px - Estándar para body text */
+  line-height: 1.6;
 }
 
 /* Sección Ingredientes - Matriz 8x2 */
@@ -873,8 +873,8 @@
 }
 
 .info-card-text {
-  font-size: 1.125rem;
-  line-height: 1.8;
+  font-size: 1rem; /* 16px - Estándar para body text */
+  line-height: 1.6;
   color: var(--color-tertiary);
   margin: 0;
 }
@@ -924,7 +924,7 @@
   }
   
   .info-card-text {
-    font-size: 1rem;
+    font-size: 1rem; /* Mantener estándar en móvil */
   }
   
   .commitment-title {

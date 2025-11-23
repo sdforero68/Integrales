@@ -191,11 +191,11 @@
 }
 
 .empty-text {
-  font-size: 1.25rem;
+  font-size: 1rem; /* 16px - Estándar para body text */
+  line-height: 1.6;
   font-weight: 500;
   color: var(--color-tertiary);
   margin: 0;
-  line-height: 1.4;
 }
 
 .empty-cart-summary {
@@ -368,14 +368,16 @@
 }
 
 .cart-item-name {
-  font-size: 1.25rem;
+  font-size: 1rem; /* 16px - Estándar para body text */
+  line-height: 1.6;
   font-weight: 600;
   color: var(--color-tertiary);
   margin: 0;
 }
 
 .cart-item-price {
-  font-size: 1.125rem;
+  font-size: 1rem; /* 16px - Estándar para body text */
+  line-height: 1.6;
   color: var(--color-primary);
   font-weight: 700;
 }

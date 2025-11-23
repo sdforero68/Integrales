@@ -776,8 +776,18 @@ a {
   margin-right: auto;
 }
 .text-xl {
-  font-size: 1.25rem; /* 20px - Consistente con h4 */
+  font-size: 1.25rem; /* 20px - Para subtítulos, no body text */
   line-height: 1.5;
+}
+
+.text-lg {
+  font-size: 1rem; /* 16px - Estándar para body text */
+  line-height: 1.6;
+}
+
+.text-base {
+  font-size: 1rem; /* 16px - Estándar para body text */
+  line-height: 1.6;
 }
 .relative {
   position: relative;
@@ -1234,8 +1244,8 @@ button.btn-terracota:active:not(:disabled) {
 
 .product-desc {
   color: #64748b;
-  font-size: 0.95rem;
-  line-height: 1.5;
+  font-size: 1rem; /* 16px - Estándar para body text */
+  line-height: 1.6;
   margin: 0;
   flex: 1;
   display: -webkit-box;
@@ -1863,13 +1873,13 @@ button.btn-terracota:active:not(:disabled) {
 }
 
 .card-address {
-  font-size: 1.25rem;
+  font-size: 1rem; /* 16px - Estándar para body text */
   margin: 0 0 0.25rem 0;
   color: var(--text);
 }
 
 .card-location {
-  font-size: 1.125rem;
+  font-size: 1rem; /* 16px - Estándar para body text */
   color: #4b5563;
   margin: 0 0 0.75rem 0;
 }
@@ -1877,6 +1887,7 @@ button.btn-terracota:active:not(:disabled) {
 .card-description {
   color: #4b5563;
   margin: 0;
+  font-size: 1rem; /* 16px - Estándar para body text */
   line-height: 1.6;
 }
 
@@ -1917,13 +1928,15 @@ button.btn-terracota:active:not(:disabled) {
 .market-location-text {
   color: #374151;
   margin: 0;
-  line-height: 1.5;
+  font-size: 1rem; /* 16px - Estándar para body text */
+  line-height: 1.6;
 }
 
 .market-description-text {
   color: #4b5563;
   margin: 0;
-  line-height: 1.5;
+  font-size: 1rem; /* 16px - Estándar para body text */
+  line-height: 1.6;
 }
 
 /* Sección Puntos de Venta - Diseño Moderno */
@@ -2218,8 +2231,8 @@ button.btn-terracota:active:not(:disabled) {
 }
 
 .info-card-text {
-  font-size: 1.125rem;
-  line-height: 1.8;
+  font-size: 1rem; /* 16px - Estándar para body text */
+  line-height: 1.6;
   color: var(--color-tertiary);
   margin: 0;
 }
@@ -2264,7 +2277,7 @@ button.btn-terracota:active:not(:disabled) {
   }
   
   .info-card-text {
-    font-size: 1rem;
+    font-size: 1rem; /* Mantener estándar en móvil */
   }
 }
 
@@ -2278,13 +2291,14 @@ button.btn-terracota:active:not(:disabled) {
 }
 
 .contact-box-title {
-  font-size: 1.125rem;
+  font-size: 1.125rem; /* 18px - Para títulos de sección */
   margin: 0 0 0.5rem 0;
   color: var(--color-tertiary);
 }
 
 .contact-box-text {
-  font-size: 1.25rem;
+  font-size: 1rem; /* 16px - Estándar para body text */
+  line-height: 1.6;
   margin: 0;
   color: var(--text);
 }
@@ -2417,13 +2431,15 @@ button.btn-terracota:active:not(:disabled) {
 }
 
 .contact-info-value-text {
-  font-size: 0.9rem;
+  font-size: 1rem; /* 16px - Estándar para body text */
+  line-height: 1.6;
   color: #374151;
   margin: 0 0 0.125rem 0;
 }
 
 .contact-info-detail {
-  font-size: 0.75rem;
+  font-size: 1rem; /* 16px - Estándar para body text */
+  line-height: 1.6;
   color: #4b5563;
   margin: 0;
 }
@@ -3736,7 +3752,8 @@ a.badge-variant-outline:hover {
 .card-description {
   color: #4b5563;
   margin: 0;
-  font-size: 0.875rem;
+  font-size: 1rem; /* 16px - Estándar para body text */
+  line-height: 1.6;
 }
 
 .card-action {
