@@ -254,6 +254,7 @@ async function renderFavorites(favorites) {
   const { products } = await import('../../products.js');
   const { removeFromFavorites } = await import('../../favorites.js');
   const { addToCart } = await import('../../sync.js');
+  const { resolveProductImage } = await import('../../main.js');
   
   favorites.forEach((favorite) => {
     // Buscar el producto completo en la lista de productos
@@ -262,10 +263,14 @@ async function renderFavorites(favorites) {
     const favoriteCard = document.createElement('div');
     favoriteCard.className = 'favorite-item';
     
-    const productImage = fullProduct.image || `../../assets/images/products/${favorite.id}.jpg`;
+    // Usar resolveProductImage para obtener la ruta correcta de la imagen
+    const productImage = resolveProductImage(fullProduct);
+    const placeholderPath = window.location.pathname.includes('/pages/') 
+      ? '../../assets/images/placeholder.svg'
+      : './assets/images/placeholder.svg';
     
     favoriteCard.innerHTML = `
-      <img src="${productImage}" alt="${favorite.name}" class="favorite-item-image" onerror="this.onerror=null;this.src='../../assets/images/placeholder.svg'" />
+      <img src="${productImage}" alt="${favorite.name}" class="favorite-item-image" onerror="this.onerror=null;this.src='${placeholderPath}'" />
       <div class="favorite-item-details">
         <h3 class="favorite-item-name">${favorite.name}</h3>
         <p class="favorite-item-description">${favorite.description || ''}</p>

@@ -21,6 +21,63 @@ function getCartItemsCount() {
   return cart.reduce((total, item) => total + (item.quantity || 1), 0);
 }
 
+// Función para resolver rutas de assets (usable fuera de DOMContentLoaded)
+const resolveAssetPath = (relativePath) => {
+  const base = window.location.pathname.includes('/pages/')
+    ? '../../assets/images/'
+    : './assets/images/';
+  return new URL(`${base}${relativePath}`, window.location.href).href;
+};
+
+const placeholderImage = resolveAssetPath('placeholder.svg');
+
+// Función para obtener imagen por categoría (exportable)
+const getCategoryImage = (category) => {
+  const categoryMap = {
+    'panaderia': 'Categorias/Panaderia.jpg',
+    'amasijos': 'Categorias/Amasijos.jpg',
+    'galleteria': 'Categorias/Galleteria.jpg',
+    'granola': 'Categorias/Granola.jpg',
+    'frutos-secos': 'Categorias/FrutosSecos.jpg',
+    'envasados': 'Categorias/Envasados.jpg',
+    // Compatibilidad con IDs antiguos
+    'bakery': 'Categorias/Panaderia.jpg',
+    'cookies': 'Categorias/Galleteria.jpg',
+    'nuts': 'Categorias/FrutosSecos.jpg',
+    'jarred': 'Categorias/Envasados.jpg'
+  };
+
+  const relativePath = categoryMap[category];
+  return relativePath ? resolveAssetPath(relativePath) : placeholderImage;
+};
+
+// Función para resolver imagen de producto (exportable)
+export const resolveProductImage = (product) => {
+  if (!product?.image) {
+    if (product?.id) {
+      return resolveAssetPath(`Catálogo/${product.id}.jpg`);
+    }
+    return getCategoryImage(product?.category);
+  }
+
+  if (typeof product.image === 'string' && product.image.startsWith('http')) {
+    return product.image;
+  }
+
+  const imagePath = typeof product.image === 'string' ? product.image : '';
+  if (!imagePath) {
+    return getCategoryImage(product?.category);
+  }
+
+  // Si la ruta ya incluye un directorio (como Catálogo/ o products/), usar directamente
+  const hasDirectory = imagePath.includes('/');
+  const normalized = hasDirectory
+    ? imagePath
+    : `products/${imagePath}`;
+
+  return resolveAssetPath(normalized);
+};
+
 // Exportar funciones del carrito para uso en otros módulos
 export { getCart, saveCart, getCartItemsCount, CART_STORAGE_KEY };
 
@@ -178,14 +235,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const clearBtn = document.getElementById('catalog-clear');
 
   if (gridEl && filtersEl) {
-    const resolveAssetPath = (relativePath) => {
-      const base = window.location.pathname.includes('/pages/')
-        ? '../../assets/images/'
-        : './assets/images/';
-      return new URL(`${base}${relativePath}`, window.location.href).href;
-    };
-    const placeholderImage = resolveAssetPath('placeholder.svg');
-
+    // Usar la función exportada resolveProductImage (ya está disponible fuera del DOMContentLoaded)
+    
     // Leer parámetro de categoría de la URL
     const urlParams = new URLSearchParams(window.location.search);
     const categoryParam = urlParams.get('category');
@@ -211,52 +262,6 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const formatCurrency = (n) => new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(n);
-    
-    // Función para obtener imagen por categoría
-    const getCategoryImage = (category) => {
-      const categoryMap = {
-        'panaderia': 'Categorias/Panaderia.jpg',
-        'amasijos': 'Categorias/Amasijos.jpg',
-        'galleteria': 'Categorias/Galleteria.jpg',
-        'granola': 'Categorias/Granola.jpg',
-        'frutos-secos': 'Categorias/FrutosSecos.jpg',
-        'envasados': 'Categorias/Envasados.jpg',
-        // Compatibilidad con IDs antiguos
-        'bakery': 'Categorias/Panaderia.jpg',
-        'cookies': 'Categorias/Galleteria.jpg',
-        'nuts': 'Categorias/FrutosSecos.jpg',
-        'jarred': 'Categorias/Envasados.jpg'
-      };
-
-      const relativePath = categoryMap[category];
-      return relativePath ? resolveAssetPath(relativePath) : placeholderImage;
-    };
-
-    const resolveProductImage = (product) => {
-      if (!product?.image) {
-        if (product?.id) {
-          return resolveAssetPath(`products/${product.id}.jpg`);
-        }
-        return getCategoryImage(product?.category);
-      }
-
-      if (typeof product.image === 'string' && product.image.startsWith('http')) {
-        return product.image;
-      }
-
-      const imagePath = typeof product.image === 'string' ? product.image : '';
-      if (!imagePath) {
-        return getCategoryImage(product?.category);
-      }
-
-      // Si la ruta ya incluye un directorio (como Catálogo/ o products/), usar directamente
-      const hasDirectory = imagePath.includes('/');
-      const normalized = hasDirectory
-        ? imagePath
-        : `products/${imagePath}`;
-
-      return resolveAssetPath(normalized);
-    };
     
     // Función para manejar agregar al carrito (usando sync.js)
     const handleAddToCart = async (product) => {
