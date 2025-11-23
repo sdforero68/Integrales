@@ -122,10 +122,10 @@
             <h2 style="color: var(--color-tertiary); margin-bottom: 1rem; font-size: 1.5rem;">No has iniciado sesión</h2>
             <p style="color: var(--color-tertiary); margin-bottom: 2rem; opacity: 0.8;">Para acceder a tu perfil, necesitas iniciar sesión o crear una cuenta.</p>
             <div style="display: flex; flex-direction: column; gap: 1rem; align-items: center; justify-content: center;">
-              <a href="../../index.html" class="btn btn-outline" style="color: var(--color-primary); background: rgba(255, 248, 240, 0.9);">
+              <a href="../../index.html" class="profile-action-btn">
                 Volver al Inicio
               </a>
-              <a href="../login/index.html" class="btn gradient-bg-primary text-white">
+              <a href="../login/index.html" class="profile-action-btn">
                 Iniciar Sesión
               </a>
             </div>
@@ -233,6 +233,31 @@
     </div>
   </div>
 
+  <!-- Cart Drawer -->
+  <div id="cart-drawer" class="cart-drawer" hidden>
+    <div class="cart-drawer-overlay" id="cart-drawer-overlay"></div>
+    <div class="cart-drawer-content">
+      <div class="cart-drawer-header">
+        <h2 class="cart-drawer-title">Tu carrito</h2>
+        <button class="cart-drawer-close" id="cart-drawer-close" aria-label="Cerrar carrito">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <div class="cart-drawer-body" id="cart-drawer-body">
+        <!-- El contenido se llenará dinámicamente -->
+      </div>
+      <div class="cart-drawer-footer" id="cart-drawer-footer">
+        <!-- El footer se llenará dinámicamente -->
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="../../js/cart-menu.js"></script>
+  <script type="module" src="../../js/cart-drawer.js"></script>
+  <script type="module" src="../../js/user-menu.js"></script>
   <script type="module" src="../../js/sync.js"></script>
   <script type="module" src="../../js/pages/profile/index.js"></script>
   <script type="module" src="../../js/main.js"></script>

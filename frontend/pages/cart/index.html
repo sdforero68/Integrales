@@ -58,7 +58,7 @@
               </div>
             </div>
             <div class="user-menu-divider"></div>
-            <a href="../profile/index.html" class="user-menu-item">
+            <a href="../profile/index.html" class="user-menu-item" id="user-menu-profile">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
                 <circle cx="12" cy="7" r="4"/>
@@ -73,6 +73,24 @@
               </svg>
               <span>Cerrar Sesión</span>
             </button>
+            <!-- Opciones para usuarios no logueados -->
+            <a href="../login/index.html" class="user-menu-item" id="user-menu-login" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+                <polyline points="10 17 15 12 10 7"/>
+                <line x1="15" y1="12" x2="3" y2="12"/>
+              </svg>
+              <span>Iniciar Sesión</span>
+            </a>
+            <a href="../login/index.html?register=true" class="user-menu-item" id="user-menu-register" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <line x1="19" y1="8" x2="19" y2="14"/>
+                <line x1="22" y1="11" x2="16" y2="11"/>
+              </svg>
+              <span>Registrarse</span>
+            </a>
           </div>
         </div>
       </div>
@@ -205,6 +223,31 @@
     </div>
   </div>
 
+  <!-- Cart Drawer -->
+  <div id="cart-drawer" class="cart-drawer" hidden>
+    <div class="cart-drawer-overlay" id="cart-drawer-overlay"></div>
+    <div class="cart-drawer-content">
+      <div class="cart-drawer-header">
+        <h2 class="cart-drawer-title">Tu carrito</h2>
+        <button class="cart-drawer-close" id="cart-drawer-close" aria-label="Cerrar carrito">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <div class="cart-drawer-body" id="cart-drawer-body">
+        <!-- El contenido se llenará dinámicamente -->
+      </div>
+      <div class="cart-drawer-footer" id="cart-drawer-footer">
+        <!-- El footer se llenará dinámicamente -->
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="../../js/cart-menu.js"></script>
+  <script type="module" src="../../js/cart-drawer.js"></script>
+  <script type="module" src="../../js/user-menu.js"></script>
   <script type="module" src="../../js/sync.js"></script>
   <script type="module" src="../../js/main.js"></script>
   <script type="module" src="../../js/animations.js"></script>

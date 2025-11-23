@@ -42,7 +42,8 @@ export const products = [
     price: 12000,
     description: 'Pan artesanal con queso y cuajada incorporados en la mezcla, tamaño grande 5 unds.',
     ingredients: 'Harina integral, mantequilla, miel de caña, queso, quinua, yacón y linaza',
-    benefits: 'Rico en proteínas y fibra, no contiene levadura.'
+    benefits: 'Rico en proteínas y fibra, no contiene levadura.',
+    image: 'Catálogo/CuajadaQuesoGrande.jpg'
   },
   {
     id: 'pan-queso-pequeno',
@@ -51,7 +52,8 @@ export const products = [
     price: 10000,
     description: 'Pan artesanal con queso y cuajada incorporados en la mezcla, tamaño pequeño 10 unds.',
     ingredients: 'Harina integral, mantequilla, miel de caña, queso, quinua, yacón y linaza',
-    benefits: 'Rico en proteínas y fibra, no contiene levadura.'
+    benefits: 'Rico en proteínas y fibra, no contiene levadura.',
+    image: 'Catálogo/CuajadaQuesoPeque.jpg'
   },
   {
     id: 'pan-maiz-grande',
@@ -60,7 +62,8 @@ export const products = [
     price: 12000,
     description: 'Pan artesanal de maíz, con queso y cuajada, tamaño grande 5 unds.',
     ingredients: 'Harina de maíz, mantequilla, miel de caña, queso, quinua, yacón y linaza',
-    benefits: 'Sin gluten, rico en fibra'
+    benefits: 'Sin gluten, rico en fibra',
+    image: 'Catálogo/QuesoMaizGrande.jpg'
   },
   {
     id: 'pan-maiz-pequeno',
@@ -69,7 +72,8 @@ export const products = [
     price: 7000,
     description: 'Pan artesanal de maíz, con queso y cuajada, tamaño pequeño 6 unds.',
     ingredients: 'Harina de maíz, mantequilla, miel de caña, queso, quinua, yacón y linaza',
-    benefits: 'Sin gluten, rico en fibra'
+    benefits: 'Sin gluten, rico en fibra',
+    image: 'Catálogo/QuesoMaizPeque.jpg'
   },
   {
     id: 'masa-madre-centeno',
@@ -78,7 +82,8 @@ export const products = [
     price: 16000,
     description: 'Pan de masa madre (proceso de fermentación natural) con harina de centeno',
     ingredients: 'Harina de centeno, masa madre natural y nueces',
-    benefits: 'Digestión lenta, rico en minerales, libre de gluten, grasa, huevo, levadura y dulce.'
+    benefits: 'Digestión lenta, rico en minerales, libre de gluten, grasa, huevo, levadura y dulce.',
+    image: 'Catálogo/AncestralCenteno.jpg'
   },
   {
     id: 'masa-madre-ancestral-grande',
@@ -87,7 +92,8 @@ export const products = [
     price: 20000,
     description: 'Pan de masa madre con harinas ancestrales, tamaño grande',
     ingredients: 'Quinua, amaranto, sagú, masa madre',
-    benefits: 'Superalimento, alto en proteínas'
+    benefits: 'Superalimento, alto en proteínas',
+    image: 'Catálogo/AncestralGrande.jpg'
   },
   {
     id: 'masa-madre-ancestral-pequeno',
@@ -96,7 +102,8 @@ export const products = [
     price: 14000,
     description: 'Pan de masa madre con harinas ancestrales, tamaño pequeño',
     ingredients: 'Quinua, amaranto, sagú, masa madre',
-    benefits: 'Superalimento, alto en proteínas'
+    benefits: 'Superalimento, alto en proteínas',
+    image: 'Catálogo/AncestralPeque.jpg'
   },
   {
     id: 'paneton-grande',
@@ -105,7 +112,8 @@ export const products = [
     price: 20000,
     description: 'Panetón artesanal grande',
     ingredients: 'Harinas integrales, frutos secos, especias',
-    benefits: 'Endulzado naturalmente'
+    benefits: 'Endulzado naturalmente',
+    image: 'Catálogo/PanetónGrande.jpg'
   },
   {
     id: 'paneton-mediano',
@@ -114,7 +122,8 @@ export const products = [
     price: 14000,
     description: 'Panetón artesanal mediano',
     ingredients: 'Harinas integrales, frutos secos, especias',
-    benefits: 'Endulzado naturalmente'
+    benefits: 'Endulzado naturalmente',
+    image: 'Catálogo/PanetónMediano.jpg'
   },
   {
     id: 'paneton-mini',
@@ -123,7 +132,8 @@ export const products = [
     price: 6000,
     description: 'Panetón artesanal mini',
     ingredients: 'Harinas integrales, frutos secos, especias',
-    benefits: 'Endulzado naturalmente'
+    benefits: 'Endulzado naturalmente',
+    image: 'Catálogo/PanetónPeque.jpg'
   },
   {
     id: 'relleno-surtido',
@@ -132,7 +142,8 @@ export const products = [
     price: 16000,
     description: 'Pan integral con relleno surtido',
     ingredients: 'Harina integral, rellenos variados',
-    benefits: 'Versátil y nutritivo'
+    benefits: 'Versátil y nutritivo',
+    image: 'Catálogo/RellenoSurtido.jpg'
   },
   {
     id: 'relleno-cacao',
@@ -141,7 +152,8 @@ export const products = [
     price: 18000,
     description: 'Pan integral con relleno de cacao',
     ingredients: 'Harina integral, cacao puro',
-    benefits: 'Antioxidantes del cacao'
+    benefits: 'Antioxidantes del cacao',
+    image: 'Catálogo/RellenoCacao.jpg'
   },
   {
     id: 'mogollas',
@@ -150,7 +162,8 @@ export const products = [
     price: 10000,
     description: 'Mogollas artesanales integrales',
     ingredients: 'Harina integral, masa madre',
-    benefits: 'Tradicional y saludable'
+    benefits: 'Tradicional y saludable',
+    image: 'Catálogo/Mogollas.jpg'
   },
   {
     id: 'roscones',
@@ -159,100 +172,11 @@ export const products = [
     price: 6000,
     description: 'Roscones integrales artesanales',
     ingredients: 'Harina integral, especias',
-    benefits: 'Crujientes y nutritivos'
-  },
-  {
-    id: 'chicharronas',
-    name: 'Chicharronas',
-    category: 'panaderia',
-    price: 10000,
-    description: 'Chicharronas tradicionales',
-    ingredients: 'Harina de trigo integral',
-    benefits: 'Receta tradicional'
-  },
-  {
-    id: 'guatila-oregano',
-    name: 'Pan de Guatila y Orégano',
-    category: 'panaderia',
-    price: 12000,
-    description: 'Pan especial con guatila y orégano',
-    ingredients: 'Guatila, orégano, harina integral',
-    benefits: 'Rico en vitaminas'
-  },
-  {
-    id: 'balu',
-    name: 'Balú',
-    category: 'panaderia',
-    price: 12000,
-    description: 'Pan artesanal Balú',
-    ingredients: 'Harinas integrales especiales',
-    benefits: 'Receta única'
+    benefits: 'Crujientes y nutritivos',
+    image: 'Catálogo/Roscones.jpg'
   },
 
   // AMASIJOS
-  {
-    id: 'arepas-boyacenses',
-    name: 'Arepas Boyacenses',
-    category: 'amasijos',
-    price: 16000,
-    description: 'Arepas tradicionales boyacenses',
-    ingredients: 'Maíz, queso',
-    benefits: 'Tradición colombiana'
-  },
-  {
-    id: 'almojabanas',
-    name: 'Almojábanas',
-    category: 'amasijos',
-    price: 16000,
-    description: 'Almojábanas artesanales',
-    ingredients: 'Queso, almidón de yuca',
-    benefits: 'Sin gluten, alto en proteína'
-  },
-  {
-    id: 'torta-almojabana-grande',
-    name: 'Torta de Almojábana Grande',
-    category: 'amasijos',
-    price: 12000,
-    description: 'Torta de almojábana tamaño grande',
-    ingredients: 'Queso, almidón de yuca',
-    benefits: 'Perfecta para compartir'
-  },
-  {
-    id: 'torta-almojabana-mediana',
-    name: 'Torta de Almojábana Mediana',
-    category: 'amasijos',
-    price: 10000,
-    description: 'Torta de almojábana tamaño mediano',
-    ingredients: 'Queso, almidón de yuca',
-    benefits: 'Ideal para familia pequeña'
-  },
-  {
-    id: 'torta-almojabana-pequena',
-    name: 'Torta de Almojábana Pequeña',
-    category: 'amasijos',
-    price: 7000,
-    description: 'Torta de almojábana tamaño pequeño',
-    ingredients: 'Queso, almidón de yuca',
-    benefits: 'Porción individual'
-  },
-  {
-    id: 'ponquesitos-agraz',
-    name: 'Ponquesitos de Agraz',
-    category: 'amasijos',
-    price: 8000,
-    description: 'Ponquesitos artesanales de agraz',
-    ingredients: 'Agraz, harina integral',
-    benefits: 'Antioxidantes naturales'
-  },
-  {
-    id: 'garullas',
-    name: 'Garullas',
-    category: 'amasijos',
-    price: 3000,
-    description: 'Garullas tradicionales',
-    ingredients: 'Harina de trigo, panela',
-    benefits: 'Dulce tradicional'
-  },
   {
     id: 'resobados',
     name: 'Resobados',
@@ -260,7 +184,8 @@ export const products = [
     price: 7000,
     description: 'Resobados artesanales',
     ingredients: 'Harina, mantequilla',
-    benefits: 'Textura única'
+    benefits: 'Textura única',
+    image: 'Catálogo/Resobados.jpg'
   },
   {
     id: 'achiras-18',
@@ -269,7 +194,8 @@ export const products = [
     price: 7000,
     description: 'Achiras tradicionales, paquete de 18',
     ingredients: 'Almidón de achira, queso',
-    benefits: 'Sin gluten'
+    benefits: 'Sin gluten',
+    image: 'Catálogo/AchirasGrandes.jpg'
   },
   {
     id: 'achiras-9',
@@ -278,28 +204,11 @@ export const products = [
     price: 3500,
     description: 'Achiras tradicionales, paquete de 9',
     ingredients: 'Almidón de achira, queso',
-    benefits: 'Sin gluten'
+    benefits: 'Sin gluten',
+    image: 'Catálogo/AchirasPeque.jpg'
   },
 
   // GALLETERÍA
-  {
-    id: 'galletas-avena-grande',
-    name: 'Galletas de Avena Grande',
-    category: 'galleteria',
-    price: 14000,
-    description: 'Galletas de avena, presentación grande',
-    ingredients: 'Avena, miel, frutos secos',
-    benefits: 'Rico en fibra'
-  },
-  {
-    id: 'galletas-avena-pequena',
-    name: 'Galletas de Avena Pequeña',
-    category: 'galleteria',
-    price: 7000,
-    description: 'Galletas de avena, presentación pequeña',
-    ingredients: 'Avena, miel, frutos secos',
-    benefits: 'Rico en fibra'
-  },
   {
     id: 'galletas-chip-cacao',
     name: 'Galletas Chip Cacao',
@@ -307,7 +216,8 @@ export const products = [
     price: 7000,
     description: 'Galletas con chips de cacao',
     ingredients: 'Harina integral, chips de cacao puro',
-    benefits: 'Antioxidantes'
+    benefits: 'Antioxidantes',
+    image: 'Catálogo/GalletasCacao.jpg'
   },
   {
     id: 'galletas-cafe',
@@ -316,7 +226,8 @@ export const products = [
     price: 7000,
     description: 'Galletas con sabor a café',
     ingredients: 'Café colombiano, harina integral',
-    benefits: 'Energizantes'
+    benefits: 'Energizantes',
+    image: 'Catálogo/GalletasCafé.jpg'
   },
   {
     id: 'galletas-jengibre',
@@ -325,7 +236,8 @@ export const products = [
     price: 7000,
     description: 'Galletas con jengibre',
     ingredients: 'Jengibre fresco, especias',
-    benefits: 'Antiinflamatorio'
+    benefits: 'Antiinflamatorio',
+    image: 'Catálogo/GalletasJenjibre.jpg'
   },
   {
     id: 'galletas-sal-grande',
@@ -334,16 +246,8 @@ export const products = [
     price: 16000,
     description: 'Galletas saladas, presentación grande',
     ingredients: 'Harina integral, sal rosada',
-    benefits: 'Snack saludable'
-  },
-  {
-    id: 'galletas-sal-pequena',
-    name: 'Galletas de Sal Pequeñas',
-    category: 'galleteria',
-    price: 8000,
-    description: 'Galletas saladas, presentación pequeña',
-    ingredients: 'Harina integral, sal rosada',
-    benefits: 'Snack saludable'
+    benefits: 'Snack saludable',
+    image: 'Catálogo/GalletasSal.jpg'
   },
   {
     id: 'tostadas',
@@ -352,7 +256,8 @@ export const products = [
     price: 7000,
     description: 'Tostadas integrales crujientes',
     ingredients: 'Harina integral, semillas',
-    benefits: 'Perfectas para dips'
+    benefits: 'Perfectas para dips',
+    image: 'Catálogo/Tostadas.jpg'
   },
 
   // GRANOLA
@@ -363,7 +268,8 @@ export const products = [
     price: 16000,
     description: 'Granola artesanal con dátiles, 1 libra',
     ingredients: 'Avena, dátiles, frutos secos',
-    benefits: 'Energía natural'
+    benefits: 'Energía natural',
+    image: 'Catálogo/LibraDátiles.jpg'
   },
   {
     id: 'granola-datiles-media',
@@ -372,7 +278,8 @@ export const products = [
     price: 8000,
     description: 'Granola artesanal con dátiles, media libra',
     ingredients: 'Avena, dátiles, frutos secos',
-    benefits: 'Energía natural'
+    benefits: 'Energía natural',
+    image: 'Catálogo/MediaDátiles.jpg'
   },
   {
     id: 'granola-uvas-lb',
@@ -381,7 +288,8 @@ export const products = [
     price: 16000,
     description: 'Granola artesanal con uvas pasas, 1 libra',
     ingredients: 'Avena, uvas pasas, almendras',
-    benefits: 'Antioxidantes'
+    benefits: 'Antioxidantes',
+    image: 'Catálogo/LibraUvas.jpg'
   },
   {
     id: 'granola-uvas-media',
@@ -390,7 +298,8 @@ export const products = [
     price: 8000,
     description: 'Granola artesanal con uvas pasas, media libra',
     ingredients: 'Avena, uvas pasas, almendras',
-    benefits: 'Antioxidantes'
+    benefits: 'Antioxidantes',
+    image: 'Catálogo/MediaUvas.jpg'
   },
   {
     id: 'granola-arandanos-lb',
@@ -399,7 +308,8 @@ export const products = [
     price: 16000,
     description: 'Granola artesanal con arándanos, 1 libra',
     ingredients: 'Avena, arándanos secos, nueces',
-    benefits: 'Superalimento'
+    benefits: 'Superalimento',
+    image: 'Catálogo/LibraArándanos.jpg'
   },
   {
     id: 'granola-arandanos-media',
@@ -408,7 +318,8 @@ export const products = [
     price: 8000,
     description: 'Granola artesanal con arándanos, media libra',
     ingredients: 'Avena, arándanos secos, nueces',
-    benefits: 'Superalimento'
+    benefits: 'Superalimento',
+    image: 'Catálogo/MediaArándanos.jpg'
   },
   {
     id: 'granola-sin-dulce',
@@ -417,28 +328,11 @@ export const products = [
     price: 16000,
     description: 'Granola especial sin azúcar',
     ingredients: 'Avena, frutos secos, sin endulzantes',
-    benefits: 'Apto para diabéticos'
+    benefits: 'Apto para diabéticos',
+    image: 'Catálogo/LibraDiabéticos.jpg'
   },
 
   // FRUTOS SECOS Y SEMILLAS
-  {
-    id: 'mix-frutos-250',
-    name: 'Mix de Frutos Secos (250g)',
-    category: 'frutos-secos',
-    price: 20000,
-    description: 'Mezcla premium de frutos secos, 250g',
-    ingredients: 'Almendras, nueces, marañón, macadamia',
-    benefits: 'Omega 3, proteínas'
-  },
-  {
-    id: 'mix-frutos-125',
-    name: 'Mix de Frutos Secos (125g)',
-    category: 'frutos-secos',
-    price: 10000,
-    description: 'Mezcla premium de frutos secos, 125g',
-    ingredients: 'Almendras, nueces, marañón, macadamia',
-    benefits: 'Omega 3, proteínas'
-  },
   {
     id: 'pistachos-250',
     name: 'Pistachos (250g)',
@@ -446,7 +340,8 @@ export const products = [
     price: 20000,
     description: 'Pistachos naturales',
     ingredients: 'Pistachos',
-    benefits: 'Rico en proteínas'
+    benefits: 'Rico en proteínas',
+    image: 'Catálogo/Pistachos250.jpg'
   },
   {
     id: 'pistachos-125',
@@ -455,7 +350,8 @@ export const products = [
     price: 10000,
     description: 'Pistachos naturales',
     ingredients: 'Pistachos',
-    benefits: 'Rico en proteínas'
+    benefits: 'Rico en proteínas',
+    image: 'Catálogo/Pistachos125.jpg'
   },
   {
     id: 'maranon-250',
@@ -464,7 +360,8 @@ export const products = [
     price: 20000,
     description: 'Marañón natural',
     ingredients: 'Marañón',
-    benefits: 'Alto en magnesio'
+    benefits: 'Alto en magnesio',
+    image: 'Catálogo/Marañon250.jpg'
   },
   {
     id: 'maranon-125',
@@ -473,7 +370,8 @@ export const products = [
     price: 10000,
     description: 'Marañón natural',
     ingredients: 'Marañón',
-    benefits: 'Alto en magnesio'
+    benefits: 'Alto en magnesio',
+    image: 'Catálogo/Marañon125.jpg'
   },
   {
     id: 'macadamia-250',
@@ -482,7 +380,8 @@ export const products = [
     price: 20000,
     description: 'Nueces de macadamia premium',
     ingredients: 'Macadamia',
-    benefits: 'Grasas saludables'
+    benefits: 'Grasas saludables',
+    image: 'Catálogo/Macadamia250.jpg'
   },
   {
     id: 'macadamia-125',
@@ -491,7 +390,8 @@ export const products = [
     price: 10000,
     description: 'Nueces de macadamia premium',
     ingredients: 'Macadamia',
-    benefits: 'Grasas saludables'
+    benefits: 'Grasas saludables',
+    image: 'Catálogo/Macadamia125.jpg'
   },
   {
     id: 'almendras-250',
@@ -500,7 +400,8 @@ export const products = [
     price: 20000,
     description: 'Almendras naturales',
     ingredients: 'Almendras',
-    benefits: 'Vitamina E'
+    benefits: 'Vitamina E',
+    image: 'Catálogo/Almendra250.jpg'
   },
   {
     id: 'almendras-125',
@@ -509,7 +410,8 @@ export const products = [
     price: 10000,
     description: 'Almendras naturales',
     ingredients: 'Almendras',
-    benefits: 'Vitamina E'
+    benefits: 'Vitamina E',
+    image: 'Catálogo/Almendra125.jpg'
   },
   {
     id: 'datiles-fruto-250',
@@ -518,7 +420,8 @@ export const products = [
     price: 20000,
     description: 'Dátiles naturales',
     ingredients: 'Dátiles',
-    benefits: 'Energía natural'
+    benefits: 'Energía natural',
+    image: 'Catálogo/Dátiles250.jpg'
   },
   {
     id: 'datiles-fruto-125',
@@ -527,7 +430,8 @@ export const products = [
     price: 10000,
     description: 'Dátiles naturales',
     ingredients: 'Dátiles',
-    benefits: 'Energía natural'
+    benefits: 'Energía natural',
+    image: 'Catálogo/Dátiles125.jpg'
   },
   {
     id: 'nuez-brasil-250',
@@ -536,7 +440,8 @@ export const products = [
     price: 20000,
     description: 'Nueces de Brasil',
     ingredients: 'Nuez de Brasil',
-    benefits: 'Selenio natural'
+    benefits: 'Selenio natural',
+    image: 'Catálogo/NuezBrasil.jpg'
   },
   {
     id: 'nuez-brasil-125',
@@ -545,7 +450,8 @@ export const products = [
     price: 10000,
     description: 'Nueces de Brasil',
     ingredients: 'Nuez de Brasil',
-    benefits: 'Selenio natural'
+    benefits: 'Selenio natural',
+    image: 'Catálogo/NuezBrasil.jpg'
   },
   {
     id: 'nuez-nogal-250',
@@ -554,7 +460,8 @@ export const products = [
     price: 20000,
     description: 'Nueces de nogal',
     ingredients: 'Nuez de nogal',
-    benefits: 'Omega 3'
+    benefits: 'Omega 3',
+    image: 'Catálogo/NuezNogal.jpg'
   },
   {
     id: 'nuez-nogal-125',
@@ -563,25 +470,8 @@ export const products = [
     price: 10000,
     description: 'Nueces de nogal',
     ingredients: 'Nuez de nogal',
-    benefits: 'Omega 3'
-  },
-  {
-    id: 'cacahuates-250',
-    name: 'Cacahuates (250g)',
-    category: 'frutos-secos',
-    price: 20000,
-    description: 'Cacahuates naturales',
-    ingredients: 'Cacahuates',
-    benefits: 'Proteína vegetal'
-  },
-  {
-    id: 'cacahuates-125',
-    name: 'Cacahuates (125g)',
-    category: 'frutos-secos',
-    price: 10000,
-    description: 'Cacahuates naturales',
-    ingredients: 'Cacahuates',
-    benefits: 'Proteína vegetal'
+    benefits: 'Omega 3',
+    image: 'Catálogo/NuezNogal.jpg'
   },
   {
     id: 'albaricoque',
@@ -590,7 +480,8 @@ export const products = [
     price: 10000,
     description: 'Albaricoques secos',
     ingredients: 'Albaricoque deshidratado',
-    benefits: 'Rico en fibra'
+    benefits: 'Rico en fibra',
+    image: 'Catálogo/Albaricoque.jpg'
   },
   {
     id: 'ciruelas-pasas',
@@ -599,7 +490,8 @@ export const products = [
     price: 5000,
     description: 'Ciruelas pasas naturales',
     ingredients: 'Ciruelas deshidratadas',
-    benefits: 'Digestión saludable'
+    benefits: 'Digestión saludable',
+    image: 'Catálogo/Ciruelas.jpg'
   },
   {
     id: 'semillas-girasol',
@@ -608,7 +500,8 @@ export const products = [
     price: 5000,
     description: 'Semillas de girasol naturales',
     ingredients: 'Semillas de girasol',
-    benefits: 'Vitamina E'
+    benefits: 'Vitamina E',
+    image: 'Catálogo/SemillasGirasol.jpg'
   },
   {
     id: 'semillas-calabaza',
@@ -617,7 +510,8 @@ export const products = [
     price: 6000,
     description: 'Semillas de calabaza',
     ingredients: 'Semillas de calabaza',
-    benefits: 'Magnesio y zinc'
+    benefits: 'Magnesio y zinc',
+    image: 'Catálogo/SemillasCalabaza.jpg'
   },
   {
     id: 'semillas-chia',
@@ -626,7 +520,8 @@ export const products = [
     price: 5000,
     description: 'Semillas de chía',
     ingredients: 'Chía',
-    benefits: 'Omega 3, fibra'
+    benefits: 'Omega 3, fibra',
+    image: 'Catálogo/SemillasChía.jpg'
   },
   {
     id: 'linaza',
@@ -635,7 +530,8 @@ export const products = [
     price: 4000,
     description: 'Semillas de linaza',
     ingredients: 'Linaza',
-    benefits: 'Omega 3'
+    benefits: 'Omega 3',
+    image: 'Catálogo/Linaza.jpg'
   },
   {
     id: 'ajonjoli',
@@ -644,7 +540,8 @@ export const products = [
     price: 12000,
     description: 'Semillas de ajonjolí',
     ingredients: 'Ajonjolí',
-    benefits: 'Calcio natural'
+    benefits: 'Calcio natural',
+    image: 'Catálogo/Ajonjolí.jpg'
   },
   {
     id: 'quinua',
@@ -653,7 +550,8 @@ export const products = [
     price: 10000,
     description: 'Quinua en grano',
     ingredients: 'Quinua',
-    benefits: 'Proteína completa'
+    benefits: 'Proteína completa',
+    image: 'Catálogo/Quinua.jpg'
   },
   {
     id: 'flor-jamaica',
@@ -662,7 +560,8 @@ export const products = [
     price: 4000,
     description: 'Flor de Jamaica deshidratada',
     ingredients: 'Flor de Jamaica',
-    benefits: 'Antioxidantes'
+    benefits: 'Antioxidantes',
+    image: 'Catálogo/FlorJamaica.jpg'
   },
   {
     id: 'curcuma',
@@ -671,7 +570,8 @@ export const products = [
     price: 5000,
     description: 'Cúrcuma en polvo',
     ingredients: 'Cúrcuma',
-    benefits: 'Antiinflamatorio'
+    benefits: 'Antiinflamatorio',
+    image: 'Catálogo/Cúrcuma.jpg'
   },
   {
     id: 'sal-rosada-grano',
@@ -680,7 +580,8 @@ export const products = [
     price: 12000,
     description: 'Sal rosada del Himalaya en grano',
     ingredients: 'Sal rosada',
-    benefits: 'Minerales naturales'
+    benefits: 'Minerales naturales',
+    image: 'Catálogo/SalEntera.jpg'
   },
   {
     id: 'sal-rosada-molida',
@@ -689,25 +590,8 @@ export const products = [
     price: 12000,
     description: 'Sal rosada del Himalaya molida',
     ingredients: 'Sal rosada',
-    benefits: 'Minerales naturales'
-  },
-  {
-    id: 'harina-maca',
-    name: 'Harina de Maca',
-    category: 'frutos-secos',
-    price: 26000,
-    description: 'Harina de maca peruana',
-    ingredients: 'Maca',
-    benefits: 'Energizante natural'
-  },
-  {
-    id: 'harina-algarrobo',
-    name: 'Harina de Algarrobo',
-    category: 'frutos-secos',
-    price: 24000,
-    description: 'Harina de algarrobo',
-    ingredients: 'Algarrobo',
-    benefits: 'Sin gluten'
+    benefits: 'Minerales naturales',
+    image: 'Catálogo/SalMolida.jpg'
   },
   {
     id: 'mix-maiz',
@@ -716,16 +600,8 @@ export const products = [
     price: 5000,
     description: 'Mezcla de maíz tostado',
     ingredients: 'Maíz variado',
-    benefits: 'Snack natural'
-  },
-  {
-    id: 'habas-fritas',
-    name: 'Habas Fritas y Tostadas',
-    category: 'frutos-secos',
-    price: 2500,
-    description: 'Habas fritas y tostadas',
-    ingredients: 'Habas',
-    benefits: 'Proteína vegetal'
+    benefits: 'Snack natural',
+    image: 'Catálogo/MixMaíz.jpg'
   },
 
   // ENVASADOS
@@ -736,7 +612,8 @@ export const products = [
     price: 36000,
     description: 'Mantequilla clarificada ghee, 1 libra',
     ingredients: 'Mantequilla clarificada',
-    benefits: 'Sin lactosa, alto punto de humo'
+    benefits: 'Sin lactosa, alto punto de humo',
+    image: 'Catálogo/GueeLibra.jpg'
   },
   {
     id: 'mantequilla-ghee-media',
@@ -745,7 +622,8 @@ export const products = [
     price: 18000,
     description: 'Mantequilla clarificada ghee, media libra',
     ingredients: 'Mantequilla clarificada',
-    benefits: 'Sin lactosa, alto punto de humo'
+    benefits: 'Sin lactosa, alto punto de humo',
+    image: 'Catálogo/GueeMedia.jpg'
   },
   {
     id: 'miel-abejas',
@@ -754,7 +632,8 @@ export const products = [
     price: 40000,
     description: 'Miel pura de abejas, 500g',
     ingredients: 'Miel 100% natural',
-    benefits: 'Antibacteriana, energizante'
+    benefits: 'Antibacteriana, energizante',
+    image: 'Catálogo/Miel.jpg'
   }
 ];
 

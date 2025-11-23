@@ -57,7 +57,7 @@
               </div>
             </div>
             <div class="user-menu-divider"></div>
-            <a href="./profile.html" class="user-menu-item">
+            <a href="../profile/index.html" class="user-menu-item" id="user-menu-profile">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
                 <circle cx="12" cy="7" r="4"/>
@@ -72,6 +72,24 @@
               </svg>
               <span>Cerrar Sesión</span>
             </button>
+            <!-- Opciones para usuarios no logueados -->
+            <a href="../login/index.html" class="user-menu-item" id="user-menu-login" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+                <polyline points="10 17 15 12 10 7"/>
+                <line x1="15" y1="12" x2="3" y2="12"/>
+              </svg>
+              <span>Iniciar Sesión</span>
+            </a>
+            <a href="../login/index.html?register=true" class="user-menu-item" id="user-menu-register" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <line x1="19" y1="8" x2="19" y2="14"/>
+                <line x1="22" y1="11" x2="16" y2="11"/>
+              </svg>
+              <span>Registrarse</span>
+            </a>
           </div>
         </div>
       </div>
@@ -80,29 +98,178 @@
 
   <div class="w-full">
     <!-- Mercados Campesinos -->
-    <section class="section container px-4 py-16">
+    <section class="section container px-4 pt-8 pb-16">
       <div class="markets-container">
         <!-- Header -->
         <div class="text-center mb-12 animate-fade-in-up">
           <h1 class="brand-font mb-4" style="color: var(--color-tertiary); font-size: clamp(1.75rem, 4vw, 2.5rem); font-weight: 800;">Mercados Campesinos</h1>
-          <p class="text-xl muted mb-6">Encuéntranos en nuestros puntos de venta en Bogotá</p>
+          <p class="text-base muted mb-6">Encuéntranos en nuestros puntos de venta en Bogotá</p>
           
-          <!-- Event Schedule -->
+          <!-- Horario General -->
           <div class="schedule-box">
             <svg class="schedule-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-              <line x1="16" y1="2" x2="16" y2="6"/>
-              <line x1="8" y1="2" x2="8" y2="6"/>
-              <line x1="3" y1="10" x2="21" y2="10"/>
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
             </svg>
             <div class="schedule-text">
-              <p class="schedule-label">Eventos cada</p>
-              <p class="schedule-value">Sábados cada 15 días</p>
+              <p class="schedule-label">Horario general</p>
+              <p class="schedule-value">6:30 AM - 2:00 PM / 3:00 PM</p>
             </div>
           </div>
         </div>
 
-        <!-- Production Location -->
+        <!-- Market Locations (Most Important Info - Shown First) - Diseño Moderno -->
+        <div class="mb-8">
+          <h2 class="text-center mb-8" style="color: var(--color-primary); font-size: 2.5rem; font-weight: 800;">Puntos de Venta - Bogotá</h2>
+          
+          <div class="sales-points-grid max-w-6xl mx-auto mb-12">
+            <!-- Mercado 1: Fontibón (Cada 8 días) -->
+            <a href="https://maps.app.goo.gl/kiUsc6DeJnUy1otk6" target="_blank" rel="noopener noreferrer" class="sales-point-card-modern animate-fade-in-up" style="--delay: 0.1s; text-decoration: none; display: block;">
+              <div class="sales-point-header">
+                <div class="sales-point-icon-wrapper">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 10c0 7-9 12-9 12S3 17 3 10a9 9 0 1 1 18 0z"/>
+                    <circle cx="12" cy="10" r="3"/>
+                  </svg>
+                </div>
+                <div class="sales-point-number">01</div>
+              </div>
+              <div class="sales-point-body">
+                <h3 class="sales-point-title">Fontibón</h3>
+                <div class="sales-point-location">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 10c0 7-9 12-9 12S3 17 3 10a9 9 0 1 1 18 0z"/>
+                    <circle cx="12" cy="10" r="3"/>
+                  </svg>
+                  <span>Parque Principal del barrio Fontibón</span>
+                </div>
+                <div class="sales-point-details">
+                  <div class="sales-point-badge sales-point-badge-frequency">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                      <line x1="16" y1="2" x2="16" y2="6"/>
+                      <line x1="8" y1="2" x2="8" y2="6"/>
+                      <line x1="3" y1="10" x2="21" y2="10"/>
+                    </svg>
+                    <span>Sábados cada 8 días</span>
+                  </div>
+                  <div class="sales-point-badge sales-point-badge-time">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="10"/>
+                      <polyline points="12 6 12 12 16 14"/>
+                    </svg>
+                    <span>6:00 AM - 4:00 PM</span>
+                  </div>
+                  <div class="sales-point-map-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M21 10c0 7-9 12-9 12S3 17 3 10a9 9 0 1 1 18 0z"/>
+                      <circle cx="12" cy="10" r="3"/>
+                    </svg>
+                    <span>Cómo llegar</span>
+                  </div>
+                </div>
+              </div>
+            </a>
+
+            <!-- Mercado 2: Kennedy - La Macarena (Cada 15 días) -->
+            <a href="https://maps.app.goo.gl/MHCUFzFP2NWa6YXK6" target="_blank" rel="noopener noreferrer" class="sales-point-card-modern animate-fade-in-up" style="--delay: 0.2s; text-decoration: none; display: block;">
+              <div class="sales-point-header" style="background: linear-gradient(135deg, var(--color-accent) 0%, #d4a574 100%);">
+                <div class="sales-point-icon-wrapper">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 10c0 7-9 12-9 12S3 17 3 10a9 9 0 1 1 18 0z"/>
+                    <circle cx="12" cy="10" r="3"/>
+                  </svg>
+                </div>
+                <div class="sales-point-number">02</div>
+              </div>
+              <div class="sales-point-body">
+                <h3 class="sales-point-title">Kennedy - La Macarena</h3>
+                <div class="sales-point-location">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 10c0 7-9 12-9 12S3 17 3 10a9 9 0 1 1 18 0z"/>
+                    <circle cx="12" cy="10" r="3"/>
+                  </svg>
+                  <span>Al lado del restaurante La Juguetería</span>
+                </div>
+                <div class="sales-point-details">
+                  <div class="sales-point-badge sales-point-badge-frequency">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                      <line x1="16" y1="2" x2="16" y2="6"/>
+                      <line x1="8" y1="2" x2="8" y2="6"/>
+                      <line x1="3" y1="10" x2="21" y2="10"/>
+                    </svg>
+                    <span>Sábados cada 15 días</span>
+                  </div>
+                  <div class="sales-point-badge sales-point-badge-time">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="10"/>
+                      <polyline points="12 6 12 12 16 14"/>
+                    </svg>
+                    <span>6:30 AM - 2:00 PM / 3:00 PM</span>
+                  </div>
+                  <div class="sales-point-map-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M21 10c0 7-9 12-9 12S3 17 3 10a9 9 0 1 1 18 0z"/>
+                      <circle cx="12" cy="10" r="3"/>
+                    </svg>
+                    <span>Cómo llegar</span>
+                  </div>
+                </div>
+              </div>
+            </a>
+
+            <!-- Mercado 3: Floralia (Cada 15 días) -->
+            <a href="https://maps.app.goo.gl/FsGtf9aSSwd11rmw8" target="_blank" rel="noopener noreferrer" class="sales-point-card-modern animate-fade-in-up" style="--delay: 0.3s; text-decoration: none; display: block;">
+              <div class="sales-point-header" style="background: linear-gradient(135deg, var(--color-tertiary) 0%, #6b4423 100%);">
+                <div class="sales-point-icon-wrapper">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 10c0 7-9 12-9 12S3 17 3 10a9 9 0 1 1 18 0z"/>
+                    <circle cx="12" cy="10" r="3"/>
+                  </svg>
+                </div>
+                <div class="sales-point-number">03</div>
+              </div>
+              <div class="sales-point-body">
+                <h3 class="sales-point-title">Floralia</h3>
+                <div class="sales-point-location">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 10c0 7-9 12-9 12S3 17 3 10a9 9 0 1 1 18 0z"/>
+                    <circle cx="12" cy="10" r="3"/>
+                  </svg>
+                  <span>En la cancha al lado del salón comunal del barrio Floralia</span>
+                </div>
+                <div class="sales-point-details">
+                  <div class="sales-point-badge sales-point-badge-frequency">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                      <line x1="16" y1="2" x2="16" y2="6"/>
+                      <line x1="8" y1="2" x2="8" y2="6"/>
+                      <line x1="3" y1="10" x2="21" y2="10"/>
+                    </svg>
+                    <span>Sábados cada 15 días</span>
+                  </div>
+                  <div class="sales-point-badge sales-point-badge-time">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="10"/>
+                      <polyline points="12 6 12 12 16 14"/>
+                    </svg>
+                    <span>6:30 AM - 2:00 PM / 3:00 PM</span>
+                  </div>
+                  <div class="sales-point-map-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M21 10c0 7-9 12-9 12S3 17 3 10a9 9 0 1 1 18 0z"/>
+                      <circle cx="12" cy="10" r="3"/>
+                    </svg>
+                    <span>Cómo llegar</span>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Production Location (Moved after Market Locations) -->
         <div class="market-card production-card mb-8 animate-fade-in-up">
           <div class="card-header-accent">
             <h3 class="card-header-title">
@@ -115,117 +282,53 @@
           </div>
           <div class="card-content">
             <div class="card-content-flex">
-              <div class="card-icon-circle">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M21 10c0 7-9 12-9 12S3 17 3 10a9 9 0 1 1 18 0z"/>
-                  <circle cx="12" cy="10" r="3"/>
-                </svg>
-              </div>
-              <div>
+              <div class="card-content-main">
                 <h4 class="card-content-title">Dirección de Producción</h4>
                 <p class="card-address">Calle 5 # 5 - 22</p>
                 <p class="card-location">Cogua, Cundinamarca</p>
                 <p class="card-description">Aquí elaboramos todos nuestros productos artesanales con ingredientes naturales y mucho amor.</p>
               </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Market Locations -->
-        <div class="mb-8">
-          <h2 class="text-center mb-6" style="color: var(--color-primary)">Puntos de Venta - Bogotá</h2>
-          <p class="text-center text-lg muted mb-8">Visítanos en cualquiera de estos tres puntos cada sábado (cada 15 días)</p>
-          
-          <div class="markets-grid">
-            <div class="market-card market-location-card animate-fade-in-up" style="--delay: 0.1s">
-              <div class="card-header-secondary">
-                <h3 class="card-header-title">
-                  <svg class="card-header-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <div class="card-content-action">
+                <a href="https://www.google.com/maps/search/?api=1&query=Calle+5+%235+5-22,+Cogua,+Cundinamarca,+Colombia" target="_blank" rel="noopener noreferrer" class="production-map-btn">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M21 10c0 7-9 12-9 12S3 17 3 10a9 9 0 1 1 18 0z"/>
                     <circle cx="12" cy="10" r="3"/>
                   </svg>
-                  Floraria
-                </h3>
-              </div>
-              <div class="card-content">
-                <div class="market-info">
-                  <div class="market-info-item">
-                    <svg class="market-info-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M21 10c0 7-9 12-9 12S3 17 3 10a9 9 0 1 1 18 0z"/>
-                      <circle cx="12" cy="10" r="3"/>
-                    </svg>
-                    <p class="market-location-text">Bogotá - Floraria</p>
-                  </div>
-                  <p class="market-description-text">Punto de venta ubicado en el sector de Floraria</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="market-card market-location-card animate-fade-in-up" style="--delay: 0.2s">
-              <div class="card-header-secondary">
-                <h3 class="card-header-title">
-                  <svg class="card-header-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 10c0 7-9 12-9 12S3 17 3 10a9 9 0 1 1 18 0z"/>
-                    <circle cx="12" cy="10" r="3"/>
-                  </svg>
-                  Kennedy La Macarena
-                </h3>
-              </div>
-              <div class="card-content">
-                <div class="market-info">
-                  <div class="market-info-item">
-                    <svg class="market-info-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M21 10c0 7-9 12-9 12S3 17 3 10a9 9 0 1 1 18 0z"/>
-                      <circle cx="12" cy="10" r="3"/>
-                    </svg>
-                    <p class="market-location-text">Bogotá - Kennedy, La Macarena</p>
-                  </div>
-                  <p class="market-description-text">Punto de venta en el barrio La Macarena, Kennedy</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="market-card market-location-card animate-fade-in-up" style="--delay: 0.3s">
-              <div class="card-header-secondary">
-                <h3 class="card-header-title">
-                  <svg class="card-header-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 10c0 7-9 12-9 12S3 17 3 10a9 9 0 1 1 18 0z"/>
-                    <circle cx="12" cy="10" r="3"/>
-                  </svg>
-                  Parque Principal Fontibón
-                </h3>
-              </div>
-              <div class="card-content">
-                <div class="market-info">
-                  <div class="market-info-item">
-                    <svg class="market-info-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M21 10c0 7-9 12-9 12S3 17 3 10a9 9 0 1 1 18 0z"/>
-                      <circle cx="12" cy="10" r="3"/>
-                    </svg>
-                    <p class="market-location-text">Bogotá - Parque Principal, Fontibón</p>
-                  </div>
-                  <p class="market-description-text">Punto de venta en el Parque Principal de Fontibón</p>
-                </div>
+                  <span>Ver en mapa</span>
+                </a>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Additional Info -->
-        <div class="market-card info-card gradient-bg-secondary mb-8">
-          <div class="card-content">
-            <div class="card-content-flex">
-              <div class="card-icon-circle animate-float">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="12" cy="12" r="10"/>
-                  <polyline points="12 6 12 12 16 14"/>
+        <!-- Información Adicional - Diseño Moderno -->
+        <div class="sales-points-info-grid max-w-5xl mx-auto">
+          <!-- Nota Importante -->
+          <div class="info-card-modern info-card-important animate-fade-in-up">
+            <div class="info-card-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="12" y1="16" x2="12" y2="12"/>
+                <line x1="12" y1="8" x2="12.01" y2="8"/>
+                    </svg>
+            </div>
+            <h3 class="info-card-title">Nota Importante</h3>
+            <p class="info-card-text">
+              Los mercados campesinos se realizan cada sábado quincenal o cada ocho días según el punto de venta. Te recomendamos llegar temprano para encontrar mejor variedad de productos frescos. Puedes encontrarnos a nosotros junto con otros puestos de emprendimientos.
+            </p>
+        </div>
+
+          <!-- Pedidos Online -->
+          <div class="info-card-modern info-card-online animate-fade-in-up" style="--delay: 0.1s">
+            <div class="info-card-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
                 </svg>
-              </div>
-              <div>
-                <h3 class="card-content-title" style="color: var(--color-primary)">Importante</h3>
-                <p class="card-description text-lg">Los mercados campesinos se realizan cada sábado quincenal. Te recomendamos llegar temprano para encontrar la mejor variedad de productos frescos. Si prefieres, puedes hacer tu pedido online y recogerlo en cualquiera de estos puntos.</p>
-              </div>
             </div>
+            <h3 class="info-card-title">Pedidos Online</h3>
+            <p class="info-card-text">
+              Puedes hacer tu pedido online y recogerlo en cualquiera de nuestros puntos de venta. Esto te garantiza que tendrás tus productos favoritos disponibles cuando llegues al mercado.
+            </p>
           </div>
         </div>
 
@@ -241,6 +344,31 @@
     </section>
   </div>
 
+  <!-- Cart Drawer -->
+  <div id="cart-drawer" class="cart-drawer" hidden>
+    <div class="cart-drawer-overlay" id="cart-drawer-overlay"></div>
+    <div class="cart-drawer-content">
+      <div class="cart-drawer-header">
+        <h2 class="cart-drawer-title">Tu carrito</h2>
+        <button class="cart-drawer-close" id="cart-drawer-close" aria-label="Cerrar carrito">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <div class="cart-drawer-body" id="cart-drawer-body">
+        <!-- El contenido se llenará dinámicamente -->
+      </div>
+      <div class="cart-drawer-footer" id="cart-drawer-footer">
+        <!-- El footer se llenará dinámicamente -->
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="../../js/cart-menu.js"></script>
+  <script type="module" src="../../js/cart-drawer.js"></script>
+  <script type="module" src="../../js/user-menu.js"></script>
   <script type="module" src="../../js/sync.js"></script>
   <script type="module" src="../../js/main.js"></script>
   <script type="module" src="../../js/animations.js"></script>

@@ -219,7 +219,8 @@ body {
 }
 
 .empty-text {
-  font-size: 1.25rem;
+  font-size: 1rem; /* 16px - Estándar para body text */
+  line-height: 1.6;
   color: #6b7280;
   margin: 0;
 }
@@ -263,14 +264,16 @@ body {
 }
 
 .favorite-item-name {
-  font-size: 1.125rem;
+  font-size: 1rem; /* 16px - Estándar para body text */
+  line-height: 1.6;
   font-weight: 600;
   color: var(--color-tertiary);
   margin: 0;
 }
 
 .favorite-item-description {
-  font-size: 0.875rem;
+  font-size: 1rem; /* 16px - Estándar para body text */
+  line-height: 1.6;
   color: #6b7280;
   margin: 0;
   display: -webkit-box;
@@ -533,5 +536,37 @@ body {
     text-align: left;
     width: 100%;
   }
+}
+
+/* Profile Action Buttons - Same size as catalog buttons but terracotta color */
+.profile-action-btn {
+  padding: 0.875rem 1rem;
+  border-radius: 0.5rem;
+  border: none;
+  background: var(--color-primary); /* Terracota */
+  color: #ffffff;
+  font-weight: 500;
+  font-size: 0.95rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(197, 101, 53, 0.3);
+  text-decoration: none;
+  width: auto;
+  min-width: 200px;
+}
+
+.profile-action-btn:hover {
+  background: var(--color-tertiary); /* Café en hover */
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 8px 20px rgba(197, 101, 53, 0.5);
+}
+
+.profile-action-btn:active {
+  transform: translateY(-2px) scale(1.01);
+  box-shadow: 0 2px 8px rgba(197, 101, 53, 0.2);
 }
 
