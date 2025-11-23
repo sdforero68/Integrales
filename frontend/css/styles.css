@@ -1031,42 +1031,37 @@ button.btn-terracota:active:not(:disabled) {
   width: 100%;
   padding: 0.875rem 1rem 0.875rem 3.5rem;
   border-radius: 0.75rem;
-  border: none;
+  border: none !important;
   outline: none !important;
-  background: var(--color-tertiary);
-  color: var(--color-secondary);
+  background: var(--color-tertiary) !important;
+  color: var(--color-secondary) !important;
   font-size: 1rem;
-  transition: all 0.3s ease;
+  transition: none;
+  box-shadow: none !important;
 }
 .input::placeholder {
-  color: rgba(255, 222, 177, 0.8);
-  opacity: 1;
+  color: var(--color-secondary) !important;
+  opacity: 0.8;
 }
-.input:hover:not(:focus) {
-  background: var(--color-secondary);
-  color: var(--color-tertiary);
-}
-.input-wrap:hover:not(:focus-within) .input-icon {
-  color: var(--color-tertiary);
-}
-.input:focus {
-  background: transparent;
-  border: 3px solid var(--color-tertiary);
-  color: var(--color-tertiary);
-  box-shadow: none;
-  outline: none !important;
-}
+.input:hover,
+.input:hover:not(:focus),
+.input:focus,
 .input:focus-visible {
+  background: var(--color-tertiary) !important;
+  border: none !important;
+  color: var(--color-secondary) !important;
+  box-shadow: none !important;
   outline: none !important;
-  box-shadow: none;
 }
+.input-wrap:hover .input-icon,
+.input-wrap:hover:not(:focus-within) .input-icon,
 .input-wrap:focus-within .input-icon {
-  color: var(--color-tertiary);
-  transform: translateY(-50%) scale(1.1);
+  color: var(--color-secondary) !important;
+  transform: translateY(-50%);
 }
 .input-icon {
-  color: var(--color-secondary);
-  transition: all 0.3s ease;
+  color: var(--color-secondary) !important;
+  transition: none;
 }
 .control-lg {
   padding-top: 1.125rem;
@@ -1079,7 +1074,7 @@ button.btn-terracota:active:not(:disabled) {
   left: 1rem;
   top: 50%;
   transform: translateY(-50%);
-  color: var(--color-primary);
+  color: var(--color-secondary) !important;
   display: inline-flex;
   z-index: 2;
   pointer-events: none;
@@ -1101,27 +1096,32 @@ button.btn-terracota:active:not(:disabled) {
   border-radius: 0.75rem;
   padding: 0.875rem 1.25rem;
   font-size: 1rem;
-  border: none !important;
-  color: #ffffff;
-  background: var(--color-primary) !important;
+  border: 2px solid var(--color-tertiary) !important;
+  color: var(--color-tertiary) !important;
+  background: transparent !important;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(197, 101, 53, 0.3);
+  box-shadow: none !important;
 }
 .filter-btn.active {
-  background: var(--color-primary) !important;
-  color: #fff;
-  border: none !important;
-  box-shadow: 0 4px 12px rgba(197, 101, 53, 0.3);
-}
-.filter-btn:hover {
   background: var(--color-tertiary) !important;
-  transform: translateY(-4px) scale(1.05);
-  box-shadow: 0 8px 20px rgba(197, 101, 53, 0.5);
+  color: var(--color-secondary) !important;
+  border: 2px solid var(--color-tertiary) !important;
+  box-shadow: none !important;
+}
+.filter-btn:hover:not(.active) {
+  background: transparent !important;
+  color: var(--color-tertiary) !important;
+  border: 2px solid var(--color-tertiary) !important;
+  transform: translateY(-2px);
+  box-shadow: none !important;
 }
 .filter-btn.active:hover {
   background: var(--color-tertiary) !important;
-  box-shadow: 0 8px 20px rgba(197, 101, 53, 0.5);
+  color: var(--color-secondary) !important;
+  border: 2px solid var(--color-tertiary) !important;
+  transform: translateY(-2px);
+  box-shadow: none !important;
 }
 
 /* Products grid and cards */
