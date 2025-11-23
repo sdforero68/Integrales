@@ -9475,4 +9475,25 @@ input[type="radio"].radio-group-item:not(:checked) ~ .radio-group-indicator {
   }
 }
 
+/* Value Cards Styles (para página de inicio) */
+.value-card {
+  position: relative;
+  border-radius: 1.5rem;
+  backdrop-filter: blur(10px);
+}
+
+.value-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.value-card-icon-wrapper {
+  transition: none;
+}
+
+.value-card .icon-container {
+  transition: none;
+  position: relative;
+}
+
 

@@ -538,22 +538,23 @@
 
 /* Tarjetas de valores */
 .value-card {
-  transition: all 0.4s ease;
   position: relative;
-  border-radius: 1rem;
+  border-radius: 1.5rem;
+  backdrop-filter: blur(10px);
 }
 
-.value-card:hover {
-  transform: translateY(-10px) scale(1.03);
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+.value-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.value-card-icon-wrapper {
+  transition: none;
 }
 
 .value-card .icon-container {
-  transition: transform 0.3s ease;
-}
-
-.value-card:hover .icon-container {
-  transform: scale(1.1) rotate(5deg);
+  transition: none;
+  position: relative;
 }
 
 /* Animaciones */
