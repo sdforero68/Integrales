@@ -14,7 +14,7 @@
     <div class="container px-4 nav-inner">
       <div class="brand-group" onclick="window.location.href='../../index.html'">
         <div class="brand-avatar" style="border-color: var(--color-accent)">
-          <img src="../../assets/images/logo.png" alt="Anita Integrales" class="brand-avatar-img" />
+          <img src="../../assets/images/Logo/Logo.jpeg" alt="Anita Integrales" class="brand-avatar-img" />
         </div>
         <div class="brand-text">
           <div class="brand brand-font gradient-text text-3xl">Anita Integrales</div>
@@ -80,15 +80,15 @@
 
   <div class="w-full">
     <!-- Catalog Section -->
-    <section class="section gradient-bg-secondary py-16">
+    <section class="section gradient-bg-secondary py-16" style="opacity: 1;">
       <div class="container px-4">
-        <h2 class="text-center mb-8" style="color: var(--color-primary)">Nuestro Catálogo</h2>
-        <p class="text-center text-xl mb-12 muted mx-auto" style="max-width: 64ch;">
+        <h1 class="text-center mb-4 brand-font animate-fade-in-up" style="color: var(--color-tertiary); font-size: clamp(1.75rem, 4vw, 2.5rem); font-weight: 800;">Nuestro Catálogo</h1>
+        <p class="text-center text-xl mb-12 muted mx-auto animate-fade-in-up" style="max-width: 64ch;">
           Descubre nuestra amplia variedad de productos artesanales, elaborados con ingredientes naturales y saludables.
         </p>
 
         <!-- Search -->
-        <div class="max-w-2xl mx-auto mb-8">
+        <div class="max-w-2xl mx-auto mb-8 animate-fade-in-up">
           <div class="input-wrap">
             <span class="input-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
@@ -98,7 +98,7 @@
         </div>
 
         <!-- Category Filters -->
-        <div id="catalog-filters" class="filters-row mb-12"></div>
+        <div id="catalog-filters" class="filters-row mb-12 animate-fade-in-up"></div>
 
         <!-- Products Grid -->
         <div id="catalog-grid" class="products-grid"></div>
@@ -193,6 +193,7 @@
 
   <script type="module" src="../../js/cart-drawer.js"></script>
   <script type="module" src="../../js/sync.js"></script>
+  <script type="module" src="../../js/pages/catalog/index.js"></script>
   <script type="module" src="../../js/main.js"></script>
   <script type="module" src="../../js/animations.js"></script>
   <script src="../../js/button-hover.js"></script>

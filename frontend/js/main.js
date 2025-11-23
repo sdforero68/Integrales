@@ -215,17 +215,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // Función para obtener imagen por categoría
     const getCategoryImage = (category) => {
       const categoryMap = {
-        'panaderia': 'categories/panaderia.jpg',
-        'amasijos': 'categories/amasijos.jpg',
-        'galleteria': 'categories/galleteria.jpg',
-        'granola': 'categories/granola.jpg',
-        'frutos-secos': 'categories/frutos-secos.jpg',
-        'envasados': 'categories/envasados.jpg',
+        'panaderia': 'Categorias/Panaderia.jpg',
+        'amasijos': 'Categorias/Amasijos.jpg',
+        'galleteria': 'Categorias/Galleteria.jpg',
+        'granola': 'Categorias/Granola.jpg',
+        'frutos-secos': 'Categorias/FrutosSecos.jpg',
+        'envasados': 'Categorias/Envasados.jpg',
         // Compatibilidad con IDs antiguos
-        'bakery': 'categories/panaderia.jpg',
-        'cookies': 'categories/galleteria.jpg',
-        'nuts': 'categories/frutos-secos.jpg',
-        'jarred': 'categories/envasados.jpg'
+        'bakery': 'Categorias/Panaderia.jpg',
+        'cookies': 'Categorias/Galleteria.jpg',
+        'nuts': 'Categorias/FrutosSecos.jpg',
+        'jarred': 'Categorias/Envasados.jpg'
       };
 
       const relativePath = categoryMap[category];
