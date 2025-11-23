@@ -3,7 +3,7 @@
  * Maneja la visualización y funcionalidad del carrito flotante
  */
 
-import { getCart, saveCart, getCartItemsCount } from './main.js';
+import { getCart, saveCart, getCartItemsCount, resolveProductImage } from './main.js';
 import { updateCartBadge, removeFromCart, updateCartQuantity } from './sync.js';
 
 // Función para formatear precio
@@ -25,34 +25,7 @@ function getRelativePath(targetPage) {
   }
 }
 
-// Función para resolver la ruta de imagen del producto
-function resolveProductImagePath(item) {
-  if (!item?.image) {
-    const currentPath = window.location.pathname;
-    const imageBase = currentPath.includes('/pages/') ? '../../assets/images' : './assets/images';
-    return `${imageBase}/placeholder.svg`;
-  }
-
-  // Si es una URL completa, retornarla directamente
-  if (typeof item.image === 'string' && item.image.startsWith('http')) {
-    return item.image;
-  }
-
-  // Resolver la ruta según la ubicación de la página
-  const currentPath = window.location.pathname;
-  const imageBase = currentPath.includes('/pages/') ? '../../assets/images' : './assets/images';
-  
-  // Si la imagen ya tiene la ruta completa o relativa, usarla
-  const imagePath = typeof item.image === 'string' ? item.image : '';
-  
-  // Si la ruta incluye un directorio (como Catálogo/), construir la ruta completa
-  if (imagePath.includes('/')) {
-    return `${imageBase}/${imagePath}`;
-  }
-  
-  // Si no tiene directorio, asumir que está en products/
-  return `${imageBase}/products/${imagePath}`;
-}
+// Usar resolveProductImage de main.js (ya está importado)
 
 // Función para renderizar el contenido del drawer
 function renderCartDrawer() {
@@ -89,14 +62,12 @@ function renderCartDrawer() {
   // Renderizar items del carrito
   let itemsHTML = '';
   cart.forEach((item) => {
-    // Resolver la ruta de imagen correctamente
-    const productImage = resolveProductImagePath(item);
-    const currentPath = window.location.pathname;
-    const imageBase = currentPath.includes('/pages/') ? '../../assets/images' : './assets/images';
+    // Usar resolveProductImage de main.js para obtener la ruta correcta
+    const productImage = resolveProductImage(item);
     
     itemsHTML += `
       <div class="cart-drawer-item">
-        <img src="${productImage}" alt="${item.name}" class="cart-drawer-item-image" onerror="this.src='${imageBase}/placeholder.svg'" />
+        <img src="${productImage}" alt="${item.name}" class="cart-drawer-item-image" onerror="this.onerror=null;this.src='${productImage}'" />
         <div class="cart-drawer-item-details">
           <h3 class="cart-drawer-item-name">${item.name}</h3>
           <p class="cart-drawer-item-price">${formatPrice(item.price)} c/u</p>
