@@ -554,7 +554,18 @@ document.addEventListener('DOMContentLoaded', () => {
           }
           
           if (addBtn) {
-            addBtn.addEventListener('click', () => handleAddToCart(p));
+            addBtn.addEventListener('click', async (e) => {
+              // Agregar clase 'added' para feedback visual
+              addBtn.classList.add('added');
+              
+              // Llamar a la función de agregar al carrito
+              await handleAddToCart(p);
+              
+              // Después de 2 segundos, remover la clase para volver al estado normal
+              setTimeout(() => {
+                addBtn.classList.remove('added');
+              }, 2000);
+            });
           }
           
           gridEl.appendChild(card);
@@ -616,7 +627,18 @@ document.addEventListener('DOMContentLoaded', () => {
           }
           
           if (addBtn) {
-            addBtn.addEventListener('click', () => handleAddToCart(p));
+            addBtn.addEventListener('click', async (e) => {
+              // Agregar clase 'added' para feedback visual
+              addBtn.classList.add('added');
+              
+              // Llamar a la función de agregar al carrito
+              await handleAddToCart(p);
+              
+              // Después de 2 segundos, remover la clase para volver al estado normal
+              setTimeout(() => {
+                addBtn.classList.remove('added');
+              }, 2000);
+            });
           }
           
           gridEl.appendChild(card);
