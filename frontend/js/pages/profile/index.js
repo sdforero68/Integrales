@@ -119,7 +119,10 @@ function fetchOrders(userId) {
   try {
     if (loadingState) loadingState.hidden = false;
     if (emptyState) emptyState.hidden = true;
-    if (ordersList) ordersList.hidden = true;
+    if (ordersList) {
+      ordersList.hidden = true;
+      ordersList.innerHTML = ''; // Limpiar contenido
+    }
     if (infoNote) infoNote.hidden = true;
     
     // Simular delay de carga
@@ -129,9 +132,15 @@ function fetchOrders(userId) {
       if (loadingState) loadingState.hidden = true;
       
       if (orders.length === 0) {
+        // No hay pedidos - mostrar estado vacío
         if (emptyState) emptyState.hidden = false;
+        if (ordersList) {
+          ordersList.hidden = true;
+          ordersList.innerHTML = ''; // Asegurar que esté vacío
+        }
         if (infoNote) infoNote.hidden = true;
       } else {
+        // Hay pedidos - renderizar lista
         renderOrders(orders);
         if (emptyState) emptyState.hidden = true;
         if (ordersList) ordersList.hidden = false;
@@ -142,6 +151,10 @@ function fetchOrders(userId) {
     console.error('Error fetching orders:', error);
     if (loadingState) loadingState.hidden = true;
     if (emptyState) emptyState.hidden = false;
+    if (ordersList) {
+      ordersList.hidden = true;
+      ordersList.innerHTML = '';
+    }
     if (infoNote) infoNote.hidden = true;
   }
 }
@@ -165,9 +178,17 @@ function renderOrders(orders) {
   
   // Obtener userId para recargar los pedidos del usuario después de eliminar
   const userInfo = getUserInfo();
-  const userId = userInfo?.user?.id || userInfo?.user?.email || 'guest';
+  const user = userInfo?.user;
+  const userId = user?.id || user?.email || 'guest';
   
+  // Limpiar la lista antes de renderizar
   ordersList.innerHTML = '';
+  
+  // Asegurarse de que el estado vacío esté oculto cuando hay pedidos
+  const emptyStateEl = document.getElementById('empty-state');
+  if (emptyStateEl && orders.length > 0) {
+    emptyStateEl.hidden = true;
+  }
   
   orders.forEach((order) => {
     const orderCard = document.createElement('div');
@@ -227,11 +248,37 @@ function renderOrders(orders) {
     if (deleteBtn) {
       deleteBtn.addEventListener('click', () => {
         if (confirm('¿Estás seguro de que deseas eliminar este pedido?')) {
+          // Eliminar el pedido del localStorage primero
           if (deleteOrder(fullOrderId)) {
-            // Recargar pedidos
-            fetchOrders(userId);
+            // Obtener elementos del DOM
+            const ordersListEl = document.getElementById('orders-list');
+            const infoNoteEl = document.querySelector('.order-info-note');
+            const emptyStateEl = document.getElementById('empty-state');
+            const loadingStateEl = document.getElementById('loading-state');
+            
+            // Ocultar inmediatamente la lista y la nota informativa
+            if (ordersListEl) {
+              ordersListEl.hidden = true;
+              ordersListEl.innerHTML = ''; // Limpiar el contenido también
+            }
+            if (infoNoteEl) infoNoteEl.hidden = true;
+            if (loadingStateEl) loadingStateEl.hidden = true;
+            
+            // Verificar si quedan pedidos después de eliminar (después de que se elimine del localStorage)
+            const remainingOrders = getOrdersByUserId(userId);
+            
+            if (remainingOrders.length === 0) {
+              // No hay pedidos - mostrar estado vacío inmediatamente y asegurarse de que la lista esté oculta
+              if (emptyStateEl) emptyStateEl.hidden = false;
+              if (ordersListEl) ordersListEl.hidden = true;
+              if (infoNoteEl) infoNoteEl.hidden = true;
+            } else {
+              // Hay pedidos - recargar la lista
+              fetchOrders(userId);
+            }
+            
             if (window.toast) {
-              window.toast.success('Pedido eliminado');
+              window.toast.success('Pedido eliminado del historial');
             } else {
               alert('Pedido eliminado');
             }
