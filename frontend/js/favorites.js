@@ -9,11 +9,21 @@ const FAVORITES_STORAGE_KEY = 'app_favorites';
 
 // Cache de favoritos
 let favoritesCache = null;
+let favoritesCacheTime = null;
+const CACHE_DURATION = 30000; // 30 segundos de cache
 
 /**
- * Sincroniza favoritos desde la API
+ * Sincroniza favoritos desde la API (con cache para evitar peticiones repetidas)
  */
-async function syncFavoritesFromAPI() {
+async function syncFavoritesFromAPI(force = false) {
+  // Si hay cache reciente y no se fuerza, usar cache
+  if (!force && favoritesCache !== null && favoritesCacheTime) {
+    const now = Date.now();
+    if (now - favoritesCacheTime < CACHE_DURATION) {
+      return favoritesCache;
+    }
+  }
+
   try {
     const response = await api.usuarios.getFavoritos();
     
@@ -28,6 +38,8 @@ async function syncFavoritesFromAPI() {
         category: fav.categoria_slug
       }));
       
+      favoritesCacheTime = Date.now();
+      
       // Guardar en localStorage para compatibilidad
       localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(favoritesCache));
       
@@ -40,6 +52,7 @@ async function syncFavoritesFromAPI() {
   // Fallback a localStorage
   const favoritesStr = localStorage.getItem(FAVORITES_STORAGE_KEY);
   favoritesCache = favoritesStr ? JSON.parse(favoritesStr) : [];
+  favoritesCacheTime = Date.now();
   return favoritesCache;
 }
 

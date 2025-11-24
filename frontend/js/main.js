@@ -136,8 +136,16 @@ async function loadProductsFromAPI() {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-  // Cargar productos desde la API
-  await loadProductsFromAPI();
+  // Manejar errores de carga
+  try {
+    // Cargar productos desde la API
+    await loadProductsFromAPI();
+  } catch (error) {
+    console.warn('⚠️ Error al cargar productos desde API, usando productos estáticos:', error.message);
+    // Continuar con productos estáticos si la API falla
+    products = staticProducts;
+    categories = staticCategories;
+  }
   
   const navbar = document.querySelector('.navbar');
   const navHeight = navbar ? navbar.offsetHeight : 0;

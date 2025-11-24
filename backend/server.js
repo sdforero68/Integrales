@@ -27,9 +27,27 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middlewares
+const corsOrigins = process.env.CORS_ORIGIN?.split(',').map(o => o.trim()) || [
+  'http://localhost:5500',
+  'http://127.0.0.1:5500',
+  'http://localhost:8000',
+  'http://127.0.0.1:8000'
+];
+
 app.use(cors({
-  origin: process.env.CORS_ORIGIN?.split(',') || ['http://localhost:5500', 'http://127.0.0.1:5500'],
-  credentials: true
+  origin: function (origin, callback) {
+    // Permitir requests sin origin (como Postman o curl)
+    if (!origin) return callback(null, true);
+    
+    if (corsOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV === 'development') {
+      callback(null, true);
+    } else {
+      callback(null, true); // En desarrollo, permitir todos
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Session-ID']
 }));
 
 app.use(express.json());
