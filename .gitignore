@@ -20,5 +20,5 @@ Thumbs.db
 # Node modules (si usas npm en el futuro)
 node_modules/
 
-# Archivos de Vercel
-.vercel
+# Archivos de Render
+.render
