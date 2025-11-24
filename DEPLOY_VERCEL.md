@@ -34,6 +34,7 @@ Si tienes una base de datos local, necesitarás:
 
    - Para MySQL: `backend/sql/init_mysql.sql`
    - Para PostgreSQL: `backend/sql/init_postgresql.sql`
+   - Para Supabase: `backend/sql/init_supabase.sql` (recomendado)
    - Para SQL Server: `backend/sql/init_sqlserver.sql`
 
 3. Anota las credenciales de conexión:
@@ -42,6 +43,8 @@ Si tienes una base de datos local, necesitarás:
    - Nombre de la base de datos
    - Usuario
    - Contraseña
+
+**📘 Si usas Supabase, consulta la guía detallada en `SUPABASE_SETUP.md`**
 
 ## 📝 Paso 2: Preparar el Proyecto Localmente
 
