@@ -36,6 +36,7 @@ Si prefieres usar Supabase u otro servicio:
 ### Configurar la Base de Datos
 
 1. Ejecuta el script SQL correspondiente:
+
    - Para PostgreSQL (Render/Supabase): `backend/sql/init_postgresql.sql` o `backend/sql/init_supabase.sql`
    - Para MySQL: `backend/sql/init_mysql.sql`
 
@@ -51,6 +52,7 @@ Si prefieres usar Supabase u otro servicio:
 ### 2.1 Verificar estructura del proyecto
 
 Asegúrate de que tu proyecto tenga esta estructura:
+
 ```
 Integrales/
 ├── backend/
@@ -124,12 +126,27 @@ git push -u origin main
 
 **Variables de Entorno:**
 
-Antes de hacer clic en "Create Web Service", haz clic en **"Advanced"** y luego en **"Add Environment Variable"** para agregar cada variable:
+Antes de hacer clic en "Create Web Service", haz clic en **"Advanced"** y luego en **"Add Environment Variable"** para agregar cada variable.
+
+**Si usas Supabase**, consulta `CONFIGURACION_SUPABASE.md` para valores exactos basados en tu cadena de conexión.
+
+**Ejemplo para Supabase:**
 
 ```
-DB_CLIENT = postgresql (o mysql según tu BD)
+DB_CLIENT = postgresql
+DB_HOST = db.ylrhkmzqylwqbjpxlllk.supabase.co
+DB_PORT = 5432
+DB_NAME = postgres
+DB_USER = postgres
+DB_PASSWORD = tu_contraseña_supabase
+```
+
+**Ejemplo para MySQL:**
+
+```
+DB_CLIENT = mysql
 DB_HOST = tu-host-de-base-de-datos.com
-DB_PORT = 5432 (o 3306 para MySQL)
+DB_PORT = 3306
 DB_NAME = integrales_db
 DB_USER = tu_usuario
 DB_PASSWORD = tu_contraseña
@@ -159,6 +176,7 @@ Para cada servicio (backend y frontend si es necesario):
 3. Agrega las variables de entorno necesarias
 
 **Para el Backend (API):**
+
 ```
 DB_CLIENT = postgresql
 DB_HOST = [tu-host]
@@ -173,10 +191,12 @@ DB_PASSWORD = [tu-contraseña]
 ### 5.1 Obtener URLs
 
 Render te dará URLs para cada servicio:
+
 - Backend API: `https://anita-integrales-api.onrender.com`
 - Frontend: `https://anita-integrales-frontend.onrender.com` (si lo desplegaste)
 
-**Importante**: 
+**Importante**:
+
 - Las URLs de Render tienen el formato: `https://[nombre-servicio].onrender.com`
 - El backend estará disponible en: `https://anita-integrales-api.onrender.com`
 - Los endpoints estarán en: `https://anita-integrales-api.onrender.com/auth/login.php`, etc.
@@ -196,12 +216,14 @@ curl -X POST https://anita-integrales-api.onrender.com/auth/register.php \
 ```
 
 **Nota**: En Render, las rutas son relativas al directorio `backend/api`, por lo que:
+
 - `/auth/login.php` apunta a `backend/api/auth/login.php`
 - `/orders.php` apunta a `backend/api/orders.php`
 
 ### 5.3 Verificar logs
 
 Si hay errores:
+
 1. Ve al dashboard de Render
 2. Selecciona tu servicio
 3. Ve a la pestaña **"Logs"**
@@ -217,22 +239,23 @@ Crea `frontend/js/config/api.js`:
 // Configuración de la API
 export const API_CONFIG = {
   // URL de producción en Render (reemplaza con tu URL real)
-  baseURL: 'https://anita-integrales-api.onrender.com',
-  
+  baseURL: "https://anita-integrales-api.onrender.com",
+
   // Para desarrollo local
   // baseURL: 'http://localhost/backend/api'
 };
 
 export function getApiBaseUrl() {
   // Detectar si estamos en producción
-  if (window.location.hostname.includes('onrender.com')) {
-    return 'https://anita-integrales-api.onrender.com';
+  if (window.location.hostname.includes("onrender.com")) {
+    return "https://anita-integrales-api.onrender.com";
   }
-  return 'http://localhost/backend/api';
+  return "http://localhost/backend/api";
 }
 ```
 
 **Nota**: La URL base NO incluye `/api` porque Render sirve directamente desde `backend/api`, así que los endpoints serán:
+
 - `https://anita-integrales-api.onrender.com/auth/login.php`
 - `https://anita-integrales-api.onrender.com/orders.php`
 
@@ -258,6 +281,7 @@ Si cambias el dominio, actualiza las URLs en el frontend si es necesario.
 ### Error: "Database connection failed"
 
 **Solución:**
+
 - Verifica que las variables de entorno estén correctamente configuradas
 - Asegúrate de que tu base de datos permita conexiones desde las IPs de Render
 - Verifica que el host, puerto, usuario y contraseña sean correctos
@@ -266,6 +290,7 @@ Si cambias el dominio, actualiza las URLs en el frontend si es necesario.
 ### Error: "404 Not Found" en endpoints
 
 **Solución:**
+
 - Verifica que el Start Command sea correcto: `php -S 0.0.0.0:$PORT -t backend/api`
 - Verifica que las rutas estén configuradas correctamente
 - Asegúrate de que los archivos PHP estén en `backend/api/`
@@ -273,6 +298,7 @@ Si cambias el dominio, actualiza las URLs en el frontend si es necesario.
 ### Error: "500 Internal Server Error"
 
 **Solución:**
+
 - Revisa los logs en Render
 - Verifica que PHP esté instalado (Render lo instala automáticamente)
 - Verifica que las credenciales de la base de datos sean correctas
@@ -281,6 +307,7 @@ Si cambias el dominio, actualiza las URLs en el frontend si es necesario.
 ### El servicio se duerme (Free tier)
 
 **Solución:**
+
 - El plan gratuito de Render duerme los servicios después de 15 minutos de inactividad
 - La primera petición después de dormir puede tardar ~30 segundos
 - Considera usar un servicio de "ping" para mantenerlo activo
@@ -289,6 +316,7 @@ Si cambias el dominio, actualiza las URLs en el frontend si es necesario.
 ### La base de datos no acepta conexiones externas
 
 **Solución:**
+
 - Si usas Render Database, las conexiones son automáticas
 - Si usas una base de datos externa, verifica que permita conexiones desde cualquier IP (0.0.0.0/0)
 - O configura el firewall para permitir las IPs de Render
@@ -309,6 +337,7 @@ Si cambias el dominio, actualiza las URLs en el frontend si es necesario.
 ### 9.3 Actualizar código
 
 Cada vez que hagas `git push` a tu repositorio, Render automáticamente:
+
 - Detectará los cambios
 - Hará un nuevo deploy
 - Te notificará cuando termine
@@ -320,12 +349,14 @@ Render tiene auto-deploy habilitado por defecto. Cada push a la rama principal (
 ## 💰 Planes de Render
 
 ### Free Tier (Gratis)
+
 - ✅ Servicios web gratuitos
 - ✅ Base de datos PostgreSQL gratuita (90 días, luego $7/mes)
 - ⚠️ Los servicios se duermen después de 15 min de inactividad
 - ⚠️ Primera petición después de dormir tarda ~30 segundos
 
 ### Paid Plans
+
 - Servicios siempre activos
 - Más recursos
 - Soporte prioritario
@@ -355,6 +386,7 @@ Antes de considerar el deploy completo, verifica:
 ## 🆘 Soporte
 
 Si tienes problemas:
+
 1. Revisa los logs en Render
 2. Verifica la documentación de tu proveedor de base de datos
 3. Consulta los issues comunes arriba
@@ -363,4 +395,3 @@ Si tienes problemas:
 ---
 
 ¡Feliz deploy en Render! 🚀
-
