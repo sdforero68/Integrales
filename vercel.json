@@ -19,11 +19,5 @@
       "src": "/(.*)",
       "dest": "/frontend/$1"
     }
-  ],
-  "functions": {
-    "backend/api/**/*.php": {
-      "runtime": "php@8.2"
-    }
-  }
+  ]
 }
-
