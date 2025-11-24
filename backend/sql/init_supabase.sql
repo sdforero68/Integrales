@@ -1,15 +1,16 @@
--- Script de inicialización de base de datos SQL
+-- Script de inicialización específico para Supabase (PostgreSQL)
 -- Base de datos para Anita Integrales E-commerce
--- Compatible con PostgreSQL, MySQL, SQL Server, SQLite, etc.
-
--- Crear base de datos (ejecutar solo si no existe)
--- PostgreSQL: CREATE DATABASE integrales_db;
--- MySQL: CREATE DATABASE IF NOT EXISTS integrales_db;
--- SQL Server: CREATE DATABASE integrales_db;
+-- 
+-- INSTRUCCIONES:
+-- 1. Ve a tu proyecto en Supabase
+-- 2. Abre el SQL Editor
+-- 3. Copia y pega este script completo
+-- 4. Haz clic en "Run" o presiona Ctrl+Enter
+-- 5. Verifica en Table Editor que las tablas se crearon
 
 -- Tabla de usuarios
 CREATE TABLE IF NOT EXISTS usuarios (
-    id SERIAL PRIMARY KEY,  -- PostgreSQL usa SERIAL, MySQL usa INT AUTO_INCREMENT
+    id SERIAL PRIMARY KEY,
     email VARCHAR(255) UNIQUE NOT NULL,
     password_hash VARCHAR(255) NOT NULL,
     name VARCHAR(255) NOT NULL,
@@ -18,7 +19,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Índice para email (si no se crea automáticamente con UNIQUE)
+-- Índice para email
 CREATE INDEX IF NOT EXISTS idx_usuarios_email ON usuarios(email);
 
 -- Tabla de pedidos
@@ -38,7 +39,9 @@ CREATE TABLE IF NOT EXISTS pedidos (
     notes TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES usuarios(id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES usuarios(id) ON DELETE CASCADE,
+    CONSTRAINT check_delivery_method CHECK (delivery_method IN ('delivery', 'pickup')),
+    CONSTRAINT check_status CHECK (status IN ('pendiente', 'confirmado', 'enviado', 'entregado', 'cancelado'))
 );
 
 -- Índices para pedidos
@@ -61,6 +64,32 @@ CREATE TABLE IF NOT EXISTS pedido_items (
 -- Índice para items de pedido
 CREATE INDEX IF NOT EXISTS idx_pedido_items_order_id ON pedido_items(order_id);
 
--- Nota: Para MySQL, reemplazar SERIAL con INT AUTO_INCREMENT
--- Nota: Para SQL Server, usar IDENTITY(1,1) en lugar de SERIAL
--- Nota: Para actualizar updated_at automáticamente, usar triggers según el SGBD
+-- Trigger para actualizar updated_at automáticamente
+CREATE OR REPLACE FUNCTION update_updated_at_column()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = CURRENT_TIMESTAMP;
+    RETURN NEW;
+END;
+$$ language 'plpgsql';
+
+-- Aplicar trigger a usuarios
+DROP TRIGGER IF EXISTS update_usuarios_updated_at ON usuarios;
+CREATE TRIGGER update_usuarios_updated_at 
+    BEFORE UPDATE ON usuarios
+    FOR EACH ROW 
+    EXECUTE FUNCTION update_updated_at_column();
+
+-- Aplicar trigger a pedidos
+DROP TRIGGER IF EXISTS update_pedidos_updated_at ON pedidos;
+CREATE TRIGGER update_pedidos_updated_at 
+    BEFORE UPDATE ON pedidos
+    FOR EACH ROW 
+    EXECUTE FUNCTION update_updated_at_column();
+
+-- Mensaje de confirmación
+DO $$
+BEGIN
+    RAISE NOTICE 'Tablas creadas exitosamente: usuarios, pedidos, pedido_items';
+END $$;
+
