@@ -1,0 +1,23 @@
+# Configuración para Apache (si se usa localmente)
+# En Render, esto no es necesario, pero puede ser útil para desarrollo local
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+    
+    # Redirigir /api/* a backend/api/*
+    RewriteRule ^api/(.*)$ backend/api/$1 [L]
+    
+    # Si el archivo o directorio no existe, redirigir al index
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ index.php [QSA,L]
+</IfModule>
+
+# Headers CORS
+<IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "*"
+    Header set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+    Header set Access-Control-Allow-Headers "Content-Type, Authorization"
+</IfModule>
+

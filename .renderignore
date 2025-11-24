@@ -1,4 +1,4 @@
-# Archivos y directorios a ignorar en Vercel
+# Archivos y directorios a ignorar en Render
 
 # Configuración local de base de datos (no subir credenciales)
 backend/config/database.env
@@ -21,7 +21,6 @@ Thumbs.db
 *.swp
 *.swo
 
-# Documentación (opcional, puedes comentar si quieres incluirlos)
-# README.md
-# *.md
+# Archivos de Vercel (si los hay)
+.vercel/
 

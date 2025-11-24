@@ -1,0 +1,20 @@
+# Configuración para Render
+# Este archivo es opcional - puedes configurar todo desde el dashboard de Render
+# Si usas este archivo, Render lo detectará automáticamente
+
+services:
+  # Backend PHP API
+  - type: web
+    name: anita-integrales-api
+    env: php
+    buildCommand: ""
+    startCommand: php -S 0.0.0.0:$PORT -t backend/api
+    # Variables de entorno - configúralas en el dashboard de Render
+    # DB_CLIENT, DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD
+
+  # Frontend Static (opcional - puedes desplegarlo por separado)
+  - type: web
+    name: anita-integrales-frontend
+    env: static
+    buildCommand: ""
+    staticPublishPath: ./frontend
