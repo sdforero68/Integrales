@@ -4,7 +4,7 @@
  */
 
 import { getCart, saveCart, getCartItemsCount, resolveProductImage } from './main.js';
-import { updateCartBadge, removeFromCart, updateCartQuantity } from './sync.js';
+import { updateCartBadge, removeFromCart, updateCartQuantity, syncCartFromAPI } from './sync.js';
 
 // Función para formatear precio
 function formatPrice(price) {
@@ -28,11 +28,14 @@ function getRelativePath(targetPage) {
 // Usar resolveProductImage de main.js (ya está importado)
 
 // Función para renderizar el contenido del drawer
-function renderCartDrawer() {
+async function renderCartDrawer() {
   const drawerBody = document.getElementById('cart-drawer-body');
   const drawerFooter = document.getElementById('cart-drawer-footer');
   
   if (!drawerBody || !drawerFooter) return;
+  
+  // Sincronizar carrito desde la API antes de renderizar
+  await syncCartFromAPI();
   
   const cart = getCart();
   
@@ -120,31 +123,31 @@ function renderCartDrawer() {
       const itemId = btn.dataset.id;
       
       if (action === 'remove') {
-        removeFromCart(itemId);
+        await removeFromCart(itemId);
       } else if (action === 'increase') {
         const item = cart.find(item => item.id === itemId);
         if (item) {
-          updateCartQuantity(itemId, item.quantity + 1);
+          await updateCartQuantity(itemId, item.quantity + 1);
         }
       } else if (action === 'decrease') {
         const item = cart.find(item => item.id === itemId);
         if (item) {
-          updateCartQuantity(itemId, item.quantity - 1);
+          await updateCartQuantity(itemId, item.quantity - 1);
         }
       }
       
-      renderCartDrawer();
+      await renderCartDrawer();
     });
   });
 }
 
 // Función para abrir el drawer
-export function openCartDrawer() {
+export async function openCartDrawer() {
   const drawer = document.getElementById('cart-drawer');
   if (drawer) {
     drawer.hidden = false;
     document.body.style.overflow = 'hidden';
-    renderCartDrawer();
+    await renderCartDrawer();
   }
 }
 

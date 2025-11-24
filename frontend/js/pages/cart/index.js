@@ -1,6 +1,6 @@
 // Importar funciones del carrito desde main.js
 import { getCart, saveCart, getCartItemsCount, CART_STORAGE_KEY } from '../../main.js';
-import { updateCartBadge } from '../../sync.js';
+import { updateCartBadge, removeFromCart, updateCartQuantity, syncCartFromAPI } from '../../sync.js';
 
 // Función para formatear precio
 function formatPrice(price) {
@@ -40,10 +40,13 @@ function resolveProductImagePath(item) {
 }
 
 // Función para renderizar items del carrito
-function renderCartItems() {
+async function renderCartItems() {
   const cartItemsList = document.getElementById('cart-items-list');
   const cartEmpty = document.getElementById('cart-empty');
   const cartContent = document.getElementById('cart-content');
+  
+  // Sincronizar carrito desde la API antes de renderizar
+  await syncCartFromAPI();
   
   const cart = getCart();
   
@@ -112,10 +115,10 @@ function renderCartItems() {
   
   // Agregar event listeners
   cartItemsList.querySelectorAll('[data-action]').forEach((btn) => {
-    btn.addEventListener('click', (e) => {
+    btn.addEventListener('click', async (e) => {
       const action = btn.dataset.action;
       const itemId = btn.dataset.id;
-      handleCartAction(action, itemId);
+      await handleCartAction(action, itemId);
     });
   });
   
@@ -123,33 +126,30 @@ function renderCartItems() {
 }
 
 // Función para manejar acciones del carrito
-function handleCartAction(action, itemId) {
-  const cart = getCart();
-  
+async function handleCartAction(action, itemId) {
   if (action === 'remove') {
-    const newCart = cart.filter(item => item.id !== itemId);
-    saveCart(newCart);
+    await removeFromCart(itemId);
   } else if (action === 'increase') {
+    const cart = getCart();
     const item = cart.find(item => item.id === itemId);
     if (item) {
-      item.quantity += 1;
-      saveCart(cart);
+      await updateCartQuantity(itemId, item.quantity + 1);
     }
   } else if (action === 'decrease') {
+    const cart = getCart();
     const item = cart.find(item => item.id === itemId);
     if (item) {
-      item.quantity -= 1;
-      if (item.quantity <= 0) {
-        const newCart = cart.filter(i => i.id !== itemId);
-        saveCart(newCart);
+      const newQuantity = item.quantity - 1;
+      if (newQuantity <= 0) {
+        await removeFromCart(itemId);
       } else {
-        saveCart(cart);
+        await updateCartQuantity(itemId, newQuantity);
       }
     }
   }
   
-  renderCartItems();
-  updateCartBadge(); // Usar función de sync.js
+  await renderCartItems();
+  await updateCartBadge(); // Usar función de sync.js
 }
 
 // Función para actualizar el resumen
@@ -176,9 +176,9 @@ function updateSummary() {
 }
 
 // Inicializar cuando el DOM esté listo
-document.addEventListener('DOMContentLoaded', () => {
-  renderCartItems();
-  updateCartBadge();
+document.addEventListener('DOMContentLoaded', async () => {
+  await renderCartItems();
+  await updateCartBadge();
   
   // Manejar click en botón de checkout
   const checkoutBtn = document.getElementById('checkout-btn');

@@ -1,5 +1,7 @@
 // Importar funciones del carrito desde main.js
 import { getCart, saveCart, CART_STORAGE_KEY } from '../../main.js';
+import { api } from '../../config/api.js';
+import { syncCartFromAPI } from '../../sync.js';
 
 // Constantes
 const ORDERS_STORAGE_KEY = 'app_orders';
@@ -105,9 +107,12 @@ function saveOrder(order) {
 }
 
 // Función para renderizar items del checkout
-function renderCheckoutItems() {
+async function renderCheckoutItems() {
   const itemsList = document.getElementById('checkout-items-list');
   if (!itemsList) return;
+  
+  // Sincronizar carrito desde la API antes de renderizar
+  await syncCartFromAPI();
   
   const cart = getCart();
   itemsList.innerHTML = '';
@@ -322,59 +327,76 @@ function handleSubmit(e) {
   if (btnLoading) btnLoading.hidden = false;
   if (errorEl) errorEl.hidden = true;
   
-  // Simular procesamiento (en una app real, harías una llamada API aquí)
-  setTimeout(() => {
-    try {
-      // Crear orden
-      const user = getUserInfo();
-      // Obtener userId del usuario logueado (compatibilidad con profile.js)
-      let userId = 'guest';
-      if (user) {
-        // user puede ser un objeto con { user, accessToken } o directamente el objeto user
-        const userObj = user.user || user;
-        userId = userObj?.id || userObj?.email || customerInfo.email || 'guest';
-      } else {
-        userId = customerInfo.email || 'guest';
-      }
-      
-      const order = {
+  // Crear pedido en el backend
+  try {
+    // Preparar items para la API
+    const items = cart.map(item => ({
+      producto_id: parseInt(item.id),
+      cantidad: item.quantity
+    }));
+    
+    // Mapear métodos de entrega y pago
+    const metodoEntrega = deliveryMethod === 'delivery' ? 'domicilio' : 'recogida';
+    const metodoPago = paymentMethod === 'cash' ? 'efectivo' : 
+                      paymentMethod === 'transfer' ? 'transferencia' : 
+                      paymentMethod === 'nequi' ? 'nequi' : 'efectivo';
+    
+    // Crear pedido en el backend
+    const response = await api.pedidos.create({
+      metodo_entrega: metodoEntrega,
+      metodo_pago: metodoPago,
+      direccion_entrega: deliveryMethod === 'delivery' ? customerInfo.address : null,
+      telefono_contacto: customerInfo.phone,
+      notas: customerInfo.notes || null,
+      fecha_entrega: null, // Se puede agregar un selector de fecha después
+      items: items
+    });
+    
+    if (response.success && response.data) {
+      // Guardar también en localStorage para compatibilidad
+      const savedOrder = saveOrder({
+        id: response.data.id,
+        numero_pedido: response.data.numero_pedido,
         items: cart,
-        total,
-        subtotal,
-        deliveryFee,
-        deliveryMethod,
-        deliveryAddress: deliveryMethod === 'delivery' ? customerInfo.address : null,
-        paymentMethod,
-        customerInfo,
-        userId: userId
-      };
+        total: response.data.total,
+        subtotal: response.data.subtotal,
+        deliveryFee: response.data.costo_envio,
+        deliveryMethod: deliveryMethod,
+        deliveryAddress: response.data.direccion_entrega,
+        paymentMethod: paymentMethod,
+        customerInfo: customerInfo,
+        status: response.data.estado,
+        createdAt: response.data.created_at
+      });
       
-      // Guardar orden
-      const savedOrder = saveOrder(order);
-      
-      // Limpiar carrito
+      // Limpiar carrito (también se limpia automáticamente en el backend)
       saveCart([]);
       
-      // Guardar el ID del pedido en sessionStorage para la página de éxito
-      sessionStorage.setItem('lastOrderId', savedOrder.id);
+      // Guardar el ID del pedido para la página de éxito
+      sessionStorage.setItem('lastOrderId', response.data.id);
+      sessionStorage.setItem('lastOrderNumber', response.data.numero_pedido);
       
       // Redirigir a página de confirmación
-      window.location.href = `../order-success/index.html?orderId=${savedOrder.id}`;
-    } catch (error) {
-      console.error('Error al procesar pedido:', error);
-      if (errorEl) {
-        errorEl.textContent = 'Error al procesar el pedido. Por favor intenta de nuevo.';
-        errorEl.hidden = false;
-      }
-      submitBtn.disabled = false;
-      btnText.hidden = false;
-      if (btnLoading) btnLoading.hidden = true;
+      window.location.href = `../order-success/index.html?orderId=${response.data.id}`;
+    } else {
+      throw new Error('Error al crear el pedido');
     }
-  }, 1000);
+  } catch (error) {
+    console.error('Error al procesar pedido:', error);
+    if (errorEl) {
+      errorEl.textContent = error.message || 'Error al procesar el pedido. Por favor intenta de nuevo.';
+      errorEl.hidden = false;
+    }
+    submitBtn.disabled = false;
+    btnText.hidden = false;
+    if (btnLoading) btnLoading.hidden = true;
+  }
 }
 
 // Inicializar cuando el DOM esté listo
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+  // Sincronizar carrito desde la API
+  await syncCartFromAPI();
   const cart = getCart();
   
   // Verificar si el usuario está logueado
@@ -395,7 +417,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   
   // Renderizar items y actualizar totales
-  renderCheckoutItems();
+  await renderCheckoutItems();
   updateTotals();
   
   // Llenar datos del usuario

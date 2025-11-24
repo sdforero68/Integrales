@@ -43,14 +43,29 @@ export async function apiRequest(endpoint, options = {}) {
       }
     });
 
-    const data = await response.json();
+    // Verificar si la respuesta es JSON
+    const contentType = response.headers.get('content-type');
+    let data;
+    
+    if (contentType && contentType.includes('application/json')) {
+      data = await response.json();
+    } else {
+      const text = await response.text();
+      throw new Error(`Respuesta no válida del servidor: ${text.substring(0, 100)}`);
+    }
 
     if (!response.ok) {
-      throw new Error(data.error || `Error ${response.status}`);
+      throw new Error(data.error || data.message || `Error ${response.status}`);
     }
 
     return data;
   } catch (error) {
+    // Si es un error de red, no mostrar el error completo
+    if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+      console.warn('⚠️ No se pudo conectar con el backend. Verifica que esté corriendo en http://localhost:3000');
+      throw new Error('No se pudo conectar con el servidor. Por favor, verifica que el backend esté corriendo.');
+    }
+    
     console.error('Error en petición API:', error);
     throw error;
   }

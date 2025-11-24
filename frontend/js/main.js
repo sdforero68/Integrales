@@ -1,5 +1,10 @@
-import { products, categories } from './products.js';
+import { products as staticProducts, categories as staticCategories } from './products.js';
+import { api } from './config/api.js';
 import { initToaster } from './UI/toaster.js';
+
+// Variables globales para productos y categorías desde API
+let products = [];
+let categories = [];
 
 // Sistema de carrito con localStorage (scope global)
 const CART_STORAGE_KEY = 'app_cart';
@@ -81,7 +86,59 @@ export const resolveProductImage = (product) => {
 // Exportar funciones del carrito para uso en otros módulos
 export { getCart, saveCart, getCartItemsCount, CART_STORAGE_KEY };
 
-document.addEventListener('DOMContentLoaded', () => {
+// Función para cargar productos y categorías desde la API
+async function loadProductsFromAPI() {
+  try {
+    // Cargar categorías
+    const categoriasResponse = await api.categorias.getAll();
+    if (categoriasResponse.success && categoriasResponse.data) {
+      categories = categoriasResponse.data.map(cat => ({
+        id: cat.slug,
+        name: cat.nombre
+      }));
+    } else {
+      categories = staticCategories;
+    }
+
+    // Cargar productos
+    const productosResponse = await api.productos.getAll();
+    if (productosResponse.success && productosResponse.data) {
+      products = productosResponse.data.map(prod => ({
+        id: prod.id.toString(),
+        name: prod.nombre,
+        category: prod.categoria_slug,
+        price: parseFloat(prod.precio),
+        description: prod.descripcion || '',
+        ingredients: prod.ingredientes || '',
+        benefits: prod.beneficios || '',
+        image: prod.imagen || ''
+      }));
+    } else {
+      products = staticProducts;
+    }
+    
+    console.log(`✅ Cargados ${products.length} productos y ${categories.length} categorías desde la API`);
+    
+    // Disparar evento para que el catálogo se renderice
+    window.dispatchEvent(new CustomEvent('productsLoaded'));
+    
+    return true;
+  } catch (error) {
+    console.warn('⚠️ No se pudo cargar desde la API, usando datos estáticos:', error);
+    products = staticProducts;
+    categories = staticCategories;
+    
+    // Disparar evento incluso con datos estáticos
+    window.dispatchEvent(new CustomEvent('productsLoaded'));
+    
+    return false;
+  }
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+  // Cargar productos desde la API
+  await loadProductsFromAPI();
+  
   const navbar = document.querySelector('.navbar');
   const navHeight = navbar ? navbar.offsetHeight : 0;
 
@@ -268,7 +325,7 @@ document.addEventListener('DOMContentLoaded', () => {
       try {
         // Importar función de sincronización
         const { addToCart } = await import('./sync.js');
-        addToCart(product);
+        await addToCart(product);
       } catch (error) {
         // Fallback local si sync.js no está disponible
         console.error('Error importing sync:', error);
@@ -465,7 +522,7 @@ document.addEventListener('DOMContentLoaded', () => {
         (async () => {
           try {
             const { isFavorite: checkFavorite } = await import('./favorites.js');
-            const isFav = checkFavorite(p.id);
+            const isFav = await checkFavorite(p.id);
           
           card.innerHTML = `
             <div class="product-media">
@@ -518,7 +575,7 @@ document.addEventListener('DOMContentLoaded', () => {
           if (favoriteBtn) {
             favoriteBtn.addEventListener('click', async (e) => {
               e.stopPropagation();
-              const { toggleFavorite, isLoggedIn } = await import('./favorites.js');
+              const { toggleFavorite, isLoggedIn, isFavorite: checkFavorite } = await import('./favorites.js');
               
               if (!isLoggedIn()) {
                 if (window.toast) {
@@ -529,8 +586,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
               }
               
-              const result = toggleFavorite(p);
-              const isFav = checkFavorite(p.id);
+              const result = await toggleFavorite(p);
+              const isFav = await checkFavorite(p.id);
               
               // Actualizar el botón visualmente
               favoriteBtn.classList.toggle('active', isFav);
@@ -672,16 +729,26 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // Verificar que products y categories estén disponibles
-    if (!products || products.length === 0) {
-      console.error('Error: No se pudieron cargar los productos');
-      if (gridEl) {
-        gridEl.innerHTML = '<div class="text-center py-16"><p class="text-xl">Error al cargar los productos. Por favor, recarga la página.</p></div>';
+    // Función para inicializar el catálogo
+    const initCatalog = () => {
+      if (!products || products.length === 0) {
+        console.error('Error: No se pudieron cargar los productos');
+        if (gridEl) {
+          gridEl.innerHTML = '<div class="text-center py-16"><p class="text-xl">Error al cargar los productos. Por favor, recarga la página.</p></div>';
+        }
+      } else {
+        console.log(`Productos cargados: ${products.length}`);
+        renderFilters();
+        renderGrid();
       }
+    };
+
+    // Inicializar inmediatamente si ya hay productos, o esperar a que se carguen
+    if (products && products.length > 0) {
+      initCatalog();
     } else {
-      console.log(`Productos cargados: ${products.length}`);
-      renderFilters();
-      renderGrid();
+      // Escuchar evento de productos cargados
+      window.addEventListener('productsLoaded', initCatalog, { once: true });
     }
   } else {
     console.warn('Elementos del catálogo no encontrados (catalog-grid o catalog-filters)');
