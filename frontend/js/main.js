@@ -519,6 +519,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         return;
       }
       if (emptyEl) emptyEl.hidden = true;
+      
+      // Cargar favoritos una sola vez para todos los productos
+      let favoritesSet = new Set();
+      try {
+        const { getFavorites } = await import('./favorites.js');
+        const favorites = await getFavorites();
+        favoritesSet = new Set(favorites.map(fav => fav.id.toString()));
+      } catch (error) {
+        console.warn('No se pudieron cargar favoritos:', error);
+      }
+      
       list.forEach((p) => {
         const card = document.createElement('div');
         card.className = 'product-card';
@@ -526,13 +537,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Obtener imagen del producto o usar imagen por categoría
         const productImage = resolveProductImage(p);
         
-        // Verificar si el producto está en favoritos (usar async/await de forma más limpia)
-        (async () => {
-          try {
-            const { isFavorite: checkFavorite } = await import('./favorites.js');
-            const isFav = await checkFavorite(p.id);
+        // Verificar si el producto está en favoritos usando el set cargado
+        const isFav = favoritesSet.has(p.id.toString());
           
-          card.innerHTML = `
+        card.innerHTML = `
             <div class="product-media">
               <button class="product-favorite-btn ${isFav ? 'active' : ''}" data-product-id="${p.id}" aria-label="Agregar a favoritos">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="${isFav ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -595,17 +603,28 @@ document.addEventListener('DOMContentLoaded', async () => {
               }
               
               const result = await toggleFavorite(p);
-              const isFav = await checkFavorite(p.id);
+              
+              // Recargar favoritos después del toggle para actualizar el cache
+              const { getFavorites } = await import('./favorites.js');
+              const updatedFavorites = await getFavorites();
+              const updatedFavoritesSet = new Set(updatedFavorites.map(fav => fav.id.toString()));
+              const newIsFav = updatedFavoritesSet.has(p.id.toString());
               
               // Actualizar el botón visualmente
-              favoriteBtn.classList.toggle('active', isFav);
+              favoriteBtn.classList.toggle('active', newIsFav);
               const svg = favoriteBtn.querySelector('svg');
               if (svg) {
-                svg.setAttribute('fill', isFav ? 'currentColor' : 'none');
+                svg.setAttribute('fill', newIsFav ? 'currentColor' : 'none');
               }
               
-              if (window.toast) {
-                window.toast.success(result.message);
+              if (result.success) {
+                if (window.toast) {
+                  window.toast.success(result.message);
+                }
+              } else {
+                if (window.toast) {
+                  window.toast.error(result.message);
+                }
               }
             });
           }
