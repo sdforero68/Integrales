@@ -3,14 +3,67 @@
  * Gestiona los productos favoritos del usuario
  */
 
+import { api } from './config/api.js';
+
 const FAVORITES_STORAGE_KEY = 'app_favorites';
+
+// Cache de favoritos
+let favoritesCache = null;
+let favoritesCacheTime = null;
+const CACHE_DURATION = 30000; // 30 segundos de cache
+
+/**
+ * Sincroniza favoritos desde la API (con cache para evitar peticiones repetidas)
+ */
+async function syncFavoritesFromAPI(force = false) {
+  // Si hay cache reciente y no se fuerza, usar cache
+  if (!force && favoritesCache !== null && favoritesCacheTime) {
+    const now = Date.now();
+    if (now - favoritesCacheTime < CACHE_DURATION) {
+      return favoritesCache;
+    }
+  }
+
+  try {
+    const response = await api.usuarios.getFavoritos();
+    
+    if (response.success && response.data) {
+      favoritesCache = response.data.map(fav => ({
+        id: fav.id.toString(),
+        producto_id: fav.id,
+        name: fav.nombre,
+        description: fav.descripcion,
+        price: parseFloat(fav.precio),
+        image: fav.imagen,
+        category: fav.categoria_slug
+      }));
+      
+      favoritesCacheTime = Date.now();
+      
+      // Guardar en localStorage para compatibilidad
+      localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(favoritesCache));
+      
+      return favoritesCache;
+    }
+  } catch (error) {
+    console.warn('No se pudo sincronizar favoritos desde API:', error);
+  }
+  
+  // Fallback a localStorage
+  const favoritesStr = localStorage.getItem(FAVORITES_STORAGE_KEY);
+  favoritesCache = favoritesStr ? JSON.parse(favoritesStr) : [];
+  favoritesCacheTime = Date.now();
+  return favoritesCache;
+}
 
 /**
  * Obtiene la lista de favoritos del usuario actual
  */
-export function getFavorites() {
-  const favoritesStr = localStorage.getItem(FAVORITES_STORAGE_KEY);
-  return favoritesStr ? JSON.parse(favoritesStr) : [];
+export async function getFavorites() {
+  if (favoritesCache === null) {
+    await syncFavoritesFromAPI();
+  }
+  return favoritesCache || [];
 }
 
 /**
@@ -18,66 +71,93 @@ export function getFavorites() {
  */
 function saveFavorites(favorites) {
   localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(favorites));
+  favoritesCache = favorites;
 }
 
 /**
  * Verifica si un producto está en favoritos
  */
-export function isFavorite(productId) {
-  const favorites = getFavorites();
-  return favorites.some(fav => fav.id === productId);
+export async function isFavorite(productId) {
+  const favorites = await getFavorites();
+  return favorites.some(fav => fav.id === productId.toString() || fav.producto_id === parseInt(productId));
 }
 
 /**
  * Agrega un producto a favoritos
  */
-export function addToFavorites(product) {
+export async function addToFavorites(product) {
   // Verificar si el usuario está logueado
   const accessToken = localStorage.getItem('accessToken') || localStorage.getItem('current_session');
   if (!accessToken) {
     return { success: false, message: 'Debes iniciar sesión para agregar productos a favoritos' };
   }
 
-  const favorites = getFavorites();
-  
-  // Verificar si ya está en favoritos
-  if (isFavorite(product.id)) {
-    return { success: false, message: 'Este producto ya está en tus favoritos' };
+  try {
+    // Agregar a favoritos en el backend
+    await api.usuarios.addFavorito(parseInt(product.id));
+    
+    // Sincronizar favoritos
+    await syncFavoritesFromAPI();
+    
+    return { success: true, message: 'Producto agregado a favoritos' };
+  } catch (error) {
+    console.error('Error al agregar a favoritos:', error);
+    
+    // Fallback a localStorage
+    const favorites = await getFavorites();
+    
+    if (await isFavorite(product.id)) {
+      return { success: false, message: 'Este producto ya está en tus favoritos' };
+    }
+
+    favorites.push({
+      id: product.id,
+      name: product.name,
+      description: product.description,
+      price: product.price,
+      image: product.image,
+      category: product.category,
+      addedAt: new Date().toISOString()
+    });
+
+    saveFavorites(favorites);
+    return { success: true, message: 'Producto agregado a favoritos' };
   }
-
-  // Agregar a favoritos
-  favorites.push({
-    id: product.id,
-    name: product.name,
-    description: product.description,
-    price: product.price,
-    image: product.image,
-    category: product.category,
-    addedAt: new Date().toISOString()
-  });
-
-  saveFavorites(favorites);
-  return { success: true, message: 'Producto agregado a favoritos' };
 }
 
 /**
  * Elimina un producto de favoritos
  */
-export function removeFromFavorites(productId) {
-  const favorites = getFavorites();
-  const updatedFavorites = favorites.filter(fav => fav.id !== productId);
-  saveFavorites(updatedFavorites);
-  return { success: true, message: 'Producto eliminado de favoritos' };
+export async function removeFromFavorites(productId) {
+  try {
+    // Eliminar de favoritos en el backend
+    await api.usuarios.removeFavorito(parseInt(productId));
+    
+    // Sincronizar favoritos
+    await syncFavoritesFromAPI();
+    
+    return { success: true, message: 'Producto eliminado de favoritos' };
+  } catch (error) {
+    console.error('Error al eliminar de favoritos:', error);
+    
+    // Fallback a localStorage
+    const favorites = await getFavorites();
+    const updatedFavorites = favorites.filter(fav => fav.id !== productId.toString());
+    saveFavorites(updatedFavorites);
+    
+    return { success: true, message: 'Producto eliminado de favoritos' };
+  }
 }
 
 /**
  * Toggle favorito (agrega si no está, elimina si está)
  */
-export function toggleFavorite(product) {
-  if (isFavorite(product.id)) {
-    return removeFromFavorites(product.id);
+export async function toggleFavorite(product) {
+  const isFav = await isFavorite(product.id);
+  if (isFav) {
+    return await removeFromFavorites(product.id);
   } else {
-    return addToFavorites(product);
+    return await addToFavorites(product);
   }
 }
 

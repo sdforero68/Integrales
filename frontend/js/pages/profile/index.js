@@ -1,3 +1,6 @@
+// Importar API
+import { api } from '../../config/api.js';
+
 // Claves de localStorage
 const CURRENT_USER_KEY = 'current_user';
 const CURRENT_SESSION_KEY = 'current_session';
@@ -61,7 +64,10 @@ function formatDate(dateString) {
 
 // Función para formatear método de entrega
 function formatDeliveryMethod(method) {
-  return method === 'delivery' ? 'Envío a domicilio' : 'Recoger en tienda';
+  if (method === 'delivery' || method === 'domicilio') {
+    return 'Envío a domicilio';
+  }
+  return 'Recoger en tienda';
 }
 
 // Función para formatear método de pago
@@ -82,8 +88,39 @@ function getOrdersByUserId(userId) {
   return allOrders.filter(order => order.userId === userId);
 }
 
-// Cargar información del usuario
-function loadUserInfo() {
+// Cargar información del usuario desde la API
+async function loadUserInfo() {
+  try {
+    // Intentar obtener perfil desde la API
+    const response = await api.usuarios.getProfile();
+    
+    if (response.success && response.data) {
+      const userData = response.data;
+      
+      // Actualizar UI del usuario
+      const userNameEl = document.getElementById('user-name');
+      const userEmailEl = document.getElementById('user-email');
+      const userPhoneEl = document.getElementById('user-phone');
+      
+      if (userNameEl) {
+        userNameEl.textContent = userData.nombre || 'Usuario';
+      }
+      
+      if (userEmailEl) {
+        userEmailEl.textContent = userData.email || '-';
+      }
+      
+      if (userPhoneEl) {
+        userPhoneEl.textContent = userData.telefono || '-';
+      }
+      
+      return { user: userData, accessToken: localStorage.getItem('token') };
+    }
+  } catch (error) {
+    console.warn('Error al obtener perfil desde API, usando localStorage:', error);
+  }
+  
+  // Fallback a localStorage
   const userInfo = getUserInfo();
   if (!userInfo) return null;
   
@@ -109,8 +146,8 @@ function loadUserInfo() {
   return { user, accessToken };
 }
 
-// Cargar pedidos
-function fetchOrders(userId) {
+// Cargar pedidos desde la API
+async function fetchOrders(userId) {
   const loadingState = document.getElementById('loading-state');
   const emptyState = document.getElementById('empty-state');
   const ordersList = document.getElementById('orders-list');
@@ -125,36 +162,83 @@ function fetchOrders(userId) {
     }
     if (infoNote) infoNote.hidden = true;
     
-    // Simular delay de carga
-    setTimeout(() => {
+    // Obtener pedidos desde la API del backend
+    const response = await api.pedidos.getAll();
+    
+    if (loadingState) loadingState.hidden = true;
+    
+    let orders = [];
+    if (response.success && response.data) {
+      // Convertir pedidos de la API al formato local
+      orders = await Promise.all(response.data.map(async (pedido) => {
+        // Obtener detalles completos del pedido
+        const pedidoDetalle = await api.pedidos.getById(pedido.id);
+        
+        return {
+          id: pedido.id.toString(),
+          numero_pedido: pedido.numero_pedido,
+          items: pedidoDetalle.data.items.map(item => ({
+            id: item.producto_id.toString(),
+            name: item.nombre,
+            quantity: item.cantidad,
+            price: parseFloat(item.precio_unitario)
+          })),
+          total: parseFloat(pedido.total),
+          subtotal: parseFloat(pedido.subtotal),
+          deliveryFee: parseFloat(pedido.costo_envio),
+          deliveryMethod: pedido.metodo_entrega === 'domicilio' ? 'delivery' : 'pickup',
+          deliveryAddress: pedido.direccion_entrega,
+          paymentMethod: pedido.metodo_pago,
+          status: pedido.estado,
+          createdAt: pedido.created_at,
+          customerInfo: {
+            name: pedido.telefono_contacto || '',
+            email: '',
+            phone: pedido.telefono_contacto || ''
+          }
+        };
+      }));
+    } else {
+      // Fallback a localStorage si la API falla
+      orders = getOrdersByUserId(userId);
+    }
+    
+    if (orders.length === 0) {
+      // No hay pedidos - mostrar estado vacío
+      if (emptyState) emptyState.hidden = false;
+      if (ordersList) {
+        ordersList.hidden = true;
+        ordersList.innerHTML = '';
+      }
+      if (infoNote) infoNote.hidden = true;
+    } else {
+      // Hay pedidos - renderizar lista
+      renderOrders(orders);
+      if (emptyState) emptyState.hidden = true;
+      if (ordersList) ordersList.hidden = false;
+      if (infoNote) infoNote.hidden = false;
+    }
+  } catch (error) {
+    console.error('Error fetching orders:', error);
+    
+    // Fallback a localStorage
+    try {
       const orders = getOrdersByUserId(userId);
-      
-      if (loadingState) loadingState.hidden = true;
-      
-      if (orders.length === 0) {
-        // No hay pedidos - mostrar estado vacío
-        if (emptyState) emptyState.hidden = false;
-        if (ordersList) {
-          ordersList.hidden = true;
-          ordersList.innerHTML = ''; // Asegurar que esté vacío
-        }
-        if (infoNote) infoNote.hidden = true;
-      } else {
-        // Hay pedidos - renderizar lista
+      if (orders.length > 0) {
         renderOrders(orders);
         if (emptyState) emptyState.hidden = true;
         if (ordersList) ordersList.hidden = false;
-        if (infoNote) infoNote.hidden = false;
+      } else {
+        if (emptyState) emptyState.hidden = false;
+        if (ordersList) ordersList.hidden = true;
       }
-    }, 500);
-  } catch (error) {
-    console.error('Error fetching orders:', error);
-    if (loadingState) loadingState.hidden = true;
-    if (emptyState) emptyState.hidden = false;
-    if (ordersList) {
-      ordersList.hidden = true;
-      ordersList.innerHTML = '';
+    } catch (fallbackError) {
+      console.error('Error en fallback:', fallbackError);
+      if (emptyState) emptyState.hidden = false;
+      if (ordersList) ordersList.hidden = true;
     }
+    
+    if (loadingState) loadingState.hidden = true;
     if (infoNote) infoNote.hidden = true;
   }
 }
@@ -194,7 +278,8 @@ function renderOrders(orders) {
     const orderCard = document.createElement('div');
     orderCard.className = 'order-card';
     
-    const orderId = order.id.slice(-8);
+    // Usar número de pedido si está disponible, sino usar ID
+    const orderDisplayId = order.numero_pedido || order.id.slice(-8);
     const fullOrderId = order.id;
     const status = order.status || 'pendiente';
     const statusClass = getStatusColor(status);
@@ -202,7 +287,7 @@ function renderOrders(orders) {
     orderCard.innerHTML = `
       <div class="order-header">
         <div class="order-info">
-          <p class="order-id">Pedido #${orderId}</p>
+          <p class="order-id">Pedido ${order.numero_pedido ? '#' + order.numero_pedido : '#' + orderDisplayId}</p>
           <p class="order-date">${formatDate(order.createdAt || order.date)}</p>
         </div>
         <div class="order-header-actions">
@@ -306,7 +391,7 @@ async function handleLogout() {
   }
 }
 
-// Cargar favoritos
+// Cargar favoritos desde la API
 async function fetchFavorites() {
   const loadingState = document.getElementById('favorites-loading-state');
   const emptyState = document.getElementById('favorites-empty-state');
@@ -317,25 +402,25 @@ async function fetchFavorites() {
     if (emptyState) emptyState.hidden = true;
     if (favoritesList) favoritesList.hidden = true;
     
-    // Simular delay de carga
-    setTimeout(async () => {
-      const { getFavorites } = await import('../../favorites.js');
-      const favorites = getFavorites();
-      
-      if (loadingState) loadingState.hidden = true;
-      
-      if (favorites.length === 0) {
-        if (emptyState) emptyState.hidden = false;
-      } else {
-        renderFavorites(favorites);
-        if (emptyState) emptyState.hidden = true;
-        if (favoritesList) favoritesList.hidden = false;
-      }
-    }, 500);
+    // Obtener favoritos desde la API
+    const { getFavorites } = await import('../../favorites.js');
+    const favorites = await getFavorites();
+    
+    if (loadingState) loadingState.hidden = true;
+    
+    if (favorites.length === 0) {
+      if (emptyState) emptyState.hidden = false;
+      if (favoritesList) favoritesList.hidden = true;
+    } else {
+      await renderFavorites(favorites);
+      if (emptyState) emptyState.hidden = true;
+      if (favoritesList) favoritesList.hidden = false;
+    }
   } catch (error) {
     console.error('Error fetching favorites:', error);
     if (loadingState) loadingState.hidden = true;
     if (emptyState) emptyState.hidden = false;
+    if (favoritesList) favoritesList.hidden = true;
   }
 }
 
@@ -346,14 +431,38 @@ async function renderFavorites(favorites) {
   
   favoritesList.innerHTML = '';
   
-  const { products } = await import('../../products.js');
   const { removeFromFavorites } = await import('../../favorites.js');
   const { addToCart } = await import('../../sync.js');
   const { resolveProductImage } = await import('../../main.js');
   
+  // Cargar productos desde la API si están disponibles
+  let products = [];
+  try {
+    const productosResponse = await api.productos.getAll();
+    if (productosResponse.success && productosResponse.data) {
+      products = productosResponse.data.map(prod => ({
+        id: prod.id.toString(),
+        name: prod.nombre,
+        category: prod.categoria_slug,
+        price: parseFloat(prod.precio),
+        description: prod.descripcion || '',
+        image: prod.imagen || ''
+      }));
+    }
+  } catch (error) {
+    console.warn('No se pudieron cargar productos, usando favoritos directamente');
+  }
+  
   favorites.forEach((favorite) => {
-    // Buscar el producto completo en la lista de productos
-    const fullProduct = products.find(p => p.id === favorite.id) || favorite;
+    // Buscar el producto completo en la lista de productos o usar el favorito directamente
+    const fullProduct = products.find(p => p.id === favorite.id.toString()) || {
+      id: favorite.id || favorite.producto_id,
+      name: favorite.name || favorite.nombre,
+      price: favorite.price || parseFloat(favorite.precio),
+      description: favorite.description || favorite.descripcion,
+      image: favorite.image || favorite.imagen,
+      category: favorite.category || favorite.categoria_slug
+    };
     
     const favoriteCard = document.createElement('div');
     favoriteCard.className = 'favorite-item';
@@ -395,8 +504,8 @@ async function renderFavorites(favorites) {
     if (removeBtn) {
       removeBtn.addEventListener('click', async (e) => {
         e.stopPropagation(); // Evitar cualquier otro evento
-        removeFromFavorites(favorite.id);
-        fetchFavorites(); // Recargar lista
+        await removeFromFavorites(favorite.id);
+        await fetchFavorites(); // Recargar lista
         if (window.toast) {
           window.toast.success('Producto eliminado de favoritos');
         }
@@ -404,8 +513,8 @@ async function renderFavorites(favorites) {
     }
     
     if (addCartBtn) {
-      addCartBtn.addEventListener('click', () => {
-        addToCart(fullProduct);
+      addCartBtn.addEventListener('click', async () => {
+        await addToCart(fullProduct);
         if (window.toast) {
           window.toast.success(`${favorite.name} agregado al carrito`);
         }
@@ -417,15 +526,15 @@ async function renderFavorites(favorites) {
 }
 
 // Inicializar cuando el DOM esté listo
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   // Obtener elementos del DOM
   const noSessionState = document.getElementById('no-session-state');
   const userInfoCard = document.getElementById('user-info-card');
   const favoritesCard = document.getElementById('favorites-card');
   const orderHistoryCard = document.getElementById('order-history-card');
   
-  // Cargar información del usuario
-  const userInfo = loadUserInfo();
+  // Cargar información del usuario desde la API
+  const userInfo = await loadUserInfo();
   
   if (userInfo && userInfo.user) {
     // Usuario autenticado - Mostrar contenido del perfil
@@ -435,10 +544,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (orderHistoryCard) orderHistoryCard.hidden = false;
     
     // Cargar favoritos
-    fetchFavorites();
+    await fetchFavorites();
     
     // Cargar pedidos
-    fetchOrders(userInfo.user.id);
+    const userId = userInfo.user.id || userInfo.user.email || 'guest';
+    await fetchOrders(userId);
     
     // Manejar botón de logout
     const logoutBtn = document.getElementById('logout-btn');

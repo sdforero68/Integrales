@@ -1,5 +1,10 @@
-import { products, categories } from './products.js';
+import { products as staticProducts, categories as staticCategories } from './products.js';
+import { api } from './config/api.js';
 import { initToaster } from './UI/toaster.js';
+
+// Variables globales para productos y categorías desde API
+let products = [];
+let categories = [];
 
 // Sistema de carrito con localStorage (scope global)
 const CART_STORAGE_KEY = 'app_cart';
@@ -81,7 +86,67 @@ export const resolveProductImage = (product) => {
 // Exportar funciones del carrito para uso en otros módulos
 export { getCart, saveCart, getCartItemsCount, CART_STORAGE_KEY };
 
-document.addEventListener('DOMContentLoaded', () => {
+// Función para cargar productos y categorías desde la API
+async function loadProductsFromAPI() {
+  try {
+    // Cargar categorías
+    const categoriasResponse = await api.categorias.getAll();
+    if (categoriasResponse.success && categoriasResponse.data) {
+      categories = categoriasResponse.data.map(cat => ({
+        id: cat.slug,
+        name: cat.nombre
+      }));
+    } else {
+      categories = staticCategories;
+    }
+
+    // Cargar productos
+    const productosResponse = await api.productos.getAll();
+    if (productosResponse.success && productosResponse.data) {
+      products = productosResponse.data.map(prod => ({
+        id: prod.id.toString(),
+        name: prod.nombre,
+        category: prod.categoria_slug,
+        price: parseFloat(prod.precio),
+        description: prod.descripcion || '',
+        ingredients: prod.ingredientes || '',
+        benefits: prod.beneficios || '',
+        image: prod.imagen || ''
+      }));
+    } else {
+      products = staticProducts;
+    }
+    
+    console.log(`✅ Cargados ${products.length} productos y ${categories.length} categorías desde la API`);
+    
+    // Disparar evento para que el catálogo se renderice
+    window.dispatchEvent(new CustomEvent('productsLoaded'));
+    
+    return true;
+  } catch (error) {
+    console.warn('⚠️ No se pudo cargar desde la API, usando datos estáticos:', error);
+    products = staticProducts;
+    categories = staticCategories;
+    
+    // Disparar evento incluso con datos estáticos
+    window.dispatchEvent(new CustomEvent('productsLoaded'));
+    
+    return false;
+  }
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+  // Manejar errores de carga
+  try {
+    // Cargar productos desde la API
+    await loadProductsFromAPI();
+  } catch (error) {
+    console.warn('⚠️ Error al cargar productos desde API, usando productos estáticos:', error.message);
+    // Continuar con productos estáticos si la API falla
+    products = staticProducts;
+    categories = staticCategories;
+  }
+  
   const navbar = document.querySelector('.navbar');
   const navHeight = navbar ? navbar.offsetHeight : 0;
 
@@ -268,7 +333,7 @@ document.addEventListener('DOMContentLoaded', () => {
       try {
         // Importar función de sincronización
         const { addToCart } = await import('./sync.js');
-        addToCart(product);
+        await addToCart(product);
       } catch (error) {
         // Fallback local si sync.js no está disponible
         console.error('Error importing sync:', error);
@@ -454,6 +519,17 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
       if (emptyEl) emptyEl.hidden = true;
+      
+      // Cargar favoritos una sola vez para todos los productos
+      let favoritesSet = new Set();
+      try {
+        const { getFavorites } = await import('./favorites.js');
+        const favorites = await getFavorites();
+        favoritesSet = new Set(favorites.map(fav => fav.id.toString()));
+      } catch (error) {
+        console.warn('No se pudieron cargar favoritos:', error);
+      }
+      
       list.forEach((p) => {
         const card = document.createElement('div');
         card.className = 'product-card';
@@ -461,13 +537,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // Obtener imagen del producto o usar imagen por categoría
         const productImage = resolveProductImage(p);
         
-        // Verificar si el producto está en favoritos (usar async/await de forma más limpia)
-        (async () => {
-          try {
-            const { isFavorite: checkFavorite } = await import('./favorites.js');
-            const isFav = checkFavorite(p.id);
+        // Verificar si el producto está en favoritos usando el set cargado
+        const isFav = favoritesSet.has(p.id.toString());
           
-          card.innerHTML = `
+        card.innerHTML = `
             <div class="product-media">
               <button class="product-favorite-btn ${isFav ? 'active' : ''}" data-product-id="${p.id}" aria-label="Agregar a favoritos">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="${isFav ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -518,7 +591,7 @@ document.addEventListener('DOMContentLoaded', () => {
           if (favoriteBtn) {
             favoriteBtn.addEventListener('click', async (e) => {
               e.stopPropagation();
-              const { toggleFavorite, isLoggedIn } = await import('./favorites.js');
+              const { toggleFavorite, isLoggedIn, isFavorite: checkFavorite } = await import('./favorites.js');
               
               if (!isLoggedIn()) {
                 if (window.toast) {
@@ -529,18 +602,29 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
               }
               
-              const result = toggleFavorite(p);
-              const isFav = checkFavorite(p.id);
+              const result = await toggleFavorite(p);
+              
+              // Recargar favoritos después del toggle para actualizar el cache
+              const { getFavorites } = await import('./favorites.js');
+              const updatedFavorites = await getFavorites();
+              const updatedFavoritesSet = new Set(updatedFavorites.map(fav => fav.id.toString()));
+              const newIsFav = updatedFavoritesSet.has(p.id.toString());
               
               // Actualizar el botón visualmente
-              favoriteBtn.classList.toggle('active', isFav);
+              favoriteBtn.classList.toggle('active', newIsFav);
               const svg = favoriteBtn.querySelector('svg');
               if (svg) {
-                svg.setAttribute('fill', isFav ? 'currentColor' : 'none');
+                svg.setAttribute('fill', newIsFav ? 'currentColor' : 'none');
               }
               
-              if (window.toast) {
-                window.toast.success(result.message);
+              if (result.success) {
+                if (window.toast) {
+                  window.toast.success(result.message);
+                }
+              } else {
+                if (window.toast) {
+                  window.toast.error(result.message);
+                }
               }
             });
           }
@@ -672,16 +756,26 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // Verificar que products y categories estén disponibles
-    if (!products || products.length === 0) {
-      console.error('Error: No se pudieron cargar los productos');
-      if (gridEl) {
-        gridEl.innerHTML = '<div class="text-center py-16"><p class="text-xl">Error al cargar los productos. Por favor, recarga la página.</p></div>';
+    // Función para inicializar el catálogo
+    const initCatalog = () => {
+      if (!products || products.length === 0) {
+        console.error('Error: No se pudieron cargar los productos');
+        if (gridEl) {
+          gridEl.innerHTML = '<div class="text-center py-16"><p class="text-xl">Error al cargar los productos. Por favor, recarga la página.</p></div>';
+        }
+      } else {
+        console.log(`Productos cargados: ${products.length}`);
+        renderFilters();
+        renderGrid();
       }
+    };
+
+    // Inicializar inmediatamente si ya hay productos, o esperar a que se carguen
+    if (products && products.length > 0) {
+      initCatalog();
     } else {
-      console.log(`Productos cargados: ${products.length}`);
-      renderFilters();
-      renderGrid();
+      // Escuchar evento de productos cargados
+      window.addEventListener('productsLoaded', initCatalog, { once: true });
     }
   } else {
     console.warn('Elementos del catálogo no encontrados (catalog-grid o catalog-filters)');

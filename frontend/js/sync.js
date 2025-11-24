@@ -4,6 +4,7 @@
  */
 
 import { getCart, saveCart, getCartItemsCount, CART_STORAGE_KEY } from './main.js';
+import { api } from './config/api.js';
 
 // =====================
 // Sincronización del Carrito
@@ -12,7 +13,14 @@ import { getCart, saveCart, getCartItemsCount, CART_STORAGE_KEY } from './main.j
 /**
  * Actualiza el badge del carrito en todas las páginas
  */
-export function updateCartBadge() {
+export async function updateCartBadge() {
+  // Intentar sincronizar desde la API primero
+  try {
+    await syncCartFromAPI();
+  } catch (error) {
+    console.warn('No se pudo sincronizar carrito, usando localStorage:', error);
+  }
+  
   const count = getCartItemsCount();
   const badges = Array.from(document.querySelectorAll('.cart-badge, #cart-badge'));
   
@@ -34,78 +42,179 @@ export function updateCartBadge() {
 /**
  * Agrega un producto al carrito y actualiza el badge
  */
-export function addToCart(product) {
-  const cart = getCart();
-  
-  // Buscar si el producto ya está en el carrito
-  const existingItem = cart.find(item => item.id === product.id);
-  
-  if (existingItem) {
-    // Incrementar cantidad
-    existingItem.quantity += 1;
-  } else {
-    // Agregar nuevo item
-    cart.push({
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      quantity: 1,
-      image: product.image,
-      category: product.category,
-      description: product.description
+export async function addToCart(product) {
+  try {
+    // Intentar agregar a la API del backend
+    await api.carrito.addItem({
+      producto_id: parseInt(product.id),
+      cantidad: 1
     });
+    
+    // Actualizar carrito local desde la API
+    await syncCartFromAPI();
+    
+    // Actualizar badge
+    updateCartBadge();
+    
+    // Mostrar notificación si está disponible
+    if (window.toast) {
+      window.toast.success(`${product.name} agregado al carrito`);
+    }
+    
+    return getCart();
+  } catch (error) {
+    console.error('Error al agregar al carrito en API, usando localStorage:', error);
+    
+    // Fallback a localStorage si la API falla
+    const cart = getCart();
+    const existingItem = cart.find(item => item.id === product.id);
+    
+    if (existingItem) {
+      existingItem.quantity += 1;
+    } else {
+      cart.push({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        quantity: 1,
+        image: product.image,
+        category: product.category,
+        description: product.description
+      });
+    }
+    
+    saveCart(cart);
+    updateCartBadge();
+    
+    if (window.toast) {
+      window.toast.success(`${product.name} agregado al carrito`);
+    }
+    
+    return cart;
   }
-  
-  // Guardar carrito
-  saveCart(cart);
-  
-  // Actualizar badge
-  updateCartBadge();
-  
-  // Mostrar notificación si está disponible
-  if (window.toast) {
-    window.toast.success(`${product.name} agregado al carrito`);
-  }
-  
-  return cart;
 }
 
 /**
  * Actualiza la cantidad de un producto en el carrito
  */
-export function updateCartQuantity(productId, newQuantity) {
-  const cart = getCart();
-  
+export async function updateCartQuantity(productId, newQuantity) {
   if (newQuantity <= 0) {
     return removeFromCart(productId);
   }
   
-  const updatedCart = cart.map(item =>
-    item.id === productId ? { ...item, quantity: newQuantity } : item
-  );
-  
-  saveCart(updatedCart);
-  updateCartBadge();
-  
-  return updatedCart;
+  try {
+    // Buscar el item en el carrito para obtener su ID de la API
+    const cart = getCart();
+    const item = cart.find(i => i.id === productId);
+    
+    if (item && item.carrito_item_id) {
+      // Actualizar en la API usando el ID del item del carrito
+      await api.carrito.updateItem(item.carrito_item_id, newQuantity);
+      await syncCartFromAPI();
+    } else {
+      // Fallback a localStorage
+      const updatedCart = cart.map(i =>
+        i.id === productId ? { ...i, quantity: newQuantity } : i
+      );
+      saveCart(updatedCart);
+    }
+    
+    updateCartBadge();
+    return getCart();
+  } catch (error) {
+    console.error('Error al actualizar cantidad en API, usando localStorage:', error);
+    
+    // Fallback a localStorage
+    const cart = getCart();
+    const updatedCart = cart.map(item =>
+      item.id === productId ? { ...item, quantity: newQuantity } : item
+    );
+    
+    saveCart(updatedCart);
+    updateCartBadge();
+    
+    return updatedCart;
+  }
 }
 
 /**
  * Elimina un producto del carrito
  */
-export function removeFromCart(productId) {
-  const cart = getCart();
-  const updatedCart = cart.filter(item => item.id !== productId);
-  
-  saveCart(updatedCart);
-  updateCartBadge();
-  
-  // Mostrar notificación si está disponible
-  if (window.toast) {
-    window.toast.success('Producto eliminado del carrito');
+export async function removeFromCart(productId) {
+  try {
+    // Buscar el item en el carrito para obtener su ID de la API
+    const cart = getCart();
+    const item = cart.find(i => i.id === productId);
+    
+    if (item && item.carrito_item_id) {
+      // Eliminar de la API usando el ID del item del carrito
+      await api.carrito.removeItem(item.carrito_item_id);
+      await syncCartFromAPI();
+    } else {
+      // Fallback a localStorage
+      const updatedCart = cart.filter(i => i.id !== productId);
+      saveCart(updatedCart);
+    }
+    
+    updateCartBadge();
+    
+    // Mostrar notificación si está disponible
+    if (window.toast) {
+      window.toast.success('Producto eliminado del carrito');
+    }
+    
+    return getCart();
+  } catch (error) {
+    console.error('Error al eliminar del carrito en API, usando localStorage:', error);
+    
+    // Fallback a localStorage
+    const cart = getCart();
+    const updatedCart = cart.filter(item => item.id !== productId);
+    
+    saveCart(updatedCart);
+    updateCartBadge();
+    
+    if (window.toast) {
+      window.toast.success('Producto eliminado del carrito');
+    }
+    
+    return updatedCart;
   }
-  
-  return updatedCart;
+}
+
+/**
+ * Sincroniza el carrito desde la API del backend
+ */
+export async function syncCartFromAPI() {
+  try {
+    const response = await api.carrito.get();
+    
+    if (response.success && response.data) {
+      // Convertir los items de la API al formato local
+      const cart = response.data.map(item => ({
+        id: item.producto_id.toString(),
+        carrito_item_id: item.id, // Guardar ID del item del carrito para futuras operaciones
+        name: item.nombre,
+        price: parseFloat(item.precio_unitario),
+        quantity: item.cantidad,
+        image: item.imagen || '',
+        subtotal: parseFloat(item.subtotal) || (item.cantidad * parseFloat(item.precio_unitario))
+      }));
+      
+      // Guardar en localStorage para compatibilidad
+      saveCart(cart);
+      
+      // Disparar evento de actualización
+      window.dispatchEvent(new CustomEvent('cartUpdated', { 
+        detail: { count: cart.reduce((sum, item) => sum + item.quantity, 0), items: cart } 
+      }));
+      
+      return cart;
+    }
+  } catch (error) {
+    console.warn('No se pudo sincronizar carrito desde API:', error);
+    return getCart();
+  }
 }
 
 // =====================
@@ -226,9 +335,12 @@ export function handleLogout() {
 /**
  * Inicializa la sincronización en todas las páginas
  */
-export function initSync() {
+export async function initSync() {
+  // Sincronizar carrito desde la API al cargar
+  await syncCartFromAPI();
+  
   // Actualizar badge del carrito al cargar
-  updateCartBadge();
+  await updateCartBadge();
   
   // Actualizar menú de usuario al cargar
   updateUserMenu();

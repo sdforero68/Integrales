@@ -1,34 +1,10 @@
-// Sistema de autenticación con localStorage
+// Sistema de autenticación con API Backend
+
+import { api, setAuthToken } from '../../config/api.js';
 
 // Variables globales para las cards
 let loginCard = null;
 let signupCard = null;
-
-// Clave para almacenar usuarios en localStorage
-const USERS_STORAGE_KEY = 'app_users';
-const CURRENT_USER_KEY = 'current_user';
-const CURRENT_SESSION_KEY = 'current_session';
-
-// Obtener todos los usuarios
-function getUsers() {
-  const usersStr = localStorage.getItem(USERS_STORAGE_KEY);
-  return usersStr ? JSON.parse(usersStr) : [];
-}
-
-// Guardar usuarios
-function saveUsers(users) {
-  localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify(users));
-}
-
-// Generar ID único
-function generateId() {
-  return Date.now().toString(36) + Math.random().toString(36).substr(2);
-}
-
-// Generar token de sesión
-function generateSessionToken() {
-  return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-}
 
 // Función para cambiar a signup con animación
 function switchToSignup() {
@@ -218,47 +194,31 @@ async function handleLogin(e) {
   const password = document.getElementById('login-password').value;
   
   try {
-    // Buscar usuario en localStorage
-    const users = getUsers();
-    const user = users.find(u => u.email === email);
+    // Llamar a la API del backend
+    const response = await api.auth.login({ email, password });
     
-    if (!user) {
-      showError('login', 'Correo o contraseña incorrectos');
-      setLoading('login', false);
-      return;
-    }
+    // Guardar token y datos del usuario
+    setAuthToken(response.token);
     
-    // Verificar contraseña (en producción, usar hash)
-    if (user.password !== password) {
-      showError('login', 'Correo o contraseña incorrectos');
-      setLoading('login', false);
-      return;
-    }
-    
-    // Crear sesión
-    const sessionToken = generateSessionToken();
     const userData = {
-      id: user.id,
-      email: user.email,
+      id: response.user.id,
+      email: response.user.email,
       user_metadata: {
-        name: user.name,
-        phone: user.phone || null
+        name: response.user.nombre,
+        phone: response.user.telefono || null
       }
     };
     
-    // Guardar sesión actual
-    localStorage.setItem(CURRENT_SESSION_KEY, sessionToken);
-    localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(userData));
-    
-    // También guardar en formato compatible con código anterior
-    localStorage.setItem('accessToken', sessionToken);
+    // Guardar datos del usuario
     localStorage.setItem('user', JSON.stringify(userData));
+    localStorage.setItem('current_user', JSON.stringify(userData));
     
     // Login exitoso
-    onLoginSuccess(sessionToken, userData);
+    onLoginSuccess(response.token, userData);
   } catch (err) {
     console.error('Login error:', err);
-    showError('login', 'Error al iniciar sesión. Por favor intenta de nuevo.');
+    const errorMessage = err.message || 'Error al iniciar sesión. Por favor intenta de nuevo.';
+    showError('login', errorMessage);
     setLoading('login', false);
   }
 }
@@ -307,54 +267,42 @@ async function handleSignup(e) {
   }
   
   try {
-    // Verificar si el usuario ya existe
-    const users = getUsers();
-    const existingUser = users.find(u => u.email === email);
+    // Separar nombre y apellido si hay espacio
+    const nameParts = name.split(' ');
+    const nombre = nameParts[0];
+    const apellido = nameParts.slice(1).join(' ') || null;
     
-    if (existingUser) {
-      showError('signup', 'Este correo electrónico ya está registrado');
-      setLoading('signup', false);
-      return;
-    }
+    // Llamar a la API del backend
+    const response = await api.auth.register({
+      nombre,
+      apellido,
+      email,
+      password,
+      telefono: phone || null
+    });
     
-    // Crear nuevo usuario
-    const newUser = {
-      id: generateId(),
-      email: email,
-      password: password, // En producción, usar hash
-      name: name,
-      phone: phone || null,
-      createdAt: new Date().toISOString()
-    };
+    // Guardar token y datos del usuario
+    setAuthToken(response.token);
     
-    // Guardar usuario
-    users.push(newUser);
-    saveUsers(users);
-    
-    // Crear sesión automáticamente
-    const sessionToken = generateSessionToken();
     const userData = {
-      id: newUser.id,
-      email: newUser.email,
+      id: response.user.id,
+      email: response.user.email,
       user_metadata: {
-        name: newUser.name,
-        phone: newUser.phone || null
+        name: response.user.nombre,
+        phone: response.user.telefono || null
       }
     };
     
-    // Guardar sesión actual
-    localStorage.setItem(CURRENT_SESSION_KEY, sessionToken);
-    localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(userData));
-    
-    // También guardar en formato compatible
-    localStorage.setItem('accessToken', sessionToken);
+    // Guardar datos del usuario
     localStorage.setItem('user', JSON.stringify(userData));
+    localStorage.setItem('current_user', JSON.stringify(userData));
     
     // Login automático después del registro
-    onLoginSuccess(sessionToken, userData);
+    onLoginSuccess(response.token, userData);
   } catch (err) {
     console.error('Signup error:', err);
-    showError('signup', 'Error al crear la cuenta. Por favor intenta de nuevo.');
+    const errorMessage = err.message || 'Error al crear la cuenta. Por favor intenta de nuevo.';
+    showError('signup', errorMessage);
     setLoading('signup', false);
   }
 }

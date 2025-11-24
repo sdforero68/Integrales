@@ -1,5 +1,6 @@
 // Importar funciones necesarias
 import { getCartItemsCount } from '../../main.js';
+import { api } from '../../config/api.js';
 
 // Función para formatear precio
 function formatPrice(price) {
@@ -10,31 +11,61 @@ function formatPrice(price) {
   }).format(price);
 }
 
-// Función para obtener el pedido desde la URL o localStorage
-function getOrderFromStorage() {
-  // Intentar obtener el ID del pedido desde la URL
+// Función para obtener el pedido desde la API o localStorage
+async function getOrder() {
+  // Intentar obtener el ID del pedido desde la URL o sessionStorage
   const urlParams = new URLSearchParams(window.location.search);
-  const orderId = urlParams.get('orderId');
+  const orderId = urlParams.get('orderId') || sessionStorage.getItem('lastOrderId');
   
   if (!orderId) {
-    // Si no hay orderId en la URL, buscar el último pedido en localStorage
+    // Fallback: buscar el último pedido en localStorage
     const ordersStr = localStorage.getItem('app_orders');
     if (ordersStr) {
       const orders = JSON.parse(ordersStr);
       if (orders.length > 0) {
-        // Retornar el último pedido
         return orders[orders.length - 1];
       }
     }
     return null;
   }
   
-  // Buscar el pedido específico
-  const ordersStr = localStorage.getItem('app_orders');
-  if (ordersStr) {
-    const orders = JSON.parse(ordersStr);
-    const order = orders.find(o => o.id === orderId);
-    return order || null;
+  try {
+    // Obtener pedido desde la API
+    const response = await api.pedidos.getById(orderId);
+    
+    if (response.success && response.data) {
+      const pedido = response.data;
+      
+      // Convertir al formato local
+      return {
+        id: pedido.id.toString(),
+        numero_pedido: pedido.numero_pedido,
+        items: pedido.items.map(item => ({
+          id: item.producto_id.toString(),
+          name: item.nombre,
+          quantity: item.cantidad,
+          price: parseFloat(item.precio_unitario)
+        })),
+        total: parseFloat(pedido.total),
+        subtotal: parseFloat(pedido.subtotal),
+        deliveryFee: parseFloat(pedido.costo_envio),
+        deliveryMethod: pedido.metodo_entrega === 'domicilio' ? 'delivery' : 'pickup',
+        deliveryAddress: pedido.direccion_entrega,
+        paymentMethod: pedido.metodo_pago,
+        status: pedido.estado,
+        createdAt: pedido.created_at
+      };
+    }
+  } catch (error) {
+    console.warn('Error al obtener pedido desde API, usando localStorage:', error);
+    
+    // Fallback a localStorage
+    const ordersStr = localStorage.getItem('app_orders');
+    if (ordersStr) {
+      const orders = JSON.parse(ordersStr);
+      const order = orders.find(o => o.id === orderId);
+      return order || null;
+    }
   }
   
   return null;
@@ -46,10 +77,14 @@ function renderOrderSummary(order) {
   
   // Renderizar número de pedido
   const orderNumberEl = document.getElementById('order-number');
-  if (orderNumberEl && order.id) {
-    // Mostrar los últimos 8 caracteres del ID
-    const shortId = order.id.slice(-8).toUpperCase();
-    orderNumberEl.textContent = `#${shortId}`;
+  if (orderNumberEl) {
+    if (order.numero_pedido) {
+      orderNumberEl.textContent = `#${order.numero_pedido}`;
+    } else if (order.id) {
+      // Fallback: mostrar los últimos 8 caracteres del ID
+      const shortId = order.id.slice(-8).toUpperCase();
+      orderNumberEl.textContent = `#${shortId}`;
+    }
   }
   
   // Renderizar items
@@ -117,9 +152,9 @@ function renderOrderSummary(order) {
 }
 
 // Inicializar cuando el DOM esté listo
-document.addEventListener('DOMContentLoaded', () => {
-  // Obtener el pedido
-  const order = getOrderFromStorage();
+document.addEventListener('DOMContentLoaded', async () => {
+  // Obtener el pedido desde la API
+  const order = await getOrder();
   
   if (!order) {
     // Si no hay pedido, redirigir al catálogo
