@@ -104,7 +104,7 @@ function renderCartDrawer() {
     </div>
     <div class="cart-drawer-buttons">
       <button class="cart-drawer-btn cart-drawer-btn-primary" onclick="window.location.href='${getRelativePath('checkout')}'">
-        Proceder al Checkout
+        Proceder al pago
       </button>
       <button class="cart-drawer-btn cart-drawer-btn-secondary" onclick="window.location.href='${getRelativePath('cart')}'">
         Ver Carrito Completo

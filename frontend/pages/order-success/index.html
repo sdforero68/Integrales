@@ -1,16 +1,18 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Carrito de Compras - Anita Integrales</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pedido Confirmado - Anita Integrales</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../../css/styles.css" />
-  <link rel="stylesheet" href="../../css/pages/cart/index.css" />
+  <link rel="stylesheet" href="../../css/pages/checkout/index.css" />
+  <link rel="stylesheet" href="../../css/pages/order-success/index.css" />
 </head>
 <body>
+  <!-- Header -->
   <header class="navbar">
     <div class="container px-4 nav-inner">
       <div class="brand-group" onclick="window.location.href='../../index.html'">
@@ -73,7 +75,6 @@
               </svg>
               <span>Cerrar Sesión</span>
             </button>
-            <!-- Opciones para usuarios no logueados -->
             <a href="../login/index.html" class="user-menu-item" id="user-menu-login" hidden>
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
@@ -97,128 +98,80 @@
     </div>
   </header>
 
-  <div class="cart-container">
-    <div class="container px-4">
-      <div class="cart-header">
-        <div class="cart-header-title">
-          <h1 class="cart-title" style="color: var(--color-primary)">
-            Tu pedido
-          </h1>
-          <span class="cart-products-count" id="cart-products-count">0 Productos</span>
-        </div>
-        <button class="btn-back-home" onclick="window.location.href='../../index.html'">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-            <polyline points="9 22 9 12 15 12 15 22"/>
-          </svg>
-          <span>Volver al inicio</span>
-        </button>
+  <!-- Success Content -->
+  <div class="success-container">
+    <div class="success-content">
+      <!-- Success Icon -->
+      <div class="success-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+          <polyline points="22 4 12 14.01 9 11.01"/>
+        </svg>
       </div>
 
-      <!-- Empty State -->
-      <div id="cart-empty" class="cart-empty" hidden>
-        <div class="empty-cart-illustration">
-          <div class="cart-icon-wrapper">
-            <svg class="cart-icon-main" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-              <rect x="20" y="30" width="50" height="35" rx="3" fill="var(--color-primary)" opacity="0.9"/>
-              <rect x="25" y="35" width="40" height="25" rx="2" fill="var(--color-secondary)"/>
-              <line x1="30" y1="40" x2="60" y2="40" stroke="var(--color-primary)" stroke-width="2"/>
-              <line x1="30" y1="48" x2="60" y2="48" stroke="var(--color-primary)" stroke-width="2"/>
-              <line x1="30" y1="56" x2="55" y2="56" stroke="var(--color-primary)" stroke-width="2"/>
-              <circle cx="30" cy="75" r="6" fill="var(--color-tertiary)"/>
-              <circle cx="70" cy="75" r="6" fill="var(--color-tertiary)"/>
-            </svg>
-            <div class="decorative-shapes">
-              <div class="shape shape-1"></div>
-              <div class="shape shape-2"></div>
-              <div class="shape shape-3"></div>
-              <div class="shape shape-4"></div>
-            </div>
-          </div>
-        </div>
-        <p class="empty-text">Aún no tienes productos en tu carrito</p>
+      <!-- Success Message -->
+      <h1 class="success-title">¡Pedido Confirmado!</h1>
+      <p class="success-subtitle">Tu pedido ha sido recibido exitosamente</p>
+      
+      <!-- Order Number -->
+      <div class="order-number-container">
+        <p class="order-number-label">Número de pedido:</p>
+        <p class="order-number" id="order-number">-</p>
+      </div>
+
+      <!-- Order Summary Card -->
+      <div class="order-summary-card">
+        <h2 class="order-summary-title">Resumen del Pedido</h2>
         
-        <!-- Empty Cart Summary -->
-        <div class="empty-cart-summary">
-          <div class="summary-row-empty">
+        <!-- Items List -->
+        <div id="order-items-list" class="order-items-list"></div>
+        
+        <!-- Divider -->
+        <div class="order-divider"></div>
+        
+        <!-- Totals -->
+        <div class="order-totals">
+          <div class="order-total-row">
             <span>Subtotal</span>
-            <span>-</span>
+            <span id="order-subtotal">$0</span>
           </div>
-          <div class="summary-row-empty">
-            <span>Productos</span>
-            <span>$0</span>
+          <div class="order-total-row">
+            <span>Envío</span>
+            <span id="order-shipping">Gratis</span>
           </div>
-          <div class="summary-row-empty">
-            <span>Subtotal</span>
-            <span>$0</span>
-          </div>
-          <div class="summary-row-empty summary-total-empty">
+          <div class="order-divider"></div>
+          <div class="order-total-row order-total-final">
             <span>Total</span>
-            <span>$0</span>
-          </div>
-          <p class="iva-text">IVA incluído</p>
-        </div>
-        
-        <button class="btn-add-to-cart" onclick="window.location.href='../catalog/index.html'">
-          Añadir al carrito
-        </button>
-        
-        <div class="payment-security">
-          <div class="payment-methods">
-            <div class="payment-icon">💳</div>
-            <span class="payment-text">VISA</span>
-            <span class="payment-text">PSE</span>
-            <div class="payment-icon">💳</div>
-            <div class="payment-icon">💳</div>
-          </div>
-          <div class="security-badge">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-              <path d="M9 12l2 2 4-4"/>
-            </svg>
-            <span>Secured by Lyra</span>
+            <span id="order-total">$0</span>
           </div>
         </div>
       </div>
 
-      <!-- Cart Content -->
-      <div id="cart-content" class="cart-content">
-        <div class="cart-main">
-          <!-- Cart Items -->
-          <div class="cart-items-section">
-            <div id="cart-items-list" class="cart-items-list"></div>
-          </div>
-
-          <!-- Cart Summary -->
-          <div class="cart-summary">
-            <div class="summary-card">
-              <h2 class="summary-title">Resumen del Pedido</h2>
-              <div class="summary-details">
-                <div class="summary-row">
-                  <span>Subtotal</span>
-                  <span id="summary-subtotal">$0</span>
-                </div>
-                <div class="summary-row">
-                  <span>Envío</span>
-                  <span id="summary-shipping">Gratis</span>
-                </div>
-                <div class="summary-divider"></div>
-                <div class="summary-row summary-total">
-                  <span>Total</span>
-                  <span id="summary-total" style="color: var(--color-primary)">$0</span>
-                </div>
-              </div>
-              <div class="summary-buttons">
-                <button class="btn-checkout" id="checkout-btn">
-                  Proceder al pago
-                </button>
-                <button class="btn-continue-shopping" onclick="window.location.href='../catalog/index.html'">
-                  Continuar Comprando
-                </button>
-              </div>
-            </div>
-          </div>
+      <!-- Delivery & Payment Info -->
+      <div class="order-info-grid">
+        <div class="order-info-card">
+          <h3 class="order-info-title">Método de Entrega</h3>
+          <p class="order-info-value" id="delivery-method">-</p>
+          <p class="order-info-detail" id="delivery-address" hidden></p>
         </div>
+        <div class="order-info-card">
+          <h3 class="order-info-title">Método de Pago</h3>
+          <p class="order-info-value" id="payment-method">-</p>
+        </div>
+      </div>
+
+      <!-- Confirmation Message -->
+      <div class="confirmation-message">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+        </svg>
+        <p>Recibirás confirmación por correo y WhatsApp</p>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="success-actions">
+        <a href="../profile/index.html" class="btn-success-primary">Ver Mis Pedidos</a>
+        <a href="../catalog/index.html" class="btn-success-secondary">Continuar Comprando</a>
       </div>
     </div>
   </div>
@@ -228,31 +181,25 @@
     <div class="cart-drawer-overlay" id="cart-drawer-overlay"></div>
     <div class="cart-drawer-content">
       <div class="cart-drawer-header">
-        <h2 class="cart-drawer-title">Tu carrito</h2>
-        <button class="cart-drawer-close" id="cart-drawer-close" aria-label="Cerrar carrito">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <h2 class="cart-drawer-title">Carrito</h2>
+        <button class="cart-drawer-close" id="cart-drawer-close" aria-label="Cerrar">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <line x1="18" y1="6" x2="6" y2="18"/>
             <line x1="6" y1="6" x2="18" y2="18"/>
           </svg>
         </button>
       </div>
-      <div class="cart-drawer-body" id="cart-drawer-body">
-        <!-- El contenido se llenará dinámicamente -->
-      </div>
-      <div class="cart-drawer-footer" id="cart-drawer-footer">
-        <!-- El footer se llenará dinámicamente -->
-      </div>
+      <div class="cart-drawer-body" id="cart-drawer-body"></div>
     </div>
   </div>
 
-  <script type="module" src="../../js/cart-menu.js"></script>
-  <script type="module" src="../../js/cart-drawer.js"></script>
+  <!-- Scripts -->
   <script type="module" src="../../js/user-menu.js"></script>
+  <script type="module" src="../../js/cart-drawer.js"></script>
+  <script type="module" src="../../js/cart-menu.js"></script>
   <script type="module" src="../../js/sync.js"></script>
+  <script type="module" src="../../js/pages/order-success/index.js"></script>
   <script type="module" src="../../js/main.js"></script>
-  <script type="module" src="../../js/animations.js"></script>
-  <script type="module" src="../../js/pages/cart/index.js"></script>
-  <script src="../../js/button-hover.js"></script>
 </body>
 </html>
 
