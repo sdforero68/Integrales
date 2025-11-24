@@ -1,13 +1,14 @@
-FROM php:8.2-apache
+FROM php:8.2-cli
 
-# Copiar TODO tu proyecto al directorio público
+# Copiar TODO tu proyecto
 COPY . /var/www/html/
 
-# Habilitar mod_rewrite (útil si usas .htaccess)
-RUN a2enmod rewrite
+# Establecer directorio de trabajo
+WORKDIR /var/www/html
 
-# Exponer el puerto que Render necesita
-EXPOSE 10000
+# Exponer el puerto (Render usa la variable $PORT)
+EXPOSE $PORT
 
-# Iniciar servidor PHP embebido para servir HTML + PHP
-CMD ["php", "-S", "0.0.0.0:10000", "-t", "/var/www/html"]
+# Iniciar servidor PHP embebido desde backend/api
+# Render inyecta $PORT automáticamente
+CMD php -S 0.0.0.0:${PORT} -t backend/api
