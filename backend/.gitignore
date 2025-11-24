@@ -1,5 +1,5 @@
 # Archivos de configuración con credenciales
-backend/config/database.env
+config/database.env
 
 # Logs
 *.log
@@ -8,17 +8,8 @@ error_log
 # Archivos temporales
 *.tmp
 *.temp
-*.swp
-*.swo
 
 # Archivos del sistema
 .DS_Store
 Thumbs.db
-.vscode/
-.idea/
 
-# Node modules (si usas npm en el futuro)
-node_modules/
-
-# Archivos de Vercel
-.vercel
