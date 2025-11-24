@@ -12,6 +12,7 @@ config/database.env
 logs/
 *.log
 npm-debug.log*
+error_log
 
 # Sistema operativo
 .DS_Store
@@ -26,4 +27,3 @@ Thumbs.db
 # Archivos temporales
 *.tmp
 *.temp
-

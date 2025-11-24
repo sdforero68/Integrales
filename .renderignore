@@ -1,0 +1,26 @@
+# Archivos y directorios a ignorar en Render
+
+# Configuración local de base de datos (no subir credenciales)
+backend/config/database.env
+
+# Archivos de desarrollo
+node_modules/
+.git/
+*.log
+error_log
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Archivos temporales
+*.tmp
+*.temp
+*.swp
+*.swo
+
+# Archivos de Vercel (si los hay)
+.vercel/
+
