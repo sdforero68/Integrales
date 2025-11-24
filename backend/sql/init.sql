@@ -1,66 +1,225 @@
--- Script de inicialización de base de datos SQL
--- Base de datos para Anita Integrales E-commerce
--- Compatible con PostgreSQL, MySQL, SQL Server, SQLite, etc.
+-- ============================================
+-- Base de Datos: Anita Integrales
+-- Sistema E-commerce para productos artesanales
+-- ============================================
 
--- Crear base de datos (ejecutar solo si no existe)
--- PostgreSQL: CREATE DATABASE integrales_db;
--- MySQL: CREATE DATABASE IF NOT EXISTS integrales_db;
--- SQL Server: CREATE DATABASE integrales_db;
+-- Crear base de datos
+CREATE DATABASE IF NOT EXISTS integrales_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
--- Tabla de usuarios
+USE integrales_db;
+
+-- ============================================
+-- TABLA: categorias
+-- Almacena las categorías de productos
+-- ============================================
+CREATE TABLE IF NOT EXISTS categorias (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL UNIQUE,
+    slug VARCHAR(100) NOT NULL UNIQUE,
+    descripcion TEXT,
+    imagen VARCHAR(255),
+    activo BOOLEAN DEFAULT TRUE,
+    orden INT DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    INDEX idx_slug (slug),
+    INDEX idx_activo (activo)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ============================================
+-- TABLA: productos
+-- Almacena información de productos
+-- ============================================
+CREATE TABLE IF NOT EXISTS productos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    categoria_id INT NOT NULL,
+    nombre VARCHAR(255) NOT NULL,
+    slug VARCHAR(255) NOT NULL UNIQUE,
+    descripcion TEXT,
+    ingredientes TEXT,
+    beneficios TEXT,
+    precio DECIMAL(10, 2) NOT NULL,
+    imagen VARCHAR(255),
+    stock INT DEFAULT 0,
+    activo BOOLEAN DEFAULT TRUE,
+    destacado BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (categoria_id) REFERENCES categorias(id) ON DELETE RESTRICT ON UPDATE CASCADE,
+    INDEX idx_categoria (categoria_id),
+    INDEX idx_slug (slug),
+    INDEX idx_activo (activo),
+    INDEX idx_precio (precio),
+    FULLTEXT idx_busqueda (nombre, descripcion, ingredientes)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ============================================
+-- TABLA: usuarios
+-- Almacena información de usuarios/clientes
+-- ============================================
 CREATE TABLE IF NOT EXISTS usuarios (
-    id SERIAL PRIMARY KEY,  -- PostgreSQL usa SERIAL, MySQL usa INT AUTO_INCREMENT
-    email VARCHAR(255) UNIQUE NOT NULL,
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    apellido VARCHAR(100),
+    email VARCHAR(255) NOT NULL UNIQUE,
+    telefono VARCHAR(20),
     password_hash VARCHAR(255) NOT NULL,
-    name VARCHAR(255) NOT NULL,
-    phone VARCHAR(50),
+    rol ENUM('cliente', 'admin') DEFAULT 'cliente',
+    activo BOOLEAN DEFAULT TRUE,
+    email_verificado BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    INDEX idx_email (email),
+    INDEX idx_activo (activo),
+    INDEX idx_rol (rol)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Índice para email (si no se crea automáticamente con UNIQUE)
-CREATE INDEX IF NOT EXISTS idx_usuarios_email ON usuarios(email);
+-- ============================================
+-- TABLA: direcciones
+-- Almacena direcciones de entrega de usuarios
+-- ============================================
+CREATE TABLE IF NOT EXISTS direcciones (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT NOT NULL,
+    tipo ENUM('casa', 'trabajo', 'otro') DEFAULT 'casa',
+    direccion TEXT NOT NULL,
+    ciudad VARCHAR(100) NOT NULL,
+    departamento VARCHAR(100),
+    codigo_postal VARCHAR(20),
+    telefono VARCHAR(20),
+    instrucciones TEXT,
+    predeterminada BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    INDEX idx_usuario (usuario_id),
+    INDEX idx_predeterminada (predeterminada)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Tabla de pedidos
+-- ============================================
+-- TABLA: carritos
+-- Almacena carritos de compra activos por usuario
+-- ============================================
+CREATE TABLE IF NOT EXISTS carritos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT,
+    sesion_id VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    INDEX idx_usuario (usuario_id),
+    INDEX idx_sesion (sesion_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ============================================
+-- TABLA: carrito_items
+-- Almacena items individuales en el carrito
+-- ============================================
+CREATE TABLE IF NOT EXISTS carrito_items (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    carrito_id INT NOT NULL,
+    producto_id INT NOT NULL,
+    cantidad INT NOT NULL DEFAULT 1,
+    precio_unitario DECIMAL(10, 2) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (carrito_id) REFERENCES carritos(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (producto_id) REFERENCES productos(id) ON DELETE RESTRICT ON UPDATE CASCADE,
+    UNIQUE KEY unique_carrito_producto (carrito_id, producto_id),
+    INDEX idx_carrito (carrito_id),
+    INDEX idx_producto (producto_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ============================================
+-- TABLA: pedidos
+-- Almacena información de pedidos realizados
+-- ============================================
 CREATE TABLE IF NOT EXISTS pedidos (
-    id SERIAL PRIMARY KEY,
-    user_id INTEGER NOT NULL,
-    total DECIMAL(10, 2) NOT NULL,
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT,
+    numero_pedido VARCHAR(50) NOT NULL UNIQUE,
+    estado ENUM('pendiente', 'confirmado', 'preparando', 'enviado', 'entregado', 'cancelado') DEFAULT 'pendiente',
+    metodo_entrega ENUM('domicilio', 'recogida') NOT NULL,
+    metodo_pago ENUM('efectivo', 'transferencia', 'nequi', 'daviplata') NOT NULL,
     subtotal DECIMAL(10, 2) NOT NULL,
-    delivery_fee DECIMAL(10, 2) DEFAULT 0.00,
-    delivery_method VARCHAR(20) NOT NULL DEFAULT 'pickup',
-    delivery_address TEXT,
-    payment_method VARCHAR(50) NOT NULL,
-    status VARCHAR(20) DEFAULT 'pendiente',
-    customer_name VARCHAR(255) NOT NULL,
-    customer_email VARCHAR(255) NOT NULL,
-    customer_phone VARCHAR(50),
-    notes TEXT,
+    costo_envio DECIMAL(10, 2) DEFAULT 0,
+    total DECIMAL(10, 2) NOT NULL,
+    direccion_entrega TEXT,
+    telefono_contacto VARCHAR(20),
+    notas TEXT,
+    fecha_entrega DATE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES usuarios(id) ON DELETE CASCADE
-);
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE SET NULL ON UPDATE CASCADE,
+    INDEX idx_usuario (usuario_id),
+    INDEX idx_numero_pedido (numero_pedido),
+    INDEX idx_estado (estado),
+    INDEX idx_created_at (created_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Índices para pedidos
-CREATE INDEX IF NOT EXISTS idx_pedidos_user_id ON pedidos(user_id);
-CREATE INDEX IF NOT EXISTS idx_pedidos_status ON pedidos(status);
-CREATE INDEX IF NOT EXISTS idx_pedidos_created_at ON pedidos(created_at);
-
--- Tabla de items de pedido
+-- ============================================
+-- TABLA: pedido_items
+-- Almacena items individuales de cada pedido
+-- ============================================
 CREATE TABLE IF NOT EXISTS pedido_items (
-    id SERIAL PRIMARY KEY,
-    order_id INTEGER NOT NULL,
-    product_id VARCHAR(255) NOT NULL,
-    product_name VARCHAR(255) NOT NULL,
-    quantity INTEGER NOT NULL DEFAULT 1,
-    price DECIMAL(10, 2) NOT NULL,
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    pedido_id INT NOT NULL,
+    producto_id INT NOT NULL,
+    cantidad INT NOT NULL,
+    precio_unitario DECIMAL(10, 2) NOT NULL,
+    subtotal DECIMAL(10, 2) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (order_id) REFERENCES pedidos(id) ON DELETE CASCADE
-);
+    FOREIGN KEY (pedido_id) REFERENCES pedidos(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (producto_id) REFERENCES productos(id) ON DELETE RESTRICT ON UPDATE CASCADE,
+    INDEX idx_pedido (pedido_id),
+    INDEX idx_producto (producto_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Índice para items de pedido
-CREATE INDEX IF NOT EXISTS idx_pedido_items_order_id ON pedido_items(order_id);
+-- ============================================
+-- TABLA: favoritos
+-- Almacena productos favoritos de usuarios
+-- ============================================
+CREATE TABLE IF NOT EXISTS favoritos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT NOT NULL,
+    producto_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (producto_id) REFERENCES productos(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    UNIQUE KEY unique_usuario_producto (usuario_id, producto_id),
+    INDEX idx_usuario (usuario_id),
+    INDEX idx_producto (producto_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Nota: Para MySQL, reemplazar SERIAL con INT AUTO_INCREMENT
--- Nota: Para SQL Server, usar IDENTITY(1,1) en lugar de SERIAL
--- Nota: Para actualizar updated_at automáticamente, usar triggers según el SGBD
+-- ============================================
+-- TABLA: puntos_venta
+-- Almacena información de puntos de venta/recogida
+-- ============================================
+CREATE TABLE IF NOT EXISTS puntos_venta (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL,
+    direccion TEXT NOT NULL,
+    ciudad VARCHAR(100) NOT NULL,
+    telefono VARCHAR(20),
+    horario TEXT,
+    activo BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    INDEX idx_activo (activo)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ============================================
+-- TABLA: sesiones
+-- Almacena tokens de sesión de usuarios
+-- ============================================
+CREATE TABLE IF NOT EXISTS sesiones (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT NOT NULL,
+    token VARCHAR(255) NOT NULL UNIQUE,
+    expira_en TIMESTAMP NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    INDEX idx_token (token),
+    INDEX idx_usuario (usuario_id),
+    INDEX idx_expira (expira_en)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

@@ -1,320 +1,212 @@
-# Backend API - Anita Integrales
+# Backend - Anita Integrales
 
-Backend PHP con base de datos SQL para el sistema de autenticación y gestión de pedidos.
+Backend API REST para el e-commerce de Anita Integrales, desarrollado con Node.js, Express y MySQL.
 
-## 📋 Estructura
+## 📋 Requisitos Previos
+
+- Node.js (v18 o superior)
+- MySQL (v8.0 o superior)
+- npm o yarn
+
+## 🚀 Instalación
+
+1. **Instalar dependencias:**
+```bash
+npm install
+```
+
+2. **Configurar base de datos:**
+   - Copia el archivo de configuración:
+   ```bash
+   cp config/database.example.env config/database.env
+   ```
+   
+   - Edita `config/database.env` con tus credenciales de MySQL:
+   ```env
+   DB_HOST=localhost
+   DB_PORT=3306
+   DB_NAME=integrales_db
+   DB_USER=root
+   DB_PASSWORD=tu_contraseña
+   ```
+
+3. **Crear la base de datos:**
+   - Opción 1: Usando MySQL CLI:
+   ```bash
+   mysql -u root -p < sql/init.sql
+   mysql -u root -p < sql/seeds.sql
+   ```
+   
+   - Opción 2: Ejecutar manualmente los scripts SQL en tu cliente MySQL favorito
+
+4. **Iniciar el servidor:**
+   ```bash
+   # Modo desarrollo (con nodemon)
+   npm run dev
+   
+   # Modo producción
+   npm start
+   ```
+
+El servidor estará disponible en `http://localhost:3000`
+
+## 📁 Estructura del Proyecto
 
 ```
 backend/
-├── api/
-│   ├── auth/
-│   │   ├── login.php       # Endpoint de inicio de sesión
-│   │   └── register.php    # Endpoint de registro
-│   └── orders.php          # Endpoint de pedidos (GET y POST)
 ├── config/
-│   ├── database.php         # Configuración de conexión a BD
-│   ├── database.env         # Variables de entorno (crear desde database.example.env)
-│   └── database.example.env # Ejemplo de configuración
-└── sql/
-    └── init.sql            # Script de inicialización de la base de datos
+│   ├── database.js          # Configuración de conexión MySQL
+│   ├── database.example.env  # Plantilla de configuración
+│   └── database.env          # Configuración real (no versionar)
+├── routes/
+│   ├── auth.js              # Rutas de autenticación
+│   ├── productos.js         # Rutas de productos
+│   ├── categorias.js        # Rutas de categorías
+│   ├── carrito.js           # Rutas del carrito
+│   ├── pedidos.js           # Rutas de pedidos
+│   └── usuarios.js          # Rutas de usuarios
+├── sql/
+│   ├── init.sql             # Script de creación de tablas
+│   └── seeds.sql            # Datos de ejemplo
+├── server.js                # Servidor principal
+└── package.json             # Dependencias
 ```
 
-## 🗄️ Base de Datos SQL
-
-Este backend es compatible con cualquier base de datos relacional SQL estándar:
-- **PostgreSQL**
-- **MySQL/MariaDB**
-- **SQL Server**
-- **SQLite**
-- Cualquier otra base de datos SQL compatible con PDO
-
-### Tablas
-
-1. **usuarios**: Almacena información de usuarios registrados
-   - `id`: ID único del usuario (SERIAL/INT AUTO_INCREMENT/IDENTITY según SGBD)
-   - `email`: Correo electrónico (único)
-   - `password_hash`: Hash de la contraseña
-   - `name`: Nombre completo
-   - `phone`: Teléfono (opcional)
-   - `created_at`, `updated_at`: Timestamps
-
-2. **pedidos**: Almacena información de pedidos
-   - `id`: ID único del pedido
-   - `user_id`: ID del usuario que realizó el pedido (FOREIGN KEY)
-   - `total`, `subtotal`, `delivery_fee`: Montos del pedido
-   - `delivery_method`: Método de entrega (delivery/pickup)
-   - `delivery_address`: Dirección de entrega (si aplica)
-   - `payment_method`: Método de pago
-   - `status`: Estado del pedido (pendiente, confirmado, enviado, entregado, cancelado)
-   - `customer_name`, `customer_email`, `customer_phone`: Información del cliente
-   - `notes`: Notas adicionales
-   - `created_at`, `updated_at`: Timestamps
-
-3. **pedido_items**: Almacena los items de cada pedido
-   - `id`: ID único del item
-   - `order_id`: ID del pedido al que pertenece (FOREIGN KEY)
-   - `product_id`: ID del producto
-   - `product_name`: Nombre del producto
-   - `quantity`: Cantidad
-   - `price`: Precio unitario
-   - `created_at`: Timestamp
-
-### Inicialización
-
-Ejecuta el script SQL correspondiente a tu base de datos:
-
-**PostgreSQL:**
-```bash
-psql -U postgres -d integrales_db -f backend/sql/init_postgresql.sql
-```
-
-**MySQL/MariaDB:**
-```bash
-mysql -u root -p integrales_db < backend/sql/init_mysql.sql
-```
-
-**SQL Server:**
-```bash
-sqlcmd -S localhost -d integrales_db -i backend/sql/init_sqlserver.sql
-```
-
-**SQL Genérico (compatible con la mayoría):**
-```sql
--- Ejecuta el contenido de backend/sql/init.sql en tu cliente SQL
-```
-
-O crea la base de datos manualmente y luego ejecuta el contenido del archivo correspondiente.
-
-## 🔌 Endpoints API
+## 🔌 Endpoints de la API
 
 ### Autenticación
+- `POST /api/auth/register` - Registrar nuevo usuario
+- `POST /api/auth/login` - Iniciar sesión
+- `GET /api/auth/verify` - Verificar token
+- `POST /api/auth/logout` - Cerrar sesión
 
-#### POST `/api/auth/register.php`
-Registra un nuevo usuario.
+### Productos
+- `GET /api/productos` - Obtener todos los productos (con filtros)
+- `GET /api/productos/:id` - Obtener producto por ID
+- `GET /api/productos/slug/:slug` - Obtener producto por slug
 
-**Request:**
-```json
-{
-  "email": "usuario@example.com",
-  "password": "contraseña123",
-  "name": "Nombre Usuario",
-  "phone": "3001234567"
-}
-```
+### Categorías
+- `GET /api/categorias` - Obtener todas las categorías
+- `GET /api/categorias/:id` - Obtener categoría por ID
+- `GET /api/categorias/:id/productos` - Obtener productos de una categoría
 
-**Response (201):**
-```json
-{
-  "success": true,
-  "message": "Usuario registrado exitosamente",
-  "data": {
-    "user": {
-      "id": 1,
-      "email": "usuario@example.com",
-      "user_metadata": {
-        "name": "Nombre Usuario",
-        "phone": "3001234567"
-      }
-    },
-    "accessToken": "session_1234567890_abc123..."
-  }
-}
-```
-
-#### POST `/api/auth/login.php`
-Inicia sesión con un usuario existente.
-
-**Request:**
-```json
-{
-  "email": "usuario@example.com",
-  "password": "contraseña123"
-}
-```
-
-**Response (200):**
-```json
-{
-  "success": true,
-  "message": "Inicio de sesión exitoso",
-  "data": {
-    "user": {
-      "id": 1,
-      "email": "usuario@example.com",
-      "user_metadata": {
-        "name": "Nombre Usuario",
-        "phone": "3001234567"
-      }
-    },
-    "accessToken": "session_1234567890_abc123..."
-  }
-}
-```
+### Carrito
+- `GET /api/carrito` - Obtener carrito del usuario
+- `POST /api/carrito/items` - Agregar producto al carrito
+- `PUT /api/carrito/items/:id` - Actualizar cantidad de item
+- `DELETE /api/carrito/items/:id` - Eliminar item del carrito
+- `DELETE /api/carrito` - Vaciar carrito
 
 ### Pedidos
+- `GET /api/pedidos` - Obtener pedidos del usuario
+- `GET /api/pedidos/:id` - Obtener pedido por ID
+- `POST /api/pedidos` - Crear nuevo pedido
 
-#### GET `/api/orders.php?userId=1`
-Obtiene todos los pedidos de un usuario.
+### Usuarios
+- `GET /api/usuarios/profile` - Obtener perfil del usuario
+- `PUT /api/usuarios/profile` - Actualizar perfil
+- `GET /api/usuarios/favoritos` - Obtener favoritos
+- `POST /api/usuarios/favoritos/:producto_id` - Agregar a favoritos
+- `DELETE /api/usuarios/favoritos/:producto_id` - Eliminar de favoritos
 
-**Response (200):**
-```json
-{
-  "success": true,
-  "data": [
-    {
-      "id": 1,
-      "user_id": 1,
-      "total": 50000,
-      "subtotal": 45000,
-      "delivery_fee": 5000,
-      "delivery_method": "delivery",
-      "delivery_address": "Calle 123, Zipaquirá",
-      "payment_method": "cash",
-      "status": "pendiente",
-      "customer_name": "Nombre Usuario",
-      "customer_email": "usuario@example.com",
-      "customer_phone": "3001234567",
-      "notes": null,
-      "created_at": "2024-12-01 10:30:00",
-      "items": [
-        {
-          "id": 1,
-          "product_id": "prod_1",
-          "product_name": "Producto 1",
-          "quantity": 2,
-          "price": 22500
-        }
-      ]
-    }
-  ]
-}
+## 🗄️ Base de Datos
+
+### Tablas Principales
+
+- **categorias**: Categorías de productos
+- **productos**: Información de productos
+- **usuarios**: Usuarios/clientes
+- **direcciones**: Direcciones de entrega
+- **carritos**: Carritos de compra
+- **carrito_items**: Items del carrito
+- **pedidos**: Pedidos realizados
+- **pedido_items**: Items de cada pedido
+- **favoritos**: Productos favoritos
+- **puntos_venta**: Puntos de venta/recogida
+- **sesiones**: Tokens de sesión
+
+## 🔐 Autenticación
+
+La API utiliza JWT (JSON Web Tokens) para autenticación. El token debe enviarse en el header:
+
+```
+Authorization: Bearer <token>
 ```
 
-#### POST `/api/orders.php`
-Crea un nuevo pedido.
+## 📝 Variables de Entorno
 
-**Request:**
-```json
-{
-  "userId": 1,
-  "items": [
-    {
-      "id": "prod_1",
-      "name": "Producto 1",
-      "quantity": 2,
-      "price": 22500
-    }
-  ],
-  "total": 50000,
-  "subtotal": 45000,
-  "deliveryFee": 5000,
-  "deliveryMethod": "delivery",
-  "deliveryAddress": "Calle 123, Zipaquirá",
-  "paymentMethod": "cash",
-  "customerInfo": {
-    "name": "Nombre Usuario",
-    "email": "usuario@example.com",
-    "phone": "3001234567"
-  },
-  "notes": "Entregar en la mañana"
-}
-```
+Archivo: `config/database.env`
 
-**Response (201):**
-```json
-{
-  "success": true,
-  "message": "Pedido creado exitosamente",
-  "data": {
-    "id": 1,
-    "user_id": 1,
-    "total": 50000,
-    "subtotal": 45000,
-    "delivery_fee": 5000,
-    "delivery_method": "delivery",
-    "delivery_address": "Calle 123, Zipaquirá",
-    "payment_method": "cash",
-    "status": "pendiente",
-    "customer_name": "Nombre Usuario",
-    "customer_email": "usuario@example.com",
-    "customer_phone": "3001234567",
-    "notes": "Entregar en la mañana",
-    "created_at": "2024-12-01 10:30:00",
-    "items": [...]
-  }
-}
-```
-
-## ⚙️ Configuración
-
-### Variables de Entorno
-
-Crea un archivo `backend/config/database.env` basado en `database.example.env`:
-
-**Para MySQL:**
 ```env
-DB_CLIENT=mysql
+# Base de datos
+DB_CLIENT=mysql2
 DB_HOST=localhost
 DB_PORT=3306
 DB_NAME=integrales_db
 DB_USER=root
 DB_PASSWORD=tu_contraseña
+
+# Servidor
+NODE_ENV=development
+PORT=3000
+API_BASE_URL=http://localhost:3000/api
+
+# JWT
+JWT_SECRET=tu_secreto_jwt_muy_seguro
+JWT_EXPIRES_IN=7d
+
+# CORS
+CORS_ORIGIN=http://localhost:5500,http://127.0.0.1:5500
 ```
 
-**Para PostgreSQL:**
-```env
-DB_CLIENT=postgresql
-DB_HOST=localhost
-DB_PORT=5432
-DB_NAME=integrales_db
-DB_USER=postgres
-DB_PASSWORD=tu_contraseña
+## 🛠️ Desarrollo
+
+### Scripts Disponibles
+
+- `npm start` - Iniciar servidor en modo producción
+- `npm run dev` - Iniciar servidor en modo desarrollo (con nodemon)
+- `npm run init-db` - Inicializar base de datos (próximamente)
+
+### Agregar Nuevas Rutas
+
+1. Crear archivo en `routes/`
+2. Importar y usar en `server.js`
+
+Ejemplo:
+```javascript
+import nuevaRuta from './routes/nueva-ruta.js';
+app.use('/api/nueva-ruta', nuevaRuta);
 ```
-
-**Para SQL Server:**
-```env
-DB_CLIENT=sqlsrv
-DB_HOST=localhost
-DB_PORT=1433
-DB_NAME=integrales_db
-DB_USER=sa
-DB_PASSWORD=tu_contraseña
-```
-
-### Vercel
-
-En Vercel, configura las variables de entorno en el dashboard:
-- `DB_CLIENT`: Tipo de BD (mysql, postgresql, sqlsrv, sqlite)
-- `DB_HOST`: Host de tu base de datos
-- `DB_PORT`: Puerto (3306 MySQL, 5432 PostgreSQL, 1433 SQL Server)
-- `DB_NAME`: Nombre de la base de datos
-- `DB_USER`: Usuario de la base de datos
-- `DB_PASSWORD`: Contraseña de la base de datos
 
 ## 🔒 Seguridad
 
-**Nota importante**: Este backend es una implementación básica. Para producción, considera:
+- Las contraseñas se hashean con bcrypt
+- Los tokens JWT tienen expiración
+- Validación de datos con express-validator
+- CORS configurado para dominios específicos
 
-1. **Autenticación JWT**: Implementar tokens JWT en lugar de tokens simples
-2. **Validación de tokens**: Validar tokens en cada request
-3. **Rate limiting**: Limitar requests por IP/usuario
-4. **HTTPS**: Usar siempre HTTPS en producción
-5. **Sanitización**: Validar y sanitizar todas las entradas
-6. **Prepared statements**: Ya implementado, mantener siempre
-7. **CORS**: Configurar CORS apropiadamente para tu dominio
+## 📦 Dependencias Principales
 
-## 🚀 Deploy en Vercel
+- **express**: Framework web
+- **mysql2**: Cliente MySQL
+- **bcryptjs**: Hash de contraseñas
+- **jsonwebtoken**: Autenticación JWT
+- **cors**: Manejo de CORS
+- **dotenv**: Variables de entorno
+- **express-validator**: Validación de datos
 
-1. Conecta tu repositorio a Vercel
-2. Configura las variables de entorno en el dashboard de Vercel
-3. Asegúrate de que tu base de datos sea accesible desde Vercel
-4. El archivo `vercel.json` ya está configurado para enrutar las peticiones correctamente
+## 🐛 Solución de Problemas
 
-## 📝 Notas
+### Error de conexión a MySQL
+- Verifica que MySQL esté corriendo
+- Revisa las credenciales en `config/database.env`
+- Asegúrate de que la base de datos existe
 
-- Los tokens de sesión son simples y no se validan actualmente. En producción, implementa JWT.
-- La validación de tokens está simplificada. Mejora esto para producción.
-- Asegúrate de que tu base de datos SQL sea accesible desde Vercel (puede requerir configuración de firewall).
-- El código PHP usa PDO, que es compatible con múltiples bases de datos SQL.
-- Los scripts SQL están optimizados para cada SGBD, pero el código PHP es genérico y funciona con cualquiera.
+### Error de puerto en uso
+- Cambia el puerto en `config/database.env`
+- O termina el proceso que está usando el puerto 3000
+
+## 📄 Licencia
+
+ISC
 
