@@ -9,6 +9,7 @@ Anita Integrales es una tienda en línea especializada en productos artesanales 
 ## ✨ Características Principales
 
 ### 🔐 Sistema de Autenticación
+
 - **Registro de usuarios**: Formulario de signup con validación de campos
 - **Inicio de sesión**: Autenticación segura con email y contraseña
 - **Gestión de sesiones**: Manejo de sesiones de usuario mediante localStorage
@@ -16,6 +17,7 @@ Anita Integrales es una tienda en línea especializada en productos artesanales 
 - **Menú de usuario**: Dropdown con información del usuario y opciones de perfil
 
 ### 🛍️ Catálogo de Productos
+
 - **Búsqueda en tiempo real**: Filtrado por nombre, ingredientes o descripción
 - **Filtros por categoría**: Panadería, Amasijos, Galletería, Granola, Frutos Secos, Envasados
 - **Tarjetas de productos**: Diseño moderno con imágenes, descripción, precio y botones de acción
@@ -23,6 +25,7 @@ Anita Integrales es una tienda en línea especializada en productos artesanales 
 - **Imágenes por defecto**: Sistema de imágenes de respaldo según la categoría del producto
 
 ### 🛒 Carrito de Compras
+
 - **Gestión de productos**: Agregar, actualizar cantidades y eliminar productos
 - **Cálculo automático**: Subtotal, envío y total actualizados en tiempo real
 - **Estado vacío**: Mensaje y botón para continuar comprando cuando el carrito está vacío
@@ -30,6 +33,7 @@ Anita Integrales es una tienda en línea especializada en productos artesanales 
 - **Persistencia**: Datos guardados en localStorage
 
 ### 💳 Checkout
+
 - **Información del cliente**: Formulario para datos de contacto y dirección de entrega
 - **Métodos de entrega**: Selección entre envío a domicilio o recogida en punto
 - **Métodos de pago**: Opciones de pago (efectivo, transferencia, etc.)
@@ -38,12 +42,14 @@ Anita Integrales es una tienda en línea especializada en productos artesanales 
 - **Validación de sesión**: Requiere autenticación para completar la compra
 
 ### 👤 Perfil de Usuario
+
 - **Información personal**: Visualización de datos del usuario (nombre, email, teléfono)
 - **Historial de pedidos**: Lista de compras realizadas con detalles
 - **Estado de pedidos**: Información sobre el estado de cada orden
 - **Navegación**: Botón para volver al inicio
 
 ### 🎨 Diseño y UX
+
 - **Diseño responsive**: Adaptable a diferentes tamaños de pantalla
 - **Animaciones**: Transiciones suaves y efectos de entrada/salida
 - **Tema consistente**: Paleta de colores y tipografía coherente
@@ -95,6 +101,7 @@ El proyecto utiliza `localStorage` para almacenar:
 ## 🎯 Funcionalidades por Módulo
 
 ### `main.js`
+
 - Navegación suave entre secciones
 - Renderizado del catálogo de productos
 - Gestión del carrito (getCart, saveCart, getCartItemsCount)
@@ -103,6 +110,7 @@ El proyecto utiliza `localStorage` para almacenar:
 - Actualización de badge del carrito
 
 ### `login.js`
+
 - Registro de nuevos usuarios
 - Autenticación de usuarios existentes
 - Generación de IDs y tokens de sesión
@@ -111,6 +119,7 @@ El proyecto utiliza `localStorage` para almacenar:
 - Animaciones de transición entre formularios
 
 ### `cart.js`
+
 - Renderizado de items del carrito
 - Actualización de cantidades
 - Eliminación de productos
@@ -119,6 +128,7 @@ El proyecto utiliza `localStorage` para almacenar:
 - Navegación al checkout
 
 ### `checkout.js`
+
 - Validación de sesión de usuario
 - Captura de información del cliente
 - Selección de métodos de entrega y pago
@@ -126,12 +136,14 @@ El proyecto utiliza `localStorage` para almacenar:
 - Redirección post-compra
 
 ### `profile.js`
+
 - Visualización de información del usuario
 - Carga de historial de pedidos
 - Cierre de sesión
 - Validación de autenticación
 
 ### `products.js`
+
 - Definición de categorías de productos
 - Base de datos de productos (demo)
 
@@ -179,10 +191,6 @@ El proyecto utiliza variables CSS para mantener consistencia:
 - El sistema de autenticación es básico y utiliza localStorage (no para producción)
 - Las imágenes de productos usan URLs de Unsplash como placeholder
 - El diseño está optimizado para móviles primero (mobile-first)
-
-## 👥 Créditos
-
-Proyecto desarrollado para Anita Integrales - Más de 15 años creando alimentos saludables con amor.
 
 ---
 
